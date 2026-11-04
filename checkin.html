@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Gym Self Check-in</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+    * { font-family: 'Inter', sans-serif; }
+
+    body {
+      background: radial-gradient(ellipse at top, #1e1b4b 0%, #0f172a 50%, #020617 100%);
+      min-height: 100dvh;
+    }
+
+    /* ── Tick animation ── */
+    .tick-circle {
+      stroke-dasharray: 166;
+      stroke-dashoffset: 166;
+      animation: dash 0.8s cubic-bezier(0.65, 0, 0.45, 1) 0.3s forwards;
+    }
+    .tick-check {
+      stroke-dasharray: 48;
+      stroke-dashoffset: 48;
+      animation: dash 0.4s cubic-bezier(0.65, 0, 0.45, 1) 0.9s forwards;
+    }
+    @keyframes dash {
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* ── Pulse ring ── */
+    .pulse-ring {
+      animation: pulse-ring 2s ease-out infinite;
+    }
+    @keyframes pulse-ring {
+      0%   { transform: scale(0.9); opacity: 0.7; }
+      70%  { transform: scale(1.4); opacity: 0; }
+      100% { transform: scale(0.9); opacity: 0; }
+    }
+
+    /* ── Slide-up ── */
+    .slide-up {
+      animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Fade in ── */
+    .fade-in {
+      animation: fadeIn 0.4s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ── Shake for errors ── */
+    .shake {
+      animation: shake 0.4s ease;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%       { transform: translateX(-8px); }
+      40%       { transform: translateX(8px); }
+      60%       { transform: translateX(-5px); }
+      80%       { transform: translateX(5px); }
+    }
+
+    /* ── Input glow ── */
+    input:focus {
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    }
+
+    /* ── Spinner ── */
+    .spinner {
+      border: 3px solid rgba(255,255,255,0.2);
+      border-top-color: #fff;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+
+<body class="flex items-center justify-center min-h-dvh p-4">
+
+  <!-- ═══════════════════════════════════════
+       MAIN CARD
+  ═══════════════════════════════════════ -->
+  <div class="w-full max-w-sm">
+
+    <!-- Logo / Brand -->
+    <div class="text-center mb-8 fade-in">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-xl shadow-indigo-900/40 mb-4">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+      </div>
+      <h1 class="text-2xl font-extrabold text-white tracking-tight">GymPro</h1>
+      <p class="text-slate-400 text-sm mt-1">Member Self Check-in</p>
+    </div>
+
+    <!-- ── STATE 1: Phone Entry ── -->
+    <div id="state-phone" class="hidden">
+      <div class="bg-slate-900/80 backdrop-blur-sm border border-slate-800 rounded-3xl p-7 shadow-2xl slide-up">
+        <div class="text-center mb-6">
+          <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 mb-3">
+            <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+            </svg>
+          </div>
+          <h2 class="text-lg font-bold text-white">Welcome!</h2>
+          <p class="text-slate-400 text-sm mt-1">Enter your registered phone number to check in</p>
+        </div>
+
+        <form id="phone-form" onsubmit="handlePhoneSubmit(event)" class="space-y-4">
+          <!-- Phone input -->
+          <div>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 text-sm font-semibold pointer-events-none select-none">
+                +91
+              </span>
+              <input
+                type="tel"
+                id="phone-input"
+                inputmode="numeric"
+                pattern="[0-9]{10}"
+                maxlength="10"
+                placeholder="10-digit mobile number"
+                required
+                autocomplete="tel"
+                class="w-full pl-14 pr-4 py-3.5 text-base font-mono bg-slate-800/80 border border-slate-700/80 rounded-2xl text-white placeholder-slate-500 outline-none transition-all"
+              />
+            </div>
+            <!-- Error msg -->
+            <p id="phone-error" class="hidden mt-2.5 text-xs font-medium text-rose-400 flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span id="phone-error-text">Number not found in our records.</span>
+            </p>
+          </div>
+
+          <!-- Submit button -->
+          <button
+            type="submit"
+            id="phone-btn"
+            class="w-full flex items-center justify-center gap-2.5 py-3.5 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-500 active:scale-95 rounded-2xl shadow-lg shadow-indigo-900/40 transition-all cursor-pointer"
+          >
+            <span id="phone-btn-text">Check In →</span>
+            <div id="phone-spinner" class="spinner hidden"></div>
+          </button>
+        </form>
+
+        <!-- Privacy note -->
+        <p class="text-center text-xs text-slate-600 mt-4">
+          🔒 Your data is saved securely for attendance only
+        </p>
+      </div>
+    </div>
+
+    <!-- ── STATE 2: Success ── -->
+    <div id="state-success" class="hidden">
+      <div class="bg-slate-900/80 backdrop-blur-sm border border-slate-800 rounded-3xl p-8 shadow-2xl text-center slide-up">
+
+        <!-- Animated tick -->
+        <div class="relative flex items-center justify-center mb-6">
+          <!-- Pulse ring -->
+          <div class="absolute w-28 h-28 rounded-full bg-emerald-500/20 pulse-ring"></div>
+          <!-- SVG Tick -->
+          <svg class="w-24 h-24" viewBox="0 0 52 52">
+            <circle class="tick-circle" cx="26" cy="26" r="25"
+              fill="none" stroke="#10b981" stroke-width="2"/>
+            <path class="tick-check" fill="none" stroke="#10b981" stroke-width="3"
+              stroke-linecap="round" stroke-linejoin="round"
+              d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+          </svg>
+        </div>
+
+        <!-- Member name -->
+        <h2 class="text-2xl font-extrabold text-white mb-1" id="success-name">Welcome!</h2>
+        <p class="text-emerald-400 font-semibold text-base mb-5">Attendance Marked for Today! 🎉</p>
+
+        <!-- Info card -->
+        <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl px-5 py-4 text-left space-y-2.5 mb-6">
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-slate-400">Date</span>
+            <span class="text-slate-100 font-semibold" id="success-date">—</span>
+          </div>
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-slate-400">Time</span>
+            <span class="text-slate-100 font-semibold" id="success-time">—</span>
+          </div>
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-slate-400">Plan</span>
+            <span class="text-slate-100 font-semibold" id="success-plan">—</span>
+          </div>
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-slate-400">Expiry</span>
+            <span class="font-semibold" id="success-expiry">—</span>
+          </div>
+        </div>
+
+        <!-- Check in again / switch account -->
+        <button
+          onclick="resetCheckin()"
+          class="w-full py-3 text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 rounded-2xl border border-slate-700/60 hover:border-slate-600 transition-all cursor-pointer"
+        >
+          Not you? Switch Account
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STATE 3: Auto-loading (for returning visitors) ── -->
+    <div id="state-loading" class="hidden fade-in">
+      <div class="bg-slate-900/80 backdrop-blur-sm border border-slate-800 rounded-3xl p-10 shadow-2xl text-center">
+        <div class="flex justify-center mb-4">
+          <div class="spinner" style="width:40px;height:40px;border-width:4px;"></div>
+        </div>
+        <p class="text-slate-300 font-semibold">Marking your attendance…</p>
+        <p class="text-slate-500 text-xs mt-1">Please wait a moment</p>
+      </div>
+    </div>
+
+    <!-- ── STATE 4: Expired Member Warning ── -->
+    <div id="state-expired" class="hidden">
+      <div class="bg-slate-900/80 backdrop-blur-sm border border-amber-800/40 rounded-3xl p-8 shadow-2xl text-center slide-up">
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-amber-500/15 border border-amber-500/30 mb-5">
+          <svg class="w-10 h-10 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+          </svg>
+        </div>
+        <h2 class="text-xl font-extrabold text-white mb-2" id="expired-name">Hello!</h2>
+        <p class="text-amber-400 font-semibold text-sm mb-1">Your membership has expired</p>
+        <p class="text-slate-400 text-xs mb-6">Please renew your plan to continue working out.</p>
+        <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl px-5 py-3 text-sm flex items-center justify-between mb-5">
+          <span class="text-slate-400">Expired on</span>
+          <span class="text-rose-400 font-bold" id="expired-date">—</span>
+        </div>
+        <button
+          onclick="resetCheckin()"
+          class="w-full py-3 text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 rounded-2xl border border-slate-700/60 hover:border-slate-600 transition-all cursor-pointer"
+        >
+          Switch Account
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /max-w-sm -->
+
+  <!-- ═══════════════════════════════════════
+       FIREBASE SDK (modular v10)
+  ═══════════════════════════════════════ -->
+  <script type="module">
+    import { initializeApp }                      from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
+    import { getFirestore, collection, query,
+             where, getDocs, updateDoc,
+             arrayUnion, doc }                    from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
+
+    // ─────────────────────────────────────────
+    // 🔧 PASTE YOUR FIREBASE CONFIG HERE
+    // ─────────────────────────────────────────
+    const firebaseConfig = {
+      apiKey:            "AIzaSyBEIS2nOugqROvF0cepKm_Vv7V0Ji2P43I",
+      authDomain:        "gymsystem-23397.firebaseapp.com",
+      projectId:         "gymsystem-23397",
+      storageBucket:     "gymsystem-23397.firebasestorage.app",
+      messagingSenderId: "487346195004",
+      appId:             "1:487346195004:web:1b15c1dcd3d363d8bdd139"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
+
+    // ─────────────────────────────────────────
+    // HELPERS
+    // ─────────────────────────────────────────
+    const $ = id => document.getElementById(id);
+
+    function showState(name) {
+      ['state-phone','state-success','state-loading','state-expired'].forEach(s => {
+        $(s).classList.add('hidden');
+      });
+      if (name) $(name).classList.remove('hidden');
+    }
+
+    function todayStr() {
+      return new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '—';
+      return new Date(dateStr).toLocaleDateString('en-IN', {
+        day: '2-digit', month: 'short', year: 'numeric'
+      });
+    }
+
+    function formatTime() {
+      return new Date().toLocaleTimeString('en-IN', {
+        hour: '2-digit', minute: '2-digit', hour12: true
+      });
+    }
+
+    function setLoading(on) {
+      const btn  = $('phone-btn');
+      const txt  = $('phone-btn-text');
+      const spin = $('phone-spinner');
+      if (!btn) return;
+      btn.disabled = on;
+      if (on) {
+        txt.textContent  = 'Checking…';
+        spin.classList.remove('hidden');
+      } else {
+        txt.textContent  = 'Check In →';
+        spin.classList.add('hidden');
+      }
+    }
+
+    function showPhoneError(msg) {
+      const el   = $('phone-error');
+      const txt  = $('phone-error-text');
+      const wrap = $('phone-input').closest('div');
+      if (txt) txt.textContent = msg;
+      if (el)  el.classList.remove('hidden');
+      // shake animation
+      wrap.classList.add('shake');
+      setTimeout(() => wrap.classList.remove('shake'), 450);
+    }
+
+    function hidePhoneError() {
+      $('phone-error')?.classList.add('hidden');
+    }
+
+    // ─────────────────────────────────────────
+    // CORE: query Firestore & mark attendance
+    // ─────────────────────────────────────────
+    async function markAttendance(phone) {
+      const today = todayStr();
+
+      // Query members where phone == the given number
+      const q   = query(collection(db, 'members'), where('phone', '==', phone));
+      const snap = await getDocs(q);
+
+      if (snap.empty) {
+        // Try without leading country code just in case
+        const q2    = query(collection(db, 'members'), where('phone', '==', '91' + phone));
+        const snap2 = await getDocs(q2);
+        if (snap2.empty) return null;
+        // Found with prefix
+        return processMemberDoc(snap2.docs[0], today);
+      }
+
+      return processMemberDoc(snap.docs[0], today);
+    }
+
+    async function processMemberDoc(docSnap, today) {
+      const data   = docSnap.data();
+      const docRef = doc(db, 'members', docSnap.id);
+
+      // Mark attendance: add today to attendanceHistory array (arrayUnion prevents duplicates)
+      await updateDoc(docRef, {
+        attendanceHistory: arrayUnion(today),
+        lastCheckIn: today
+      });
+
+      return {
+        name:       data.name       || 'Member',
+        plan:       data.plan       || '—',
+        expiryDate: data.expiryDate || data.expiry || '',
+        phone:      data.phone      || ''
+      };
+    }
+
+    // ─────────────────────────────────────────
+    // SHOW SUCCESS SCREEN
+    // ─────────────────────────────────────────
+    function renderSuccess(memberData) {
+      const expiry   = memberData.expiryDate;
+      const expired  = expiry && new Date(expiry) < new Date(new Date().toDateString());
+
+      if (expired) {
+        // Show expired state instead
+        $('expired-name').textContent  = `Hey, ${memberData.name}`;
+        $('expired-date').textContent  = formatDate(expiry);
+        showState('state-expired');
+        return;
+      }
+
+      $('success-name').textContent   = `Hey, ${memberData.name}! 👋`;
+      $('success-date').textContent   = formatDate(todayStr());
+      $('success-time').textContent   = formatTime();
+      $('success-plan').textContent   = memberData.plan;
+
+      const expiryEl = $('success-expiry');
+      const daysLeft = expiry
+        ? Math.ceil((new Date(expiry) - new Date(new Date().toDateString())) / 86400000)
+        : null;
+
+      if (expiry) {
+        expiryEl.textContent  = `${formatDate(expiry)} (${daysLeft}d left)`;
+        expiryEl.className    = daysLeft <= 7
+          ? 'font-semibold text-amber-400'
+          : 'font-semibold text-emerald-400';
+      } else {
+        expiryEl.textContent = '—';
+        expiryEl.className   = 'font-semibold text-slate-300';
+      }
+
+      showState('state-success');
+    }
+
+    // ─────────────────────────────────────────
+    // PAGE LOAD: check localStorage
+    // ─────────────────────────────────────────
+    async function init() {
+      const savedPhone = localStorage.getItem('gymCheckinPhone');
+
+      if (savedPhone) {
+        // Returning visitor — auto check-in
+        showState('state-loading');
+        try {
+          const member = await markAttendance(savedPhone);
+          if (!member) {
+            // Phone no longer in Firestore (member deleted?) — reset
+            localStorage.removeItem('gymCheckinPhone');
+            showState('state-phone');
+            return;
+          }
+          renderSuccess(member);
+        } catch (error) {
+          console.error("Auto check-in error:", error);
+          localStorage.removeItem('gymCheckinPhone');
+          showState('state-phone');
+          const errMsg = error?.message || error?.code || 'Something went wrong';
+          showPhoneError(`Error: ${errMsg}. Please try again.`);
+        }
+      } else {
+        // First-time visitor
+        showState('state-phone');
+        $('phone-input')?.focus();
+      }
+    }
+
+    // ─────────────────────────────────────────
+    // FORM SUBMIT: first-time phone entry
+    // ─────────────────────────────────────────
+    window.handlePhoneSubmit = async function(e) {
+      e.preventDefault();
+      hidePhoneError();
+
+      const rawPhone   = $('phone-input').value.trim().replace(/\D/g, '');
+      const phone      = rawPhone.length > 10 ? rawPhone.slice(-10) : rawPhone;
+
+      if (phone.length !== 10) {
+        showPhoneError('Please enter a valid 10-digit mobile number.');
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const member = await markAttendance(phone);
+        if (!member) {
+          setLoading(false);
+          showPhoneError('Number not found in our records. Please contact the gym desk.');
+          return;
+        }
+        // Save to localStorage so returning visits auto check-in
+        localStorage.setItem('gymCheckinPhone', phone);
+        setLoading(false);
+        renderSuccess(member);
+      } catch (error) {
+        console.error("Firestore Check-in Error:", error);
+        setLoading(false);
+        const errMsg = error?.message || error?.code || 'Connection error';
+        showPhoneError(`Error: ${errMsg}. Check Console for details.`);
+      }
+    };
+
+    // ─────────────────────────────────────────
+    // RESET: switch account
+    // ─────────────────────────────────────────
+    window.resetCheckin = function() {
+      localStorage.removeItem('gymCheckinPhone');
+      $('phone-input').value = '';
+      hidePhoneError();
+      showState('state-phone');
+      setTimeout(() => $('phone-input')?.focus(), 100);
+    };
+
+    // ─────────────────────────────────────────
+    // BOOT
+    // ─────────────────────────────────────────
+    init();
+  </script>
+</body>
+</html>
+

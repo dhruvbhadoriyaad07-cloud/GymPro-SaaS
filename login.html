@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GymPro Admin — Sign In</title>
+  <!-- Tailwind CSS Play CDN -->
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+          },
+          colors: {
+            brand: { DEFAULT: '#4F46E5', light: '#818CF8', dark: '#3730A3', soft: '#EEF2FF' },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .fade-in { animation: fadeIn 0.4s ease both; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .ambient-glow {
+      background: radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.18) 0%, rgba(15, 23, 42, 0) 70%);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4 relative overflow-hidden select-none">
+
+  <!-- Ambient background glow & decorative grid -->
+  <div class="absolute inset-0 ambient-glow pointer-events-none"></div>
+  <div class="absolute -top-40 -right-40 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+  <!-- Login Container -->
+  <div class="w-full max-w-md relative z-10 fade-in">
+
+    <!-- Brand Header -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-indigo-600 to-indigo-500 rounded-2xl shadow-xl shadow-indigo-500/25 mb-4">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
+        </svg>
+      </div>
+      <h1 class="text-2xl font-bold tracking-tight text-white flex items-center justify-center gap-2">
+        GymPro <span class="text-xs uppercase px-2 py-0.5 font-semibold tracking-wider bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 rounded-full">Admin</span>
+      </h1>
+      <p class="text-sm text-slate-400 mt-2">Sign in to manage your members and cash collection</p>
+    </div>
+
+    <!-- Card -->
+    <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-800/80 rounded-3xl shadow-2xl p-7 sm:p-8">
+
+      <!-- Alert / Error Banner -->
+      <div id="alert-banner" class="hidden mb-6 p-3.5 rounded-2xl border text-sm flex items-start gap-3 transition-all duration-200">
+        <span id="alert-icon" class="text-lg shrink-0 mt-0.5">⚠️</span>
+        <div class="flex-1 text-xs sm:text-sm font-medium leading-relaxed" id="alert-msg"></div>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="space-y-5" onsubmit="handleSignIn(event)">
+
+        <!-- Email Field -->
+        <div>
+          <label for="email" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Email Address</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+              </svg>
+            </div>
+            <input
+              type="email"
+              id="email"
+              required
+              autocomplete="email"
+              placeholder="admin@gympro.in"
+              class="w-full pl-11 pr-4 py-3 bg-slate-950/70 text-slate-100 text-sm rounded-xl border border-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all"
+            />
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label for="password" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Password</label>
+            <button
+              type="button"
+              onclick="handleForgotPassword()"
+              class="text-xs text-indigo-400 hover:text-indigo-300 font-medium transition-colors hover:underline cursor-pointer"
+            >
+              Forgot password?
+            </button>
+          </div>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
+            </div>
+            <input
+              type="password"
+              id="password"
+              required
+              autocomplete="current-password"
+              placeholder="••••••••"
+              class="w-full pl-11 pr-11 py-3 bg-slate-950/70 text-slate-100 text-sm rounded-xl border border-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all"
+            />
+            <button
+              type="button"
+              onclick="togglePasswordVisibility()"
+              class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-500 hover:text-slate-300 transition-colors cursor-pointer"
+              title="Show/Hide password"
+            >
+              <svg id="eye-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Remember Me Checkbox -->
+        <div class="flex items-center">
+          <input
+            id="remember"
+            type="checkbox"
+            checked
+            class="w-4 h-4 rounded bg-slate-950 border-slate-800 text-indigo-600 focus:ring-indigo-500/30 focus:ring-offset-0 cursor-pointer"
+          />
+          <label for="remember" class="ml-2 text-xs font-medium text-slate-400 cursor-pointer">
+            Keep me signed in
+          </label>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          id="btn-login"
+          class="w-full py-3.5 px-4 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-600 text-white font-semibold text-sm rounded-xl shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          <span id="btn-login-text">Sign In to Dashboard</span>
+          <svg id="btn-login-spinner" class="w-4 h-4 text-white animate-spin hidden" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+          </svg>
+        </button>
+
+      </form>
+    </div>
+
+    <!-- Security badge / footer -->
+    <div class="mt-8 text-center text-xs text-slate-500 flex items-center justify-center gap-2">
+      <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+      </svg>
+      <span>Protected by Firebase Authentication</span>
+    </div>
+
+  </div>
+
+  <!-- ─────────────────────────────────────────────────
+       FIREBASE AUTH JAVASCRIPT
+  ───────────────────────────────────────────────── -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { 
+      getAuth, 
+      signInWithEmailAndPassword, 
+      onAuthStateChanged,
+      sendPasswordResetEmail
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+    // Live Firebase Project Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBEIS2nOugqROvF0cepKm_Vv7V0Ji2P43I",
+      authDomain: "gymsystem-23397.firebaseapp.com",
+      projectId: "gymsystem-23397",
+      storageBucket: "gymsystem-23397.firebasestorage.app",
+      messagingSenderId: "487346195004",
+      appId: "1:487346195004:web:1b15c1dcd3d363d8bdd139"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // If user is already authenticated, immediately send to dashboard
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.replace("index.html");
+      }
+    });
+
+    // Alert helper
+    function showAlert(msg, isError = true) {
+      const banner = document.getElementById('alert-banner');
+      const icon = document.getElementById('alert-icon');
+      const text = document.getElementById('alert-msg');
+
+      banner.className = isError
+        ? "mb-6 p-3.5 rounded-2xl border text-sm flex items-start gap-3 bg-red-500/10 border-red-500/30 text-red-300"
+        : "mb-6 p-3.5 rounded-2xl border text-sm flex items-start gap-3 bg-emerald-500/10 border-emerald-500/30 text-emerald-300";
+
+      icon.textContent = isError ? "⚠️" : "✅";
+      text.textContent = msg;
+      banner.classList.remove('hidden');
+    }
+
+    function hideAlert() {
+      document.getElementById('alert-banner').classList.add('hidden');
+    }
+
+    // Toggle password visibility
+    window.togglePasswordVisibility = function() {
+      const pwdInput = document.getElementById('password');
+      const eyeIcon = document.getElementById('eye-icon');
+      if (pwdInput.type === 'password') {
+        pwdInput.type = 'text';
+        eyeIcon.innerHTML = `
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/>
+        `;
+      } else {
+        pwdInput.type = 'password';
+        eyeIcon.innerHTML = `
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+        `;
+      }
+    };
+
+    // Forgot password handler
+    window.handleForgotPassword = async function() {
+      const email = document.getElementById('email').value.trim();
+      if (!email) {
+        showAlert("Please enter your email address in the field above to receive a password reset link.");
+        return;
+      }
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showAlert(`Password reset link sent to ${email}. Check your inbox!`, false);
+      } catch (err) {
+        console.error("Password reset error:", err);
+        showAlert("Failed to send reset link: " + (err.message || "Unknown error"));
+      }
+    };
+
+    // Handle Sign In submission
+    window.handleSignIn = async function(event) {
+      event.preventDefault();
+      hideAlert();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      const btn = document.getElementById('btn-login');
+      const btnText = document.getElementById('btn-login-text');
+      const spinner = document.getElementById('btn-login-spinner');
+
+      btnText.textContent = "Verifying...";
+      spinner.classList.remove('hidden');
+      btn.disabled = true;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        // Successful login will trigger onAuthStateChanged and redirect
+        btnText.textContent = "Redirecting...";
+        window.location.replace("index.html");
+      } catch (error) {
+        console.error("Sign-in error:", error);
+        let errorMsg = "Unable to sign in. Please verify your email and password.";
+
+        if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+          errorMsg = "Incorrect email or password. Please check your credentials.";
+        } else if (error.code === 'auth/too-many-requests') {
+          errorMsg = "Access temporarily disabled due to many failed attempts. Try again later or reset password.";
+        } else if (error.code === 'auth/invalid-email') {
+          errorMsg = "The email address is improperly formatted.";
+        } else if (error.code === 'auth/network-request-failed') {
+          errorMsg = "Network error. Please check your internet connection.";
+        } else if (error.message) {
+          errorMsg = error.message;
+        }
+
+        showAlert(errorMsg, true);
+        btnText.textContent = "Sign In to Dashboard";
+        spinner.classList.add('hidden');
+        btn.disabled = false;
+      }
+    };
+  </script>
+
+</body>
+</html>
+
