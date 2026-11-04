@@ -189,7 +189,7 @@
 
         <!-- Member name -->
         <h2 class="text-2xl font-extrabold text-white mb-1" id="success-name">Welcome!</h2>
-        <p class="text-emerald-400 font-semibold text-base mb-5">Attendance Marked for Today! 🎉</p>
+        <p class="text-emerald-400 font-semibold text-base mb-5" id="success-subtitle">Attendance Marked for Today! 🎉</p>
 
         <!-- Info card -->
         <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl px-5 py-4 text-left space-y-2.5 mb-6">
@@ -265,7 +265,7 @@
   <script type="module">
     import { initializeApp }                      from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
     import { getFirestore, collection, query,
-             where, getDocs, updateDoc,
+             where, getDocs, getDoc, updateDoc,
              arrayUnion, doc, serverTimestamp }   from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
     import { getAuth, signInAnonymously }         from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js';
 
@@ -353,6 +353,33 @@
     }
 
     // ─────────────────────────────────────────
+    // UI ALERT / NOTIFICATION TOAST
+    // ─────────────────────────────────────────
+    function showNotification(msg, type = 'warning') {
+      let el = $('alert-toast');
+      if (!el) {
+        el = document.createElement('div');
+        el.id = 'alert-toast';
+        document.body.appendChild(el);
+      }
+      el.className = `fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-5 py-3 rounded-2xl shadow-2xl text-xs sm:text-sm font-bold border transition-all duration-300 slide-up ${
+        type === 'warning'
+          ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-amber-500/30'
+          : 'bg-emerald-500 text-slate-950 border-emerald-400 shadow-emerald-500/30'
+      }`;
+      el.innerHTML = `
+        <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+        </svg>
+        <span>${msg}</span>
+      `;
+      setTimeout(() => {
+        el.classList.add('opacity-0', '-translate-y-4');
+        setTimeout(() => el.remove(), 350);
+      }, 4500);
+    }
+
+    // ─────────────────────────────────────────
     // CORE: query Firestore & mark attendance
     // ─────────────────────────────────────────
     async function markAttendance(phone) {
@@ -367,13 +394,16 @@
         Number(phone)
       ];
 
+      let targetDocRef = null;
+
       // 1. Query 'phone' field
       for (const val of phoneVariants) {
         try {
           const q = query(collection(db, 'members'), where('phone', '==', val));
           const snap = await getDocs(q);
           if (!snap.empty) {
-            return await processMemberDoc(snap.docs[0], today);
+            targetDocRef = doc(db, 'members', snap.docs[0].id);
+            break;
           }
         } catch (e) {
           console.error("Firestore query error for phone=" + val, e);
@@ -381,31 +411,72 @@
         }
       }
 
-      // 2. Query fallback fields (contact, phoneNumber, mobile)
-      for (const field of ['contact', 'phoneNumber', 'mobile']) {
-        for (const val of [phone, '+91' + phone, Number(phone)]) {
-          try {
-            const q = query(collection(db, 'members'), where(field, '==', val));
-            const snap = await getDocs(q);
-            if (!snap.empty) {
-              return await processMemberDoc(snap.docs[0], today);
+      // 2. Query fallback fields (contact, phoneNumber, mobile) if not found
+      if (!targetDocRef) {
+        for (const field of ['contact', 'phoneNumber', 'mobile']) {
+          for (const val of [phone, '+91' + phone, Number(phone)]) {
+            try {
+              const q = query(collection(db, 'members'), where(field, '==', val));
+              const snap = await getDocs(q);
+              if (!snap.empty) {
+                targetDocRef = doc(db, 'members', snap.docs[0].id);
+                break;
+              }
+            } catch (e) {
+              // ignore fallback query errors
             }
-          } catch (e) {
-            // ignore fallback query errors
           }
+          if (targetDocRef) break;
         }
       }
 
-      return null;
+      if (!targetDocRef) return null;
+
+      // Fetch fresh member document using getDoc
+      const memberSnap = await getDoc(targetDocRef);
+      if (!memberSnap.exists()) return null;
+
+      return await processMemberDoc(memberSnap, targetDocRef, today);
     }
 
-    async function processMemberDoc(docSnap, today) {
-      const data   = docSnap.data();
-      const docRef = doc(db, 'members', docSnap.id);
-      const currentTime = formatTime();
+    async function processMemberDoc(docSnap, docRef, today) {
+      const data = docSnap.data();
 
-      // Mark attendance: add today to attendanceHistory array (arrayUnion prevents duplicates)
-      // and record lastCheckIn date, lastCheckInTime and secure serverTimestamp
+      // Check if today's date (YYYY-MM-DD) is already present in attendanceHistory
+      const history = Array.isArray(data.attendanceHistory) ? data.attendanceHistory : [];
+      const alreadyPresent = history.includes(today) || data.lastCheckIn === today;
+
+      // Retrieve existing check-in time if already checked in
+      let existingTime = data.lastCheckInTime || '';
+      if (data.lastCheckInTimestamp) {
+        try {
+          if (typeof data.lastCheckInTimestamp.toDate === 'function') {
+            existingTime = data.lastCheckInTimestamp.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          } else if (data.lastCheckInTimestamp.seconds) {
+            existingTime = new Date(data.lastCheckInTimestamp.seconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          }
+        } catch (e) {
+          // ignore formatting error
+        }
+      }
+      if (!existingTime) existingTime = formatTime();
+
+      // IF ALREADY PRESENT: Abort update to protect first scan timestamp of the day
+      if (alreadyPresent) {
+        console.log(`Member already checked in for today (${today}). Update aborted.`);
+        return {
+          alreadyCheckedIn:     true,
+          name:                 data.name            || 'Member',
+          plan:                 data.plan            || '—',
+          expiryDate:           data.expiryDate      || data.expiry || '',
+          phone:                data.phone           || '',
+          lastCheckInTime:      existingTime,
+          lastCheckInTimestamp: data.lastCheckInTimestamp || null
+        };
+      }
+
+      // IF NOT PRESENT: Proceed to update attendanceHistory and record serverTimestamp()
+      const currentTime = formatTime();
       await updateDoc(docRef, {
         attendanceHistory: arrayUnion(today),
         lastCheckIn: today,
@@ -414,6 +485,7 @@
       });
 
       return {
+        alreadyCheckedIn:     false,
         name:                 data.name            || 'Member',
         plan:                 data.plan            || '—',
         expiryDate:           data.expiryDate      || data.expiry || '',
@@ -442,6 +514,17 @@
       $('success-date').textContent   = formatDate(todayStr());
       $('success-time').textContent   = memberData.lastCheckInTime || formatTime();
       $('success-plan').textContent   = memberData.plan;
+
+      const subTitleEl = $('success-subtitle');
+      if (subTitleEl) {
+        if (memberData.alreadyCheckedIn) {
+          subTitleEl.textContent = 'You have already checked in for today! ℹ️';
+          subTitleEl.className   = 'text-amber-400 font-semibold text-base mb-5';
+        } else {
+          subTitleEl.textContent = 'Attendance Marked for Today! 🎉';
+          subTitleEl.className   = 'text-emerald-400 font-semibold text-base mb-5';
+        }
+      }
 
       const expiryEl = $('success-expiry');
       const daysLeft = expiry
@@ -477,6 +560,9 @@
             localStorage.removeItem('gymCheckinPhone');
             showState('state-phone');
             return;
+          }
+          if (member.alreadyCheckedIn) {
+            showNotification('You have already checked in for today!', 'warning');
           }
           renderSuccess(member);
         } catch (error) {
@@ -526,6 +612,10 @@
         // Save to localStorage so returning visits auto check-in
         localStorage.setItem('gymCheckinPhone', phone);
         setLoading(false);
+
+        if (member.alreadyCheckedIn) {
+          showNotification('You have already checked in for today!', 'warning');
+        }
         renderSuccess(member);
       } catch (error) {
         console.error("Firestore Check-in Error:", error);
