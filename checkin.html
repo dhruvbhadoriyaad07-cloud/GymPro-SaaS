@@ -143,12 +143,12 @@
               />
             </div>
             <!-- Error msg -->
-            <p id="phone-error" class="hidden mt-2.5 text-xs font-medium text-rose-400 flex items-center gap-1.5">
-              <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div id="phone-error" class="hidden mt-2.5 text-xs font-medium text-rose-400 flex items-start gap-1.5 leading-relaxed">
+              <svg class="w-3.5 h-3.5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
               <span id="phone-error-text">Number not found in our records.</span>
-            </p>
+            </div>
           </div>
 
           <!-- Submit button -->
@@ -266,10 +266,11 @@
     import { initializeApp }                      from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
     import { getFirestore, collection, query,
              where, getDocs, updateDoc,
-             arrayUnion, doc }                    from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
+             arrayUnion, doc, serverTimestamp }   from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
+    import { getAuth, signInAnonymously }         from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js';
 
     // ─────────────────────────────────────────
-    // 🔧 PASTE YOUR FIREBASE CONFIG HERE
+    // 🔧 FIREBASE CONFIGURATION
     // ─────────────────────────────────────────
     const firebaseConfig = {
       apiKey:            "AIzaSyBEIS2nOugqROvF0cepKm_Vv7V0Ji2P43I",
@@ -280,8 +281,17 @@
       appId:             "1:487346195004:web:1b15c1dcd3d363d8bdd139"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db  = getFirestore(app);
+    const app  = initializeApp(firebaseConfig);
+    const db   = getFirestore(app);
+    const auth = getAuth(app);
+
+    // Attempt anonymous sign-in so requests succeed if rules require request.auth != null
+    signInAnonymously(auth).then(() => {
+      console.log("Firebase anonymous session active");
+    }).catch(err => {
+      // If anonymous auth is disabled in Firebase Console, continue unauthenticated
+      console.warn("Anonymous auth skipped/disabled:", err.code || err.message);
+    });
 
     // ─────────────────────────────────────────
     // HELPERS
@@ -348,37 +358,68 @@
     async function markAttendance(phone) {
       const today = todayStr();
 
-      // Query members where phone == the given number
-      const q   = query(collection(db, 'members'), where('phone', '==', phone));
-      const snap = await getDocs(q);
+      // Variations of phone numbers: string, with country codes, number type
+      const phoneVariants = [
+        phone,
+        '+91' + phone,
+        '+91 ' + phone,
+        '91' + phone,
+        Number(phone)
+      ];
 
-      if (snap.empty) {
-        // Try without leading country code just in case
-        const q2    = query(collection(db, 'members'), where('phone', '==', '91' + phone));
-        const snap2 = await getDocs(q2);
-        if (snap2.empty) return null;
-        // Found with prefix
-        return processMemberDoc(snap2.docs[0], today);
+      // 1. Query 'phone' field
+      for (const val of phoneVariants) {
+        try {
+          const q = query(collection(db, 'members'), where('phone', '==', val));
+          const snap = await getDocs(q);
+          if (!snap.empty) {
+            return await processMemberDoc(snap.docs[0], today);
+          }
+        } catch (e) {
+          console.error("Firestore query error for phone=" + val, e);
+          throw e; // rethrow so error handler can display specific permission/connection error
+        }
       }
 
-      return processMemberDoc(snap.docs[0], today);
+      // 2. Query fallback fields (contact, phoneNumber, mobile)
+      for (const field of ['contact', 'phoneNumber', 'mobile']) {
+        for (const val of [phone, '+91' + phone, Number(phone)]) {
+          try {
+            const q = query(collection(db, 'members'), where(field, '==', val));
+            const snap = await getDocs(q);
+            if (!snap.empty) {
+              return await processMemberDoc(snap.docs[0], today);
+            }
+          } catch (e) {
+            // ignore fallback query errors
+          }
+        }
+      }
+
+      return null;
     }
 
     async function processMemberDoc(docSnap, today) {
       const data   = docSnap.data();
       const docRef = doc(db, 'members', docSnap.id);
+      const currentTime = formatTime();
 
       // Mark attendance: add today to attendanceHistory array (arrayUnion prevents duplicates)
+      // and record lastCheckIn date, lastCheckInTime and secure serverTimestamp
       await updateDoc(docRef, {
         attendanceHistory: arrayUnion(today),
-        lastCheckIn: today
+        lastCheckIn: today,
+        lastCheckInTime: currentTime,
+        lastCheckInTimestamp: serverTimestamp()
       });
 
       return {
-        name:       data.name       || 'Member',
-        plan:       data.plan       || '—',
-        expiryDate: data.expiryDate || data.expiry || '',
-        phone:      data.phone      || ''
+        name:                 data.name            || 'Member',
+        plan:                 data.plan            || '—',
+        expiryDate:           data.expiryDate      || data.expiry || '',
+        phone:                data.phone           || '',
+        lastCheckInTime:      currentTime,
+        lastCheckInTimestamp: new Date()
       };
     }
 
@@ -399,7 +440,7 @@
 
       $('success-name').textContent   = `Hey, ${memberData.name}! 👋`;
       $('success-date').textContent   = formatDate(todayStr());
-      $('success-time').textContent   = formatTime();
+      $('success-time').textContent   = memberData.lastCheckInTime || formatTime();
       $('success-plan').textContent   = memberData.plan;
 
       const expiryEl = $('success-expiry');
@@ -442,8 +483,15 @@
           console.error("Auto check-in error:", error);
           localStorage.removeItem('gymCheckinPhone');
           showState('state-phone');
-          const errMsg = error?.message || error?.code || 'Something went wrong';
-          showPhoneError(`Error: ${errMsg}. Please try again.`);
+          const errCode = error?.code || '';
+          const errMsg = error?.message || '';
+          if (errCode === 'permission-denied' || errMsg.includes('permission')) {
+            showPhoneError('Permission Denied: Your Firestore rules block public check-in. Update rules in Firebase Console.');
+          } else if (errCode === 'unavailable' || errMsg.includes('network') || errMsg.includes('unavailable')) {
+            showPhoneError('Connection error: Unable to reach Firebase. Please check your internet connection.');
+          } else {
+            showPhoneError(`Check-in error (${errCode || 'network'}): ${errMsg || 'Please try again.'}`);
+          }
         }
       } else {
         // First-time visitor
@@ -482,8 +530,20 @@
       } catch (error) {
         console.error("Firestore Check-in Error:", error);
         setLoading(false);
-        const errMsg = error?.message || error?.code || 'Connection error';
-        showPhoneError(`Error: ${errMsg}. Check Console for details.`);
+        const errCode = error?.code || '';
+        const errMsg = error?.message || '';
+
+        if (errCode === 'permission-denied' || errMsg.includes('permission')) {
+          showPhoneError(
+            '⚠️ Firestore Permission Denied: Cloud Firestore security rules are blocking unauthenticated reads. Update your Firestore Rules in Firebase Console to allow public check-in (see firestore.rules file).'
+          );
+        } else if (errCode === 'unavailable' || errMsg.includes('network') || errMsg.includes('unavailable')) {
+          showPhoneError(
+            '⚠️ Connection Error: Unable to connect to Firebase. Check your internet connection or ad-blocker.'
+          );
+        } else {
+          showPhoneError(`⚠️ Database Error (${errCode || 'error'}): ${errMsg || 'Check browser console for details.'}`);
+        }
       }
     };
 

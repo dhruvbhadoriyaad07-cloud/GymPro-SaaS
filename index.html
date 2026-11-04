@@ -712,11 +712,12 @@
 
         <!-- Table Container -->
         <div class="overflow-x-auto -mx-5 sm:-mx-6 px-5 sm:px-6">
-          <table class="w-full text-sm text-left min-w-[620px]">
+          <table class="w-full text-sm text-left min-w-[720px]">
             <thead>
               <tr class="text-xs font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-800/80">
                 <th class="pb-3 pr-4">Member Name</th>
                 <th class="pb-3 pr-4">Phone</th>
+                <th class="pb-3 pr-4">IN-TIME</th>
                 <th class="pb-3 pr-4">Plan Expiry</th>
                 <th class="pb-3 text-right">Status</th>
               </tr>
@@ -724,7 +725,7 @@
             <tbody id="today-attendance-body" class="divide-y divide-slate-800/60">
               <!-- Rendered in real-time -->
               <tr>
-                <td colspan="4" class="py-8 text-center text-sm text-slate-400">
+                <td colspan="5" class="py-8 text-center text-sm text-slate-400">
                   Listening for real-time check-ins...
                 </td>
               </tr>
@@ -1040,8 +1041,8 @@
 
   // ── Initial Sample Data (used in demo mode & seeder) ─
   const initialMembersData = [
-    { memberId:'GYM-0042', name:'Priya Nair',      plan:'Monthly',   startDate:'2026-10-01', expiryDate:'2026-11-01', phone:'9876543201', attendanceHistory:[new Date().toISOString().split('T')[0]], status:'active' },
-    { memberId:'GYM-0099', name:'Karan Singh',     plan:'Monthly',   startDate:'2026-10-01', expiryDate:'2026-11-01', phone:'9912345615', attendanceHistory:[new Date().toISOString().split('T')[0]], status:'active' },
+    { memberId:'GYM-0042', name:'Priya Nair',      plan:'Monthly',   startDate:'2026-10-01', expiryDate:'2026-11-01', phone:'9876543201', attendanceHistory:[new Date().toISOString().split('T')[0]], lastCheckInTime:'09:45 AM', lastCheckInTimestamp: new Date(), status:'active' },
+    { memberId:'GYM-0099', name:'Karan Singh',     plan:'Monthly',   startDate:'2026-10-01', expiryDate:'2026-11-01', phone:'9912345615', attendanceHistory:[new Date().toISOString().split('T')[0]], lastCheckInTime:'10:15 AM', lastCheckInTimestamp: new Date(), status:'active' },
     { memberId:'GYM-0113', name:'Neha Gupta',      plan:'Quarterly', startDate:'2026-08-01', expiryDate:'2026-11-01', phone:'9123456723', status:'active' },
     { memberId:'GYM-0078', name:'Rahul Mehta',     plan:'Quarterly', startDate:'2026-08-03', expiryDate:'2026-11-03', phone:'9823456702', status:'active' },
     { memberId:'GYM-0055', name:'Anita Sharma',    plan:'Monthly',   startDate:'2026-10-04', expiryDate:'2026-11-04', phone:'9734567833', status:'active' },
@@ -1549,7 +1550,7 @@
     if (!attendanceList || attendanceList.length === 0) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="4" class="py-10 text-center text-slate-400">
+          <td colspan="5" class="py-10 text-center text-slate-400">
             <div class="flex flex-col items-center justify-center gap-2">
               <div class="w-10 h-10 rounded-2xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-500">
                 <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
@@ -1569,6 +1570,24 @@
       const rawPhone = m.phone || m.phoneNumber || m.mobile || m.contact || '—';
       const phoneDigits = String(rawPhone).replace(/\D/g, '');
       const displayPhone = phoneDigits.length === 10 ? `+91 ${phoneDigits}` : rawPhone;
+
+      // Format in-time from Firebase serverTimestamp lastCheckInTimestamp
+      let inTime = '-';
+      if (m.lastCheckInTimestamp) {
+        try {
+          if (typeof m.lastCheckInTimestamp.toDate === 'function') {
+            inTime = m.lastCheckInTimestamp.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          } else if (m.lastCheckInTimestamp.seconds) {
+            inTime = new Date(m.lastCheckInTimestamp.seconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          } else if (m.lastCheckInTimestamp instanceof Date) {
+            inTime = m.lastCheckInTimestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          }
+        } catch (e) {
+          inTime = m.lastCheckInTime || '-';
+        }
+      } else if (m.lastCheckInTime) {
+        inTime = m.lastCheckInTime;
+      }
 
       const dateStr = m.expiryDate || m.expiry;
       const expFormatted = dateStr ? new Date(dateStr).toLocaleDateString('en-IN', {
@@ -1595,6 +1614,16 @@
           <!-- Phone -->
           <td class="py-3.5 pr-4 font-mono text-xs text-slate-300">
             ${displayPhone}
+          </td>
+
+          <!-- In-Time -->
+          <td class="py-3.5 pr-4 text-xs">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700/60 font-mono text-indigo-300 font-medium">
+              <svg class="w-3.5 h-3.5 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              ${inTime}
+            </span>
           </td>
 
           <!-- Plan Expiry -->

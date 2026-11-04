@@ -1,0 +1,39 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ========================================================
+    // 1. MEMBERS COLLECTION
+    // ========================================================
+    // - Public read: Enables the QR Check-in page (checkin.html)
+    //   to find members by phone number.
+    // - Public update: Allows checkin.html to record attendance
+    //   (attendanceHistory, lastCheckIn, lastCheckInTime).
+    // - Admin full access: Authenticated staff can create/edit/delete.
+    match /members/{memberId} {
+      allow read: if true;
+      allow create, delete: if request.auth != null;
+      allow update: if request.auth != null || (
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['attendanceHistory', 'lastCheckIn', 'lastCheckInTime', 'lastCheckInTimestamp'])
+      );
+    }
+
+    // ========================================================
+    // 2. TRANSACTIONS & PAYMENTS
+    // ========================================================
+    // - Private: Only authenticated gym staff/admin can read or write transactions.
+    match /transactions/{txId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // ========================================================
+    // 3. FALLBACK FOR OTHER COLLECTIONS
+    // ========================================================
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+
