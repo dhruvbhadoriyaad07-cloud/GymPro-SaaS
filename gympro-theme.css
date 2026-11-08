@@ -1,0 +1,135 @@
+/* =====================================================================
+   GymPro theme layer  ·  link AFTER your <style> block, before </head>
+   <link rel="stylesheet" href="gympro-theme.css">
+
+   Colour language (same everywhere):
+   green = money · orange = attendance/energy · blue = members
+   yellow = needs attention · purple = plans & UPI · red = expired
+   ===================================================================== */
+
+/* ---------- 0. Small fixes ---------- */
+.av{flex-shrink:0}
+.fade-in{animation:gpFade .3s ease}
+@keyframes gpFade{from{opacity:0;transform:translateY(8px)}}
+
+/* ---------- 1. Sidebar: each page lights up in its own colour ---------- */
+.sidebar-link[data-view="members"].active,.sidebar-link[data-view="reports"].active{background:var(--blu)!important;box-shadow:0 8px 20px -6px var(--blu)!important}
+.sidebar-link[data-view="payments"].active{background:var(--grn)!important;box-shadow:0 8px 20px -6px var(--grn)!important}
+.sidebar-link[data-view="attendance"].active{background:var(--org)!important;box-shadow:0 8px 20px -6px var(--org)!important}
+.sidebar-link[data-view="plans"].active{background:var(--pur)!important;box-shadow:0 8px 20px -6px var(--pur)!important}
+
+/* ---------- 2. Shared reusable classes your HTML already uses ---------- */
+.glass-input{background:#fff!important;border:1.5px solid var(--line)!important;color:var(--ink)!important;box-shadow:none!important}
+.glass-input:focus{border-color:var(--blu)!important;box-shadow:0 0 0 4px rgba(47,107,255,.14)!important}
+.btn-primary-glass{background:linear-gradient(135deg,#4C86FF,var(--blu2))!important;color:#fff!important;font-weight:700;border:0;box-shadow:0 8px 20px rgba(47,107,255,.3);transition:.15s;text-decoration:none}
+.btn-primary-glass:hover{transform:translateY(-2px)}
+.btn-primary-glass:active{transform:scale(.97)}
+.btn-primary-glass svg{color:#fff!important}
+#payments-view .btn-primary-glass{background:linear-gradient(135deg,#1FCB7C,var(--grn2))!important;box-shadow:0 8px 20px rgba(18,183,106,.3)}
+#attendance-view .btn-primary-glass{background:linear-gradient(135deg,#FF8A3D,var(--org2))!important;box-shadow:0 8px 20px rgba(255,106,31,.3)}
+.active-payment-filter{background:var(--grn)!important;color:#fff!important;box-shadow:0 4px 12px rgba(18,183,106,.3)}
+.text-gradient-white{color:var(--ink)!important}
+
+/* ---------- 3. Light remap of the old dark-glass utility classes ----------
+   (Attendance, Payments, modals, toast, dashboard lists were written for a dark UI) */
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) .text-white{color:var(--ink)!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) :is(.text-neutral-100,.text-neutral-200,.text-neutral-300){color:#334155!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) :is(.text-neutral-400,.text-neutral-500){color:var(--muted)!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) .hover\:text-white:hover{color:var(--ink)!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) .placeholder-neutral-500::placeholder{color:#94A3B8!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) :is(.text-amber-300,.text-amber-400,.text-amber-500){color:#B45309!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) :is(.text-emerald-200,.text-emerald-300,.text-emerald-400){color:#0B7A43!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) .text-sky-300{color:#1E4FD8!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) :is(.text-rose-300,.text-rose-400){color:#B4161F!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) :is([class*=" bg-white/["],[class^="bg-white/["],[class*=" bg-white/10"]){background:#F1F4F9!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) [class*="bg-amber-500/"]{background:#FFF1BF!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) [class*="bg-emerald-500/"]{background:#DDF7E8!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) [class*="bg-sky-500/"]{background:#E1E8FF!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) [class*="border-amber-500/"]{border-color:#FDE68A!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) [class*="border-emerald-500/"]{border-color:#A7E8C6!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) [class*="border-sky-500/"]{border-color:#BFD0FF!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) [class*="border-white/"]{border-color:var(--line)!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) [class*="divide-white/"]>:not([hidden])~:not([hidden]){border-color:var(--line)!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) :is(.bg-neutral-900,.bg-neutral-950){background:#fff!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) .bg-neutral-800{background:#EEF4FF!important}
+:is(#attendance-view,#payments-view,#addMemberModal,#editMemberModal,#firebaseConfigModal,#transactions-list,#activity-feed) :is(.border-neutral-700,.border-neutral-800){border-color:var(--line)!important}
+:is(#attendance-view,#payments-view,#transactions-list,#activity-feed) [class*="hover:bg-neutral-800"]:hover,
+:is(#attendance-view,#payments-view) [class*="hover:bg-white/"]:hover{background:#F8FAFC!important}
+:is(#addMemberModal,#editMemberModal,#firebaseConfigModal) .card{color:var(--ink)!important}
+:is(#addMemberModal,#editMemberModal) label .text-white{color:var(--red)!important}
+input[type="date"]{color-scheme:light!important}
+:is(#addMemberModal,#editMemberModal) select option{background:#fff;color:var(--ink)}
+
+/* Payment-mode chooser in the New Member modal: Cash green, UPI purple, Card blue */
+#payment-mode-group label{color:#475569!important}
+#payment-mode-group label:has(input[value="Cash"]:checked){background:var(--grn)!important;border-color:var(--grn)!important;color:#fff!important}
+#payment-mode-group label:has(input[value="UPI"]:checked){background:var(--pur)!important;border-color:var(--pur)!important;color:#fff!important}
+#payment-mode-group label:has(input[value="Card"]:checked){background:var(--blu)!important;border-color:var(--blu)!important;color:#fff!important}
+
+/* Toast stays dark so it pops on the light page */
+#toast{background:var(--ink)!important;border:0!important;border-left:6px solid var(--grn)!important;color:#fff!important}
+#toast *{color:#fff!important}
+
+/* ---------- 4. Attendance page = orange ---------- */
+#attendance-view :is(.text-amber-400,.text-amber-500){color:var(--org2)!important}
+#attendance-view .bg-amber-400{background:var(--org)!important}
+#attendance-view #today-attendance-count{color:var(--org2)!important}
+
+/* ---------- 5. Payments page = green (money) ---------- */
+#payments-view h1+p,#payments-view h2+p{color:var(--muted)!important}
+#payments-view .text-amber-500,#payments-view .text-emerald-400{color:var(--grn2)!important}
+#payments-total-counter{color:var(--grn2)!important}
+#pot-mini-cash,#channel-cash-amount{color:var(--grn2)!important}
+#pot-mini-upi,#channel-upi-amount{color:var(--pur)!important}
+#pot-mini-card,#channel-card-amount{color:var(--blu)!important}
+#channel-cash-bar{background:var(--grn)!important;box-shadow:none!important}
+#channel-upi-bar{background:var(--pur)!important;box-shadow:none!important}
+#channel-card-bar{background:var(--blu)!important;box-shadow:none!important}
+#payments-view .w-2.h-2.bg-amber-400{background:var(--grn)!important;box-shadow:none!important}
+#payments-view .w-2.h-2.bg-white{background:var(--pur)!important;box-shadow:none!important}
+#payments-view .w-2.h-2.bg-neutral-400{background:var(--blu)!important}
+#payments-view :is(.bg-white\/\[0\.04\],.bg-white\/\[0\.03\]) .block{color:var(--muted)!important}
+/* Ledger mode badges: Cash green, UPI purple, Card blue (the "Paid" badge stays green) */
+#payments-table-body [class*="bg-amber-500/10"]{background:#DDF7E8!important;color:#0B7A43!important;border-color:#A7E8C6!important}
+#payments-table-body [class*="bg-amber-500/10"] span{background:var(--grn)!important;box-shadow:none!important}
+#payments-table-body [class*="bg-emerald-500/10"]{background:#EBE3FF!important;color:#5B21B6!important;border-color:#D4C4FF!important}
+#payments-table-body [class*="bg-emerald-500/10"] span{background:var(--pur)!important;box-shadow:none!important}
+#payments-table-body [class*="bg-sky-500/10"]{background:#E1E8FF!important;color:#1E4FD8!important;border-color:#BFD0FF!important}
+#payments-table-body [class*="bg-sky-500/10"] span{background:var(--blu)!important;box-shadow:none!important}
+#payments-table-body td .font-mono.font-bold{color:var(--grn2)!important}
+#transactions-list .font-mono.font-bold{color:var(--grn2)!important}
+
+/* The Money Pot card stays dark navy so the glass gullak and green liquid glow */
+#payments-view .grid>.card:nth-child(2){background:linear-gradient(160deg,#0F1E3D,#0A1428)!important;border:0!important;box-shadow:0 24px 50px -20px rgba(15,30,61,.6)!important}
+#payments-view .grid>.card:nth-child(2) :is(.text-white,.text-gradient-white){color:#fff!important}
+#payments-view .grid>.card:nth-child(2) [class*="text-neutral-"]{color:#9FB0CF!important}
+#payments-view .grid>.card:nth-child(2) .text-amber-400{color:#FFC21A!important}
+#payments-view .grid>.card:nth-child(2) .text-emerald-200{color:#A7F3D0!important}
+#payments-view .grid>.card:nth-child(2) [class*="border-white/"]{border-color:rgba(255,255,255,.14)!important}
+#payments-view .grid>.card:nth-child(2) :is([class*=" bg-white/["],[class^="bg-white/["]){background:rgba(255,255,255,.08)!important}
+#payments-view .grid>.card:nth-child(2) #squid-expected-revenue,
+#payments-view .grid>.card:nth-child(2) #squid-pot-collected{color:#4DE394!important}
+
+/* ---------- 6. Members: compact two-line rows on mobile ---------- */
+.mp{display:none}
+.mtable{min-width:760px}
+@media (max-width:900px){
+  .mtable{min-width:0!important}
+  #members-directory-section .overflow-x-auto{overflow-x:visible}
+  .tr.th{display:none!important}
+  .tr{grid-template-columns:minmax(0,1fr) auto!important;gap:4px 12px!important;padding:12px 4px!important}
+  #members-directory-body .tr>div:first-child{display:none}
+  #members-directory-body .tr .who{grid-column:1;grid-row:1}
+  #members-directory-body .tr .act{grid-column:2;grid-row:1}
+  #members-directory-body .tr .ph{display:none}
+  #members-directory-body .tr .ex{grid-column:1;grid-row:2;padding-left:54px;display:flex;align-items:baseline;gap:4px 8px;flex-wrap:wrap}
+  #members-directory-body .tr .ex b,#members-directory-body .tr .ex small{display:inline!important}
+  #members-directory-body .tr .st{grid-column:2;grid-row:2;justify-content:flex-end}
+  #members-directory-body .pill{font-size:12px;padding:3px 10px}
+  .mp{display:inline}
+  .tools .hint{display:none}
+}
+@media (max-width:640px){
+  #members-directory-section{padding:18px 14px!important;border-radius:22px!important}
+}
+
