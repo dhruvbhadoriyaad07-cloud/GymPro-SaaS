@@ -1,0 +1,774 @@
+<USER_REQUEST>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GymPro – Payments (redesign preview)</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F1F4F9;--card:#fff;--ink:#0F172A;--muted:#64708A;--line:#E3E8F1;--grn:#12B76A;--grn2:#0B9A55;--blu:#2F6BFF;--blu2:#1E4FD8;--org:#FF6A1F;--org2:#F04A00;--yel:#FFC21A;--pur:#7C3AED;--red:#EF4444;--wa:#25D366;--d:"Barlow Condensed","Arial Narrow",Impact,sans-serif;--b:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:400 14px/1.5 var(--b);padding:clamp(14px,3vw,32px);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--blu);outline-offset:2px}
+.wrap{max-width:1280px;margin:0 auto}
+.ic{position:absolute;right:18px;top:18px;width:42px;height:42px;border-radius:13px;display:grid;place-content:center;background:rgba(255,255,255,.22)}
+.ic svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.hidden{display:none}
+#toast{position:fixed;bottom:24px;right:24px;z-index:99;background:var(--ink);color:#fff;border-left:6px solid var(--grn);padding:13px 20px;border-radius:14px;font-weight:600;display:flex;gap:10px;transition:.3s;pointer-events:none}
+.opacity-0{opacity:0}.translate-y-20{transform:translateY(5rem)}
+/* PASTE-1-START  ·  CSS: delete your old .stage .aura .pot .fill .wave .bill .cap .slot .knob .base rules and the @keyframes pulse / wave / fall, then paste this */
+.gp-stage{position:relative;width:300px;height:360px;margin:6px auto 0;max-width:100%}
+.gp-aura{position:absolute;inset:50px 24px 12px;border-radius:50%;background:radial-gradient(circle,rgba(255,196,64,.26),rgba(34,197,94,.14) 55%,transparent 70%);filter:blur(28px);animation:gpAura 4s ease-in-out infinite}
+@keyframes gpAura{50%{opacity:.55;transform:scale(1.06)}}
+.gp-jar{position:relative;width:100%;height:100%;display:block;overflow:visible}
+.gp-b{transform-box:fill-box;transform-origin:center;opacity:0;transform:translateY(-90px) rotate(-16deg) scale(.8);transition:transform .6s cubic-bezier(.2,1.25,.4,1),opacity .25s}
+.gp-b.on{opacity:1;transform:none}
+.gp-pct{position:absolute;left:0;right:0;top:47%;text-align:center;pointer-events:none}
+.gp-pct b{display:block;font:700 36px/1 ui-monospace,Menlo,Consolas,monospace;color:#fff!important;text-shadow:0 2px 14px rgba(0,0,0,.85)}
+.gp-pct span{display:block;margin-top:4px;font:800 9px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.2em;color:#C8F7DC!important;text-shadow:0 1px 6px rgba(0,0,0,.9)}
+@media (prefers-reduced-motion:reduce){.gp-aura{animation:none}.gp-b{transition:none}}
+/* PASTE-1-END */
+/* ===================== PAYMENTS PAGE (pay-*) ===================== */
+.pay{--cash:var(--grn);--upi:var(--pur);--cardc:var(--blu);display:grid;gap:16px;min-width:0}
+.pay *{min-width:0}
+.pay-bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.pay-bar h2{font:italic 700 28px/1 var(--d);letter-spacing:.02em;display:flex;align-items:center;gap:10px}
+.pay-bar h2::before{content:"";width:8px;height:26px;border-radius:4px;background:var(--grn)}
+.pay-bar p{color:var(--muted);margin-top:4px}
+.pay-actions{display:flex;gap:10px;flex-wrap:wrap}
+.pay-btn{height:42px;padding:0 18px;border-radius:12px;font-weight:700;background:var(--ink);color:#fff;transition:.15s;white-space:nowrap}
+.pay-btn:hover{transform:translateY(-2px)}
+.pay-btn:active{transform:scale(.97)}
+.pay-btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+.pay-btn.ghost:hover{border-color:var(--grn);color:var(--grn2)}
+.pay-btn.green{background:linear-gradient(135deg,#1FCB7C,var(--grn2));box-shadow:0 8px 20px rgba(18,183,106,.3)}
+.pay-btn.sm{height:38px;padding:0 14px;font-size:13px}
+
+/* KPI cards */
+/* Changed to 3 columns since Average Payment is removed */
+.pay-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.pay-k{position:relative;border-radius:22px;padding:20px 22px;background:#fff;border:1px solid var(--line);overflow:hidden;transition:.2s}
+.pay-k:hover{transform:translateY(-3px);box-shadow:0 16px 30px -12px rgba(15,23,42,.25)}
+.pay-k .l{font-weight:600;font-size:13px;color:var(--muted);padding-right:48px}
+.pay-k b{display:block;font:italic 700 46px/1 var(--d);margin:8px 0;color:var(--grn2);letter-spacing:.01em}
+.pay-k small{display:block;color:var(--muted);font-size:12.5px;margin-top:8px}
+.pay-k .ic{background:#DDF7E8;color:var(--grn2)}
+.pay-k.hero{background:linear-gradient(135deg,#1FCB7C,#0B9A55);border:0;color:#fff}
+.pay-k.hero .l,.pay-k.hero small{color:rgba(255,255,255,.85)}
+.pay-k.hero b{color:#fff}
+.pay-k.hero .ic{background:rgba(255,255,255,.22);color:#fff}
+.pay-chip{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px}
+.pay-chip.up{background:#DDF7E8;color:#0B7A43}
+.pay-chip.down{background:#FFDCDC;color:#B4161F}
+.pay-chip.flat{background:var(--bg);color:var(--muted)}
+.pay-k.hero .pay-chip{background:rgba(255,255,255,.24);color:#fff}
+
+/* layout rows */
+.pay-r2{display:grid;grid-template-columns:minmax(320px,400px) minmax(0,1fr);gap:14px}
+.pay-r3{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:14px}
+.pay-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:22px}
+.pay-card h3{font:italic 700 22px/1 var(--d);letter-spacing:.03em;display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.pay-card h3::before{content:"";width:8px;height:20px;border-radius:4px;background:var(--c,var(--grn))}
+.pay-card h3 .r{margin-left:auto;font:500 13px var(--b);letter-spacing:0;color:var(--muted)}
+
+/* segmented control */
+.pay-seg{display:inline-flex;gap:4px;background:var(--bg);padding:4px;border-radius:12px;flex-wrap:wrap}
+.pay-seg button{padding:7px 14px;border-radius:9px;font-weight:600;font-size:13px;color:var(--muted);transition:.15s;white-space:nowrap}
+.pay-seg button:hover{color:var(--ink)}
+.pay-seg button.on{background:#fff;color:var(--grn2);box-shadow:0 2px 6px rgba(15,23,42,.12)}
+.pay-rangebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:var(--muted);font-weight:600}
+.pay-rangebar .pay-seg{background:#fff;border:1px solid var(--line)}
+.pay-rangebar .pay-seg button.on{background:var(--grn);color:#fff;box-shadow:0 4px 12px rgba(18,183,106,.3)}
+
+/* trend chart (stacked by payment mode) */
+.pay-chartbox{position:relative}
+.pay-chart{display:flex;align-items:stretch;gap:6px;height:220px;padding-top:6px}
+.pay-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer}
+.pay-bw{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center;min-height:0}
+.pay-stack{width:100%;max-width:40px;display:flex;flex-direction:column-reverse;border-radius:9px 9px 3px 3px;overflow:hidden;min-height:3px;background:#E9EDF5;transition:transform .15s}
+.pay-stack i{display:block;min-height:2px}
+.pay-col:hover .pay-stack{transform:scaleX(1.1)}
+.pay-col em{font-style:normal;font-size:11.5px;color:var(--muted);font-weight:600;white-space:nowrap}
+.pay-col.t em{color:var(--ink);font-weight:700}
+.pay-tip{position:absolute;pointer-events:none;background:var(--ink);color:#fff;padding:8px 12px;border-radius:10px;font:600 12.5px/1.45 var(--b);opacity:0;transition:opacity .12s;white-space:nowrap;z-index:5;transform:translateX(-50%)}
+.pay-leg{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:12.5px;color:var(--muted)}
+.pay-leg i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px}
+
+/* collection mix */
+.pay-sub{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:4px 0 12px}
+.pay-sub.s2{margin-top:20px}
+.pay-row{display:grid;grid-template-columns:auto 1fr auto;gap:4px 10px;align-items:center;margin-bottom:12px}
+.pay-dot{width:10px;height:10px;border-radius:50%;background:var(--k)}
+.pay-row b{font-weight:700}
+.pay-row .v{font-weight:700;font-variant-numeric:tabular-nums}
+.pay-row .v small{color:var(--muted);font-weight:500;margin-left:6px}
+.pay-track{grid-column:1/-1;height:8px;border-radius:8px;background:var(--bg);overflow:hidden}
+.pay-track i{display:block;height:100%;border-radius:8px;background:var(--k);transition:width .6s}
+.pay-mixbar{display:flex;height:12px;border-radius:12px;overflow:hidden;gap:2px;background:var(--bg)}
+.pay-mixbar i{display:block;min-width:4px}
+.pay-types{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;margin-top:12px}
+.pay-types div{display:flex;align-items:center;gap:8px;font-size:13px}
+.pay-types .pay-dot{width:9px;height:9px;border-radius:3px}
+.pay-types b{margin-left:auto;font-variant-numeric:tabular-nums}
+
+/* pending renewals */
+.pay-sumline{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:6px;font-size:13px;color:var(--muted)}
+.pay-sumline b{color:var(--ink);font-size:15px}
+.pay-sumline .x{color:#B4161F}
+.pay-pr{display:flex;align-items:center;gap:12px;padding:12px 0}
+.pay-pr+.pay-pr{border-top:1px solid var(--line)}
+.pay-av{width:38px;height:38px;border-radius:50%;display:grid;place-content:center;color:#fff;font-weight:700;flex:none;text-transform:uppercase}
+.pay-who{flex:1;min-width:0}
+.pay-who b{display:block;font-weight:700;text-transform:capitalize;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pay-who small{color:var(--muted);font-size:12.5px}
+.pay-due{font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;white-space:nowrap}
+.pay-due.x{background:#FFDCDC;color:#B4161F}
+.pay-due.e{background:#FFF1BF;color:#8A5A00}
+.pay-ib{width:36px;height:36px;border-radius:10px;display:grid;place-content:center;flex:none;transition:.15s;background:#DDF7E8;color:#0B7A43}
+.pay-ib:hover{background:var(--wa);color:#fff;transform:scale(1.06)}
+.pay-ib svg{width:18px;height:18px;fill:currentColor}
+.pay-mini{height:34px;padding:0 14px;border-radius:10px;background:var(--grn);color:#fff;font-weight:700;font-size:13px;transition:.15s}
+.pay-mini:hover{background:var(--grn2)}
+.pay-more{color:var(--muted);font-size:13px;padding-top:10px}
+.pay-empty{text-align:center;color:var(--muted);padding:28px 8px}
+
+/* ledger */
+.pay-lh{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:10px}
+.pay-lh h3{margin:0}
+.pay-count{font:600 12px var(--b);letter-spacing:0;background:var(--bg);color:var(--muted);padding:3px 10px;border-radius:99px}
+.pay-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.pay-in{height:38px;border-radius:10px;border:1.5px solid var(--line);padding:0 12px;background:#fff;font-weight:600;outline:0;color:var(--ink)}
+.pay-in:focus{border-color:var(--grn)}
+.pay-search{display:flex;align-items:center;gap:8px;height:38px;padding:0 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff}
+.pay-search:focus-within{border-color:var(--grn)}
+.pay-search input{border:0;outline:0;background:none;width:150px;cursor:text}
+.pay-search svg{width:15px;stroke:var(--muted);fill:none;stroke-width:2;flex:none}
+.pay-tr{display:grid;grid-template-columns:minmax(190px,1.7fr) 150px 100px 150px 110px 44px;gap:14px;align-items:center;padding:13px 8px;border-top:1px solid var(--line);border-radius:12px}
+.pay-tr:not(.pay-th):hover{background:#F8FAFC}
+.pay-th{border:0;color:var(--muted);font-weight:600;font-size:13px;padding-bottom:8px}
+.pay-meta{display:contents}
+.pay-amt{font:italic 700 24px var(--d);color:var(--grn2);text-align:right;white-space:nowrap}
+.pay-act{display:flex;justify-content:flex-end}
+.pay-dt b{display:block;font-weight:600;font-size:13px}
+.pay-dt small{color:var(--muted);font-size:12px}
+.pay-chip2{font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:var(--bg);color:#475569;white-space:nowrap;justify-self:start}
+.pm{font-size:12px;font-weight:700;padding:3px 11px;border-radius:99px;justify-self:start}
+.pm.cash{background:#DDF7E8;color:#0B7A43}
+.pm.upi{background:#EBE3FF;color:#5B21B6}
+.pm.card{background:#E1E8FF;color:#1E4FD8}
+.pay-lf{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--line);color:var(--muted)}
+.pay-lf b{color:var(--grn2);font-size:16px}
+
+/* money pot card */
+.pay-pot{background:linear-gradient(160deg,#0F1E3D,#0A1428);border:0;color:#E2E8F0;box-shadow:0 24px 50px -20px rgba(15,30,61,.6);display:flex;flex-direction:column}
+.pay-pot-h{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pay-pot-h b{display:block;font-size:12px;letter-spacing:.08em;color:#C9D4EA}
+.pay-pot-h small{color:#8FA0C2;font-size:12px}
+.pay-pill{font-size:12px;font-weight:600;padding:5px 12px;border-radius:99px;background:rgba(255,255,255,.1);color:#C9D4EA;white-space:nowrap}
+.pay-pill.full{background:#DDF7E8;color:#0B7A43}
+.pay-pill.mid{background:rgba(255,194,26,.18);color:#FFD66B}
+.pay-pot .gp-stage{transform:scale(.92);transform-origin:top center;margin-bottom:-22px}
+.pay-pot-m{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;border-top:1px solid rgba(255,255,255,.12);padding-top:14px;margin-top:auto}
+.pay-pot-m small{display:block;color:#8FA0C2;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.pay-pot-m strong{font:700 16px ui-monospace,Menlo,Consolas,monospace;color:#fff}
+.pay-pot-m .g{color:#4DE394}
+.pay-pot-m .y{color:#FFC21A}
+.pay-pot-f{margin-top:10px;font-size:12px;color:#8FA0C2}
+
+/* quick payment modal */
+.pay-modal{position:fixed;inset:0;z-index:60;background:rgba(15,23,42,.5);backdrop-filter:blur(3px);display:none;place-items:center;padding:16px}
+.pay-modal.on{display:grid}
+.pay-dlg{background:#fff;border-radius:24px;padding:26px;width:min(440px,100%);box-shadow:0 30px 80px rgba(15,23,42,.35)}
+.pay-dlg h4{font:italic 700 32px/1 var(--d);color:var(--grn2);margin-bottom:4px}
+.pay-dlg p{color:var(--muted)}
+.pay-dlg label{display:block;font-weight:600;font-size:13px;margin:14px 0 6px}
+.pay-dlg .pay-in{width:100%;height:46px;border-radius:12px}
+.pay-choice{display:flex;gap:8px;flex-wrap:wrap}
+.pay-choice label{margin:0;flex:1}
+.pay-choice input{display:none}
+.pay-choice span{display:block;text-align:center;padding:10px 8px;border-radius:12px;border:1.5px solid var(--line);font-weight:700;cursor:pointer;font-size:13px;white-space:nowrap}
+.pay-choice input:checked+span{background:var(--ink);border-color:var(--ink);color:#fff}
+.pay-choice input[value="Cash"]:checked+span{background:var(--grn);border-color:var(--grn)}
+.pay-choice input[value="UPI"]:checked+span{background:var(--pur);border-color:var(--pur)}
+.pay-choice input[value="Card"]:checked+span{background:var(--blu);border-color:var(--blu)}
+.pay-acts{display:flex;gap:10px;margin-top:22px}
+.pay-acts .pay-btn{flex:1}
+
+@media (max-width:1180px){
+  /* Changed from 2 to 3 cards for medium screens, down to 1 on small */
+  .pay-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pay-r2,.pay-r3{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:900px){
+  .pay-tr.pay-th{display:none}
+  .pay-tr{grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;padding:12px 4px}
+  .pay-tr>.pay-who{grid-column:1;grid-row:1}
+  .pay-tr>.pay-amt{grid-column:2;grid-row:1}
+  .pay-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;grid-column:1;grid-row:2}
+  .pay-tr>.pay-act{grid-column:2;grid-row:2}
+  .pay-search input{width:110px}
+}
+@media (max-width:560px){
+  .pay-kpis{grid-template-columns:minmax(0,1fr)}
+  .pay-types{grid-template-columns:1fr}
+  .pay-card{padding:18px 16px}
+}
+@media (prefers-reduced-motion:reduce){.pay *{transition:none!important}}
+
+</style></head>
+<body><div class="wrap">
+<div id="payments-view" >
+  <div class="pay">
+
+    <div class="pay-bar">
+      <div>
+        <h2>Money overview</h2>
+        <p>What came in, what&rsquo;s pending, and who needs a nudge.</p>
+      </div>
+      <div class="pay-actions">
+        <button class="pay-btn ghost" type="button" data-pgo="members">View members</button>
+        <button class="pay-btn" type="button" data-pquick>+ Quick payment</button>
+        <button class="pay-btn green" type="button" onclick="openAddMemberModal()">+ New / renew member</button>
+      </div>
+    </div>
+
+    <div class="pay-kpis" id="pay-kpis"></div>
+
+    <div class="pay-r2">
+      <!-- MONEY POT (kept, moved next to the trend) -->
+      <section class="pay-card pay-pot">
+        <div class="pay-pot-h">
+          <div><b>THE MONEY POT</b><small>Value of active plans vs all plans</small></div>
+          <span class="pay-pill" id="squid-pot-status">0%</span>
+        </div>
+        <div class="gp-stage" id="stage">
+          <div class="gp-aura"></div>
+          <svg class="gp-jar" viewBox="0 0 300 360" aria-hidden="true">
+            <defs>
+              <path id="gpOutline" d="M150,14 C138,14 129,25 130,38 C131,49 139,53 140,62 C141,78 104,88 72,118 C42,146 26,186 28,226 C30,268 58,304 96,320 C86,324 72,330 68,338 C66,348 100,356 150,356 C200,356 234,348 232,338 C228,330 214,324 204,320 C242,304 270,268 272,226 C274,186 258,146 228,118 C196,88 159,78 160,62 C161,53 169,49 170,38 C171,25 162,14 150,14 Z"/>
+              <clipPath id="gpClip"><use href="#gpOutline"/></clipPath>
+              <linearGradient id="gpSheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".34"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+              <radialGradient id="gpGlass" cx="50%" cy="48%" r="62%"><stop offset=".58" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".18"/></radialGradient>
+              <radialGradient id="gpSpec" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+              <g id="gpBill">
+                <rect width="60" height="28" rx="3" style="fill:var(--c)"/>
+                <rect width="60" height="28" rx="3" fill="url(#gpSheen)"/>
+                <rect x="3.5" y="3.5" width="53" height="21" rx="2" fill="none" stroke="#E8F9D6" stroke-opacity=".5" stroke-dasharray="3 2"/>
+                <circle cx="30" cy="14" r="7.5" fill="#E8F9D6" fill-opacity=".22" stroke="#E8F9D6" stroke-opacity=".65"/>
+                <text x="30" y="18.2" text-anchor="middle" font-size="11" font-weight="700" fill="#F2FCE6" font-family="system-ui,sans-serif">₹</text>
+              </g>
+            </defs>
+            <ellipse cx="150" cy="354" rx="96" ry="8" fill="rgba(0,0,0,.5)" style="filter:blur(5px)"/>
+            <use href="#gpOutline" fill="rgba(255,255,255,.05)"/>
+            <g clip-path="url(#gpClip)"><g id="gpPile"></g></g>
+            <use href="#gpOutline" fill="url(#gpGlass)"/>
+            <path d="M70 124C44 150 32 186 34 226" stroke="#fff" stroke-opacity=".55" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M264 196C264 234 248 282 214 312" stroke="#fff" stroke-opacity=".22" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M137 24C134 32 134 42 138 50" stroke="#fff" stroke-opacity=".65" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <ellipse cx="100" cy="158" rx="17" ry="34" transform="rotate(-28 100 158)" fill="url(#gpSpec)"/>
+            <ellipse cx="150" cy="345" rx="62" ry="7" fill="none" stroke="#fff" stroke-opacity=".3"/>
+            <use href="#gpOutline" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2"/>
+            <rect x="116" y="126" width="68" height="3.4" rx="1.7" fill="#08101F" opacity=".92"/>
+            <rect x="116" y="129.6" width="68" height="1" rx=".5" fill="#fff" opacity=".3"/>
+          </svg>
+          <div class="gp-pct"><b id="squid-pot-percentage">0%</b><span>COLLECTED</span></div>
+        </div>
+        <div class="pay-pot-m">
+          <div><small>Total plan value</small><strong id="squid-expected-revenue">₹0</strong></div>
+          <div><small>Collected</small><strong id="squid-pot-collected" class="g">₹0</strong></div>
+          <div><small>Overdue</small><strong id="squid-remaining-revenue" class="y">₹0</strong></div>
+        </div>
+        <div class="pay-pot-f"><span id="squid-members-count">0 Members</span> &middot; collected = members whose plan is still running</div>
+      </section>
+
+      <section class="pay-card" id="pay-trend" style="--c:var(--grn)"></section>
+    </div>
+
+    <div class="pay-rangebar">
+      <span>Breakdown &amp; ledger for</span>
+      <div class="pay-seg" id="pay-range">
+        <button type="button" data-pr="today">Today</button>
+        <button type="button" data-pr="week">Last 7 days</button>
+        <button type="button" data-pr="month">This month</button>
+        <button type="button" data-pr="all">All time</button>
+      </div>
+    </div>
+
+    <div class="pay-r3">
+      <section class="pay-card" id="pay-mix" style="--c:var(--blu)"></section>
+      <section class="pay-card" id="pay-pending" style="--c:var(--yel)"></section>
+    </div>
+
+    <section class="pay-card" style="--c:var(--grn)">
+      <div class="pay-lh">
+        <h3>Payment ledger <span class="pay-count" id="pl-count">0</span></h3>
+        <div class="pay-tools">
+          <div class="pay-seg" id="pl-modes">
+            <button type="button" data-pm="all">All</button>
+            <button type="button" data-pm="Cash">Cash</button>
+            <button type="button" data-pm="UPI">UPI</button>
+            <button type="button" data-pm="Card">Card</button>
+          </div>
+          <select id="pl-type" class="pay-in" aria-label="Filter by type">
+            <option value="all">All types</option>
+            <option>New Membership</option>
+            <option>Renewal</option>
+            <option>Walk-in</option>
+            <option>Personal Training</option>
+            <option>Other</option>
+          </select>
+          <label class="pay-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="pl-q" type="search" placeholder="Search name or ID"></label>
+          <button class="pay-btn ghost sm" type="button" data-pexport>Export CSV</button>
+        </div>
+      </div>
+      <div class="pay-tr pay-th"><span>Member</span><span>Type</span><span>Mode</span><span>Date &amp; time</span><span style="text-align:right">Amount</span><span></span></div>
+      <div id="pl-rows"></div>
+      <div class="pay-lf" id="pl-foot"></div>
+    </section>
+
+  </div>
+
+  <!-- Quick payment (walk-in / personal training / other) -->
+  <div class="pay-modal" id="pay-quick" data-pclose-bg>
+    <form class="pay-dlg" id="pay-quick-form" autocomplete="off">
+      <h4>Quick payment</h4>
+      <p>For walk-ins, personal training and other one-off payments.</p>
+      <label for="pqn">Name</label>
+      <input class="pay-in" id="pqn" name="pqn" list="pay-names" required placeholder="e.g. Karan Mehta">
+      <datalist id="pay-names"></datalist>
+      <label>What is it for?</label>
+      <div class="pay-choice">
+        <label><input type="radio" name="pqt" value="Walk-in" checked><span>Walk-in</span></label>
+        <label><input type="radio" name="pqt" value="Personal Training"><span>Personal training</span></label>
+        <label><input type="radio" name="pqt" value="Other"><span>Other</span></label>
+      </div>
+      <label for="pqa">Amount (₹)</label>
+      <input class="pay-in" id="pqa" name="pqa" type="number" min="1" required placeholder="500">
+      <label>Payment mode</label>
+      <div class="pay-choice">
+        <label><input type="radio" name="pqm" value="Cash" checked><span>Cash</span></label>
+        <label><input type="radio" name="pqm" value="UPI"><span>UPI</span></label>
+        <label><input type="radio" name="pqm" value="Card"><span>Card</span></label>
+      </div>
+      <div class="pay-acts">
+        <button type="button" class="pay-btn ghost" data-pclose>Cancel</button>
+        <button type="submit" class="pay-btn green">Record payment</button>
+      </div>
+    </form>
+  </div>
+</div><!-- ════ End #payments-view ════ -->
+
+</div>
+<div id="toast" class="translate-y-20 opacity-0"><span id="toast-icon">✅</span><span id="toast-msg"></span></div>
+<script>/* PASTE-3-START  ·  JS: replace your whole "Glass Gullak Money Pot Animation Script" <script> block with this.
+   Your existing animateSquidGamePot() keeps working: it still calls window.setGullakFill(percent). */
+(function () {
+  var NS = 'http://www.w3.org/2000/svg', pile = document.getElementById('gpPile'), faller = (function(){var p=document.getElementById('gpPile');if(!p)return null;var g=document.createElementNS('http://www.w3.org/2000/svg','g');g.style.opacity='0';var u=document.createElementNS('http://www.w3.org/2000/svg','use');u.setAttribute('href','#gpBill');u.setAttribute('transform','translate(-24 -11) scale(.8)');u.style.setProperty('--c','#3DD07B');g.appendChild(u);p.parentNode.appendChild(g);return g;})();
+  if (!pile) return;
+  var ROWS = 25, PER = 7, N = ROWS * PER, seed = 11, level = 0, bills = [];
+  function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+  var cols = ['#2FBF6A', '#25A85C', '#1D9150', '#3DD07B'];
+  for (var r = 0; r < ROWS; r++) {
+    var idx = [0, 1, 2, 3, 4, 5, 6].sort(function () { return rnd() - .5; });
+    for (var i = 0; i < PER; i++) {
+      var x = 24 + i * (252 / (PER - 1)) + (rnd() - .5) * 14, y = 338 - r * 10.8 + (rnd() - .5) * 3, a = (rnd() - .5) * 34, s = .82 + rnd() * .2;
+      var g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'gp-b');
+      var u = document.createElementNS(NS, 'use'); u.setAttribute('href', '#gpBill');
+      u.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') rotate(' + a.toFixed(1) + ') scale(' + s.toFixed(2) + ') translate(-30 -14)');
+      u.style.setProperty('--c', cols[Math.floor(rnd() * cols.length)]);
+      g.appendChild(u); pile.appendChild(g); bills.push({ o: r * PER + idx[i], el: g });
+    }
+  }
+  bills.sort(function (a, b) { return a.o - b.o; });
+
+  // Same function name your existing code already calls: 0-100
+  window.setGullakFill = function (p) {
+    p = Math.max(0, Math.min(100, +p || 0));
+    var t = Math.round(p / 100 * N); if (p > 0 && t < 1) t = 1;
+    var fresh = 0;
+    bills.forEach(function (b) {
+      var show = b.o < t, on = b.el.classList.contains('on');
+      if (show && !on) { b.el.style.transitionDelay = Math.min(fresh++ * 26, 900) + 'ms'; b.el.classList.add('on'); }
+      else if (!show && on) { b.el.style.transitionDelay = '0ms'; b.el.classList.remove('on'); }
+    });
+    level = t;
+  };
+
+  // A note drops through the slot every couple of seconds until the pot is full
+  var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!still && faller && faller.animate) setInterval(function () {
+    if (level >= N || document.hidden) return;
+    var land = 330 - Math.floor(level / PER) * 10.8, dx = (Math.random() - .5) * 60, rot = (Math.random() - .5) * 50;
+    var from = 'translate(150px,124px) rotate(-6deg)', to = 'translate(' + (150 + dx).toFixed(0) + 'px,' + land.toFixed(0) + 'px) rotate(' + rot.toFixed(0) + 'deg)';
+    faller.animate([{ transform: from, opacity: 0 }, { transform: 'translate(150px,138px) rotate(-6deg)', opacity: 1, offset: .12 }, { transform: to, opacity: 1, offset: .86 }, { transform: to, opacity: 0 }], { duration: 1500, easing: 'cubic-bezier(.5,0,.9,.6)' });
+  }, 2300);
+})();
+/* PASTE-3-END */</script>
+<script>
+(function(){
+  var pad=function(n){return String(n).padStart(2,'0')},iso=function(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+  var T=new Date();T.setHours(0,0,0,0);
+  var day=function(n){var d=new Date(T);d.setDate(d.getDate()-n);return iso(d)};
+  window.allMembers=[
+    {id:'m1',memberId:'GYM-4735',name:'priya',phone:'9868498567',plan:'2 Months',amount:2500,expiryDate:day(-40),status:'active'},
+    {id:'m2',memberId:'GYM-3202',name:'Dev Yadav',phone:'8456549889',plan:'1 Month',amount:1500,expiryDate:day(-2),status:'active'},
+    {id:'m3',memberId:'GYM-3984',name:'dhruv',phone:'8269583846',plan:'1 Month',amount:1500,expiryDate:day(-24),status:'active'},
+    {id:'m4',memberId:'GYM-5505',name:'Naitik Rajawat',phone:'8456942718',plan:'3 Months',amount:4000,expiryDate:day(-70),status:'active'},
+    {id:'m5',memberId:'GYM-2188',name:'Sneha Rao',phone:'9630081245',plan:'1 Month',amount:1500,expiryDate:day(5),status:'expired'},
+    {id:'m6',memberId:'GYM-1204',name:'Rohan Jain',phone:'9752033871',plan:'6 Months',amount:7500,expiryDate:day(12),status:'expired'}
+  ];
+  var names=['priya','Dev Yadav','dhruv','Naitik Rajawat','Sneha Rao','Rohan Jain','Aman Verma','Karan Mehta'];
+  var types=['New Membership','Renewal','Walk-in','Personal Training','Renewal','New Membership'];
+  var modes=['Cash','UPI','UPI','Card','Cash','UPI'];
+  var amts=[1500,2500,300,800,1500,4000,1500,500];
+  var tx=[],seed=5,r=function(){seed=(seed*9301+49297)%233280;return seed/233280};
+  tx.push({id:'FIPazn1eyCA5nV1dV5pT',name:'Sahil',amount:1500,mode:'Cash',type:'New Membership',time:'09:42 AM',date:day(0)});
+  tx.push({id:'wDMR2Ps5nN4AJpu2Dd64',name:'dhruv singh bhadoriya',amount:1500,mode:'UPI',type:'New Membership',time:'09:41 AM',date:day(0)});
+  for(var i=1;i<30;i++){var n=Math.floor(r()*3);for(var k=0;k<n;k++){var j=Math.floor(r()*8);tx.push({id:'tx'+i+k,name:names[j],amount:amts[Math.floor(r()*8)],mode:modes[Math.floor(r()*6)],type:types[Math.floor(r()*6)],time:pad(9+Math.floor(r()*9))+':'+pad(Math.floor(r()*60))+(r()>.5?' AM':' PM'),date:day(i)})}}
+  window.allTransactions=tx;
+  window.sendWhatsAppReminder=function(n,p,e,a){window.open('https://wa.me/91'+String(p).replace(/\D/g,'').slice(-10)+'?text='+encodeURIComponent('Hi '+n+', your plan ends on '+e+'.'),'_blank','noopener')};
+  window.renewMember=function(id,n){var t=document.getElementById('toast');document.getElementById('toast-msg').textContent='Preview: would open the renew form for '+n;t.classList.remove('translate-y-20','opacity-0');setTimeout(function(){t.classList.add('translate-y-20','opacity-0')},2600)};
+  window.switchView=function(v){var t=document.getElementById('toast');document.getElementById('toast-msg').textContent='Preview: would open '+v;t.classList.remove('translate-y-20','opacity-0');setTimeout(function(){t.classList.add('translate-y-20','opacity-0')},2600)};
+  window.openAddMemberModal=function(){window.renewMember(0,'a new member')};
+  window.recordQuickPayment=async function(p){var d=iso(new Date());window.allTransactions.unshift({id:'tx-'+Date.now(),name:p.name,amount:p.amount,mode:p.mode,type:p.type,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),date:d});window.renderPaymentsPage(false)};
+})();
+</script>
+<script>/* ===================== PAYMENTS PAGE LOGIC =====================
+   Reads window.allTransactions / window.allMembers (your module already keeps these in sync)
+   and takes over window.initPaymentsTab + window.updatePaymentsViewData after the module loads. */
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var COLORS = ['#2F6BFF', '#7C3AED', '#0EA5A4', '#E11D74', '#FF6A1F', '#0B9A55'];
+  var PRICES = { '1 Month': 1500, 'Monthly': 1500, '2 Months': 2500, '3 Months': 4000, 'Quarterly': 4000, '6 Months': 7500, '1 Year': 12000, 'Yearly': 12000, 'Annual': 12000, 'Walk-in': 300 };
+  var TYPES = [['New Membership', '#2F6BFF'], ['Renewal', '#12B76A'], ['Walk-in', '#FF6A1F'], ['Personal Training', '#7C3AED'], ['Other', '#94A3B8']];
+  var MODES = [['cash', 'Cash', '#12B76A'], ['upi', 'UPI', '#7C3AED'], ['card', 'Card', '#2F6BFF']];
+  var RANGE_LABEL = { today: 'Today', week: 'Last 7 days', month: 'This month', all: 'All time' };
+  var WA = '<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3.1.8.8-3-.2-.3A8 8 0 1 1 12 20zm4.4-6c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1s-.7.8-.8 1c-.1.1-.3.2-.5.1a6.6 6.6 0 0 1-2-1.3 7.3 7.3 0 0 1-1.4-1.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.1.2-.3.3-.4a.4.4 0 0 0 0-.4l-.8-2c-.2-.5-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3A3.1 3.1 0 0 0 7 8.2a5.4 5.4 0 0 0 1.1 2.9 12.3 12.3 0 0 0 4.8 4.2c.7.3 1.2.5 1.6.6a3.8 3.8 0 0 0 1.8.1 3 3 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.5-.3z"/></svg>';
+  var ICON = {
+    inr: 'M6 4h12M6 9h12M7 4c6 0 7 5 2 7H6m3 0l6 9',
+    cal: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
+    bars: 'M4 20V10M10 20V4M16 20v-7M22 20H2',
+    tick: 'M5 8a2 2 0 012-2h10a2 2 0 012 2v2a2 2 0 000 4v2a2 2 0 01-2 2H7a2 2 0 01-2-2v-2a2 2 0 000-4z'
+  };
+  var S = { range: 'month', mode: 'all', type: 'all', q: '', limit: 10, days: 14 };
+  var lastPct = -1;
+
+  /* ---------- helpers ---------- */
+  var inr = function (n) { return '\u20B9' + Math.round(Number(n) || 0).toLocaleString('en-IN'); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var pad = function (n) { return String(n).padStart(2, '0'); };
+  function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function today() { var d = new Date(); d.setHours(0, 0, 0, 0); return d; }
+  function addDays(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+  function fmt(d) { if (typeof d === 'string') d = new Date(d.slice(0, 10) + 'T00:00:00'); return d ? d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '\u2014'; }
+  function txs() { return Array.isArray(window.allTransactions) ? window.allTransactions : []; }
+  function mems() { return Array.isArray(window.allMembers) ? window.allMembers : []; }
+  function sum(l) { return l.reduce(function (a, t) { return a + (Number(t.amount) || 0); }, 0); }
+  function txDate(t) { var v = t.date || t.d; if (!v) return ''; if (typeof v === 'string') return v.slice(0, 10); if (v.seconds) return iso(new Date(v.seconds * 1000)); if (v instanceof Date) return iso(v); return ''; }
+  function txTs(t) {
+    var ts = Date.parse(txDate(t) + 'T00:00:00') || 0, m = /(\d{1,2}):(\d{2})\s*(AM|PM)?/i.exec(t.time || '');
+    if (m) { var h = +m[1] % 12; if (/pm/i.test(m[3] || '')) h += 12; if (!m[3]) h = +m[1]; ts += h * 3600000 + (+m[2]) * 60000; }
+    return ts;
+  }
+  function modeOf(t) { var m = String(t.mode || 'Cash').toLowerCase(); return m === 'upi' ? 'upi' : m === 'card' ? 'card' : 'cash'; }
+  function typeOf(t) {
+    var s = String(t.type || '').toLowerCase();
+    if (s.indexOf('renew') > -1) return 'Renewal';
+    if (s.indexOf('walk') > -1) return 'Walk-in';
+    if (s.indexOf('personal') > -1 || s === 'pt') return 'Personal Training';
+    if (s.indexOf('new') > -1) return 'New Membership';
+    return 'Other';
+  }
+  function inRange(t, r) {
+    var d = txDate(t), T = today(), tk = iso(T);
+    if (r === 'all') return true;
+    if (r === 'today') return d === tk;
+    if (r === 'week') return d >= iso(addDays(T, -6)) && d <= tk;
+    if (r === 'month') return d.slice(0, 7) === tk.slice(0, 7);
+    return true;
+  }
+  function fee(m) { return Number(m.amount) || Number(m.dueAmount) || PRICES[m.plan] || 1500; }
+  function expOf(m) {
+    var v = m.expiryDate || m.planExpiryDate || m.expiry; if (!v) return null;
+    var d = typeof v.toDate === 'function' ? v.toDate() : v.seconds ? new Date(v.seconds * 1000) : new Date(v);
+    if (isNaN(d.getTime())) return null; d.setHours(0, 0, 0, 0); return d;
+  }
+  function daysLeft(m) { var e = expOf(m); return e ? Math.round((e - today()) / 864e5) : null; }
+  function state(m) {
+    var d = daysLeft(m), s = String(m.status || '').toLowerCase();
+    if (s === 'expired' || s === 'inactive' || d === null || d < 0) return 'x';
+    return d <= 7 ? 'e' : 'a';
+  }
+  function memberBy(id) { return mems().filter(function (m) { return m.id === id || m.memberId === id; })[0] || null; }
+  function memberOfTx(t) {
+    var L = mems(), nm = String(t.name || '').toLowerCase().trim();
+    return (t.memberId && memberBy(t.memberId)) || L.filter(function (m) { return String(m.name || '').toLowerCase().trim() === nm; })[0] || null;
+  }
+  function phoneOf(m) { var d = String((m && (m.phone || m.phoneNumber || m.mobile || m.contact)) || '').replace(/\D/g, ''); return d.length >= 10 ? d.slice(-10) : ''; }
+  function colorOf(name) { var h = 0, s = String(name || '').toLowerCase(); for (var i = 0; i < s.length; i++) h = s.charCodeAt(i) + ((h << 5) - h); return COLORS[Math.abs(h) % COLORS.length]; }
+  function view() { return $('#payments-view'); }
+  function visible() { var v = view(); return v && !v.classList.contains('hidden'); }
+
+  function toast(msg, type) {
+    var t = $('#toast'); if (!t) return;
+    var ic = $('#toast-icon'), tx = $('#toast-msg');
+    if (ic) ic.textContent = type === 'error' ? '\u26A0\uFE0F' : '\u2705';
+    if (tx) tx.textContent = msg;
+    t.classList.remove('translate-y-20', 'opacity-0');
+    clearTimeout(toast.t); toast.t = setTimeout(function () { t.classList.add('translate-y-20', 'opacity-0'); }, 3200);
+  }
+  function setNum(el, to, pre, suf, anim) {
+    if (!el) return; to = Math.round(to); pre = pre || ''; suf = suf || '';
+    var from = +el.dataset.v || 0; el.dataset.v = to;
+    if (!anim || from === to) { el.textContent = pre + to.toLocaleString('en-IN') + suf; return; }
+    var t0 = performance.now();
+    (function step(t) { var p = Math.min((t - t0) / 900, 1), e = 1 - Math.pow(1 - p, 3); el.textContent = pre + Math.round(from + (to - from) * e).toLocaleString('en-IN') + suf; if (p < 1) requestAnimationFrame(step); })(t0);
+  }
+  function delta(cur, prev, txt) {
+    if (!cur && !prev) return '<span class="pay-chip flat">No payments yet</span>';
+    if (!prev) return '<span class="pay-chip up">New</span>';
+    var p = Math.round((cur - prev) / prev * 100);
+    if (p === 0) return '<span class="pay-chip flat">Same ' + txt + '</span>';
+    return '<span class="pay-chip ' + (p > 0 ? 'up' : 'down') + '">' + (p > 0 ? '\u25B2 ' : '\u25BC ') + Math.abs(p) + '% ' + txt + '</span>';
+  }
+
+  /* ---------- KPI cards ---------- */
+  function kpis(anim) {
+    var T = today(), tk = iso(T), all = txs();
+    var dayL = function (k) { return all.filter(function (t) { return txDate(t) === k; }); };
+    var td = dayL(tk), yd = sum(dayL(iso(addDays(T, -1))));
+    var w0 = iso(addDays(T, -6)), p0 = iso(addDays(T, -13)), p1 = iso(addDays(T, -7));
+    var wk = sum(all.filter(function (t) { var d = txDate(t); return d >= w0 && d <= tk; }));
+    var pw = sum(all.filter(function (t) { var d = txDate(t); return d >= p0 && d <= p1; }));
+    var mk = tk.slice(0, 7), pmk = iso(new Date(T.getFullYear(), T.getMonth() - 1, 1)).slice(0, 7);
+    var mL = all.filter(function (t) { return txDate(t).slice(0, 7) === mk; }), mo = sum(mL);
+    var pmo = sum(all.filter(function (t) { return txDate(t).slice(0, 7) === pmk; }));
+    var card = function (cls, ic, label, val, chip, small) {
+      return '<div class="pay-k ' + cls + '"><span class="ic"><svg viewBox="0 0 24 24"><path d="' + ic + '"/></svg></span><div class="l">' + label + '</div><b data-to="' + Math.round(val) + '">' + inr(val) + '</b>' + (chip || '') + '<small>' + small + '</small></div>';
+    };
+    var host = $('#pay-kpis'); if (!host) return;
+    host.innerHTML =
+      card('hero', ICON.inr, 'Collected today', sum(td), delta(sum(td), yd, 'vs yesterday'), td.length + (td.length === 1 ? ' payment' : ' payments') + ' today') +
+      card('', ICON.cal, 'Last 7 days', wk, delta(wk, pw, 'vs previous 7'), 'Average ' + inr(wk / 7) + ' per day') +
+      card('', ICON.bars, 'This month', mo, delta(mo, pmo, 'vs last month'), 'Last month ' + inr(pmo));
+    $$('b[data-to]', host).forEach(function (b) { delete b.dataset.v; setNum(b, +b.dataset.to, '\u20B9', '', anim); });
+  }
+
+  /* ---------- Money pot ---------- */
+  function pot(anim) {
+    var L = mems(), expected = 0, collected = 0;
+    L.forEach(function (m) { var f = fee(m); expected += f; if (state(m) !== 'x') collected += f; });
+    var pct = expected ? Math.min(100, Math.round(collected / expected * 100)) : 0;
+    setNum($('#squid-expected-revenue'), expected, '\u20B9', '', anim);
+    setNum($('#squid-pot-collected'), collected, '\u20B9', '', anim);
+    setNum($('#squid-remaining-revenue'), expected - collected, '\u20B9', '', anim);
+    setNum($('#squid-pot-percentage'), pct, '', '%', anim);
+    var mc = $('#squid-members-count'); if (mc) mc.textContent = L.length + (L.length === 1 ? ' member' : ' members');
+    var st = $('#squid-pot-status');
+    if (st) { st.textContent = pct >= 100 ? 'All plans active' : pct + '% active'; st.className = 'pay-pill' + (pct >= 100 ? ' full' : pct >= 50 ? ' mid' : ''); }
+    if (typeof window.setGullakFill === 'function' && (anim || pct !== lastPct)) {
+      if (anim) { window.setGullakFill(0); setTimeout(function () { window.setGullakFill(pct); }, 120); } else window.setGullakFill(pct);
+    }
+    lastPct = pct;
+  }
+
+  /* ---------- Trend chart ---------- */
+  function trend() {
+    var host = $('#pay-trend'); if (!host) return;
+    var n = S.days, T = today(), all = txs(), cols = [], mx = 1, total = 0, best = null;
+    for (var i = n - 1; i >= 0; i--) {
+      var d = addDays(T, -i), k = iso(d), o = { k: k, d: d, cash: 0, upi: 0, card: 0, tot: 0, n: 0, today: i === 0 };
+      all.forEach(function (t) { if (txDate(t) === k) { var a = Number(t.amount) || 0; o[modeOf(t)] += a; o.tot += a; o.n++; } });
+      mx = Math.max(mx, o.tot); total += o.tot; if (!best || o.tot > best.tot) best = o; cols.push(o);
+    }
+    var wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    var bars = cols.map(function (o, idx) {
+      var lbl = n <= 7 ? wd[o.d.getDay()] : (n <= 14 || idx % 5 === 0 || o.today) ? String(o.d.getDate()) : '';
+      var tip = wd[o.d.getDay()] + ', ' + fmt(o.d) + ' \u00B7 ' + inr(o.tot) + (o.tot ? '<br>' + MODES.filter(function (m) { return o[m[0]]; }).map(function (m) { return m[1] + ' ' + inr(o[m[0]]); }).join(' \u00B7 ') : '<br>No payments');
+      var segs = MODES.map(function (m) { return o[m[0]] ? '<i style="flex:' + o[m[0]] + ';background:' + m[2] + '"></i>' : ''; }).join('');
+      return '<div class="pay-col' + (o.today ? ' t' : '') + '" data-tip="' + esc(tip) + '"><div class="pay-bw"><div class="pay-stack" style="height:' + (o.tot ? Math.max(4, o.tot / mx * 100) : 2) + '%">' + segs + '</div></div><em>' + lbl + '</em></div>';
+    }).join('');
+    host.innerHTML =
+      '<h3>Collection trend<span class="r"><div class="pay-seg">' + [7, 14, 30].map(function (d) { return '<button type="button" data-pd="' + d + '" class="' + (S.days === d ? 'on' : '') + '">' + d + ' days</button>'; }).join('') + '</div></span></h3>' +
+      '<div class="pay-sumline"><span>Total <b>' + inr(total) + '</b></span><span>Daily average <b>' + inr(total / n) + '</b></span>' + (best && best.tot ? '<span>Best day <b>' + fmt(best.d).slice(0, 6) + ' \u00B7 ' + inr(best.tot) + '</b></span>' : '') + '</div>' +
+      '<div class="pay-chartbox"><div class="pay-tip" id="pay-tip"></div><div class="pay-chart">' + bars + '</div></div>' +
+      '<div class="pay-leg">' + MODES.map(function (m) { return '<span><i style="background:' + m[2] + '"></i>' + m[1] + '</span>'; }).join('') + '</div>';
+  }
+
+  /* ---------- Collection mix ---------- */
+  function mix() {
+    var host = $('#pay-mix'); if (!host) return;
+    var L = txs().filter(function (t) { return inRange(t, S.range); }), tot = sum(L);
+    var h = '<h3>Collection mix<span class="r">' + RANGE_LABEL[S.range] + ' \u00B7 ' + inr(tot) + '</span></h3>';
+    if (!L.length) { host.innerHTML = h + '<div class="pay-empty">No payments in this period yet.</div>'; return; }
+    h += '<div class="pay-sub">By payment mode</div>' + MODES.map(function (m) {
+      var a = sum(L.filter(function (t) { return modeOf(t) === m[0]; })), p = tot ? Math.round(a / tot * 100) : 0;
+      return '<div class="pay-row" style="--k:' + m[2] + '"><i class="pay-dot"></i><b>' + m[1] + '</b><span class="v">' + inr(a) + '<small>' + p + '%</small></span><div class="pay-track"><i style="width:' + p + '%"></i></div></div>';
+    }).join('');
+    var ty = TYPES.map(function (t) { return { n: t[0], c: t[1], a: sum(L.filter(function (x) { return typeOf(x) === t[0]; })) }; }).filter(function (x) { return x.a > 0; });
+    h += '<div class="pay-sub s2">By type</div><div class="pay-mixbar">' + ty.map(function (x) { return '<i style="flex:' + x.a + ';background:' + x.c + '" title="' + esc(x.n) + '"></i>'; }).join('') + '</div>' +
+      '<div class="pay-types">' + ty.map(function (x) { return '<div><i class="pay-dot" style="background:' + x.c + '"></i>' + esc(x.n) + '<b>' + inr(x.a) + '</b></div>'; }).join('') + '</div>';
+    host.innerHTML = h;
+  }
+
+  /* ---------- Pending renewals ---------- */
+  function pending() {
+    var host = $('#pay-pending'); if (!host) return;
+    var list = mems().filter(function (m) { return state(m) !== 'a'; }).sort(function (a, b) {
+      var x = daysLeft(a), y = daysLeft(b); return (x === null ? -9999 : x) - (y === null ? -9999 : y);
+    });
+    var over = list.filter(function (m) { return state(m) === 'x'; }), soon = list.filter(function (m) { return state(m) === 'e'; });
+    var h = '<h3>Pending renewals<span class="r">' + list.length + (list.length === 1 ? ' member' : ' members') + '</span></h3>';
+    if (!list.length) { host.innerHTML = h + '<div class="pay-empty">Everyone is up to date. Nothing pending.</div>'; return; }
+    h += '<div class="pay-sumline"><span>Overdue <b class="x">' + inr(sum(over.map(function (m) { return { amount: fee(m) }; }))) + '</b> (' + over.length + ')</span><span>Expiring in 7 days <b>' + inr(sum(soon.map(function (m) { return { amount: fee(m) }; }))) + '</b> (' + soon.length + ')</span></div>';
+    h += list.slice(0, 6).map(function (m) {
+      var d = daysLeft(m), x = state(m) === 'x', key = m.id || m.memberId;
+      var badge = x ? (d === null ? 'No expiry' : 'Expired ' + Math.abs(d) + 'd ago') : (d === 0 ? 'Ends today' : d + 'd left');
+      return '<div class="pay-pr"><span class="pay-av" style="background:' + colorOf(m.name) + '">' + esc((m.name || 'M')[0]) + '</span>' +
+        '<div class="pay-who"><b>' + esc(m.name) + '</b><small>' + esc(m.plan || 'Plan') + ' \u00B7 ' + inr(fee(m)) + '</small></div>' +
+        '<span class="pay-due ' + (x ? 'x' : 'e') + '">' + badge + '</span>' +
+        '<button class="pay-ib" type="button" data-prem="' + esc(key) + '" title="Remind on WhatsApp" aria-label="Remind ' + esc(m.name) + ' on WhatsApp">' + WA + '</button>' +
+        '<button class="pay-mini" type="button" data-pren="' + esc(key) + '">Renew</button></div>';
+    }).join('');
+    if (list.length > 6) h += '<div class="pay-more">+ ' + (list.length - 6) + ' more &middot; <a href="#" data-pgo="members" style="color:var(--blu);font-weight:600">see all in Members</a></div>';
+    host.innerHTML = h;
+  }
+
+  /* ---------- Ledger ---------- */
+  function ledgerList() {
+    var q = S.q.toLowerCase().trim();
+    return txs().filter(function (t) {
+      if (!inRange(t, S.range)) return false;
+      if (S.mode !== 'all' && String(t.mode || 'Cash').toLowerCase() !== S.mode.toLowerCase()) return false;
+      if (S.type !== 'all' && typeOf(t) !== S.type) return false;
+      if (q && (String(t.name || '') + ' ' + String(t.id || '') + ' ' + String(t.memberId || '') + ' ' + String(t.type || '')).toLowerCase().indexOf(q) < 0) return false;
+      return true;
+    }).sort(function (a, b) { return txTs(b) - txTs(a); });
+  }
+  function ledger() {
+    var L = ledgerList(), shown = L.slice(0, S.limit);
+    var cnt = $('#pl-count'); if (cnt) cnt.textContent = L.length;
+    var rows = $('#pl-rows'), foot = $('#pl-foot'); if (!rows) return;
+    rows.innerHTML = shown.length ? shown.map(function (t) {
+      var m = memberOfTx(t), ph = phoneOf(m), md = modeOf(t), id = String(t.id || '');
+      var mm = MODES.filter(function (x) { return x[0] === md; })[0][1];
+      return '<div class="pay-tr"><div class="pay-who" style="display:flex;align-items:center;gap:12px"><span class="pay-av" style="background:' + colorOf(t.name) + '">' + esc((t.name || 'M')[0]) + '</span><div class="pay-who"><b>' + esc(t.name || 'Anonymous') + '</b><small>' + esc((t.memberId || id).toString().slice(0, 12)) + '</small></div></div>' +
+        '<div class="pay-meta"><span class="pay-chip2">' + esc(typeOf(t)) + '</span><span class="pm ' + md + '">' + mm + '</span><div class="pay-dt"><b>' + fmt(txDate(t)) + '</b><small>' + esc(t.time || '') + '</small></div></div>' +
+        '<div class="pay-amt">+' + inr(t.amount) + '</div>' +
+        '<div class="pay-act">' + (ph ? '<button class="pay-ib" type="button" data-pwa="' + esc(id) + '" title="Send receipt on WhatsApp" aria-label="Send receipt">' + WA + '</button>' : '') + '</div></div>';
+    }).join('') : '<div class="pay-empty">No payments match these filters.</div>';
+    foot.innerHTML = '<span>Showing ' + shown.length + ' of ' + L.length + ' payments</span>' +
+      (L.length > shown.length ? '<button class="pay-btn ghost sm" type="button" data-pmore>Show more</button>' : '') +
+      '<span>Total <b>' + inr(sum(L)) + '</b></span>';
+  }
+
+  function syncCtl() {
+    $$('#pay-range button').forEach(function (b) { b.classList.toggle('on', b.dataset.pr === S.range); });
+    $$('#pl-modes button').forEach(function (b) { b.classList.toggle('on', b.dataset.pm === S.mode); });
+    var dl = $('#pay-names'); if (dl && !dl.dataset.n || (dl && +dl.dataset.n !== mems().length)) { dl.innerHTML = mems().map(function (m) { return '<option value="' + esc(m.name) + '">'; }).join(''); dl.dataset.n = mems().length; }
+  }
+
+  function render(anim) {
+    if (!view()) return;
+    kpis(anim); pot(anim); trend(); mix(); pending(); ledger(); syncCtl();
+  }
+
+  /* ---------- CSV + receipts + quick payment ---------- */
+  function exportCsv() {
+    var L = ledgerList(); if (!L.length) { toast('Nothing to export for these filters', 'error'); return; }
+    var rows = [['Date', 'Time', 'Member', 'Type', 'Mode', 'Amount', 'ID']].concat(L.map(function (t) { return [txDate(t), t.time || '', t.name || '', t.type || '', t.mode || '', Number(t.amount) || 0, t.id || '']; }));
+    var csv = rows.map(function (r) { return r.map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(','); }).join('\n');
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'gympro-payments-' + iso(new Date()) + '.csv'; document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    toast('Exported ' + L.length + ' payments');
+  }
+  function receipt(id) {
+    var t = txs().filter(function (x) { return String(x.id) === id; })[0]; if (!t) return;
+    var ph = phoneOf(memberOfTx(t)); if (!ph) { toast('No phone number found for ' + (t.name || 'this member'), 'error'); return; }
+    var msg = 'Hi ' + t.name + ', we received ' + inr(t.amount) + ' (' + (t.mode || 'Cash') + ') for ' + typeOf(t) + ' on ' + fmt(txDate(t)) + '. Thank you! Regards, Gym Admin';
+    window.open('https://wa.me/91' + ph + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    toast('Opening WhatsApp receipt for ' + t.name);
+  }
+  function quick(open) {
+    var m = $('#pay-quick'); if (!m) return; m.classList.toggle('on', !!open);
+    if (open) { setTimeout(function () { var n = $('#pqn'); if (n) n.focus(); }, 30); } else { var f = $('#pay-quick-form'); if (f) f.reset(); }
+  }
+
+  /* ---------- events ---------- */
+  document.addEventListener('click', function (e) {
+    var root = view(); if (!root) return;
+    var t = e.target.closest('[data-pr],[data-pm],[data-pd],[data-pmore],[data-pexport],[data-pquick],[data-pclose],[data-pwa],[data-prem],[data-pren],[data-pgo],[data-pclose-bg]');
+    if (!t || !root.contains(t)) return;
+    var D = t.dataset;
+    if (t.hasAttribute('data-pclose-bg')) { if (e.target === t) quick(false); return; }
+    if (D.pgo) { e.preventDefault(); if (window.switchView) window.switchView(D.pgo); }
+    else if (D.pr) { S.range = D.pr; S.limit = 10; mix(); ledger(); syncCtl(); }
+    else if (D.pm) { S.mode = D.pm; S.limit = 10; ledger(); syncCtl(); }
+    else if (D.pd) { S.days = +D.pd; trend(); }
+    else if ('pmore' in D) { S.limit += 10; ledger(); }
+    else if ('pexport' in D) exportCsv();
+    else if ('pquick' in D) quick(true);
+    else if ('pclose' in D) quick(false);
+    else if (D.pwa) receipt(D.pwa);
+    else if (D.prem) { var m = memberBy(D.prem); if (m && window.sendWhatsAppReminder) window.sendWhatsAppReminder(m.name, phoneOf(m) || m.phone || '', fmt(expOf(m)), fee(m)); }
+    else if (D.pren) { var r = memberBy(D.pren); if (r && window.renewMember) window.renewMember(r.id || r.memberId, r.name, phoneOf(r)); }
+  });
+  document.addEventListener('mouseover', function (e) {
+    var c = e.target.closest && e.target.closest('#pay-trend .pay-col'); var tip = $('#pay-tip');
+    if (!tip) return; if (!c) { tip.style.opacity = 0; return; }
+    var box = c.closest('.pay-chartbox'), cr = c.getBoundingClientRect(), br = box.getBoundingClientRect();
+    tip.innerHTML = c.getAttribute('data-tip'); tip.style.left = Math.min(Math.max(cr.left - br.left + cr.width / 2, 90), br.width - 90) + 'px'; tip.style.top = '-6px'; tip.style.opacity = 1;
+  });
+  document.addEventListener('input', function (e) { if (e.target && e.target.id === 'pl-q') { S.q = e.target.value; S.limit = 10; ledger(); } });
+  document.addEventListener('change', function (e) { if (e.target && e.target.id === 'pl-type') { S.type = e.target.value; S.limit = 10; ledger(); } });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') quick(false); });
+
+  function bindForm() {
+    var f = $('#pay-quick-form'); if (!f) return;
+    f.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var name = f.elements.pqn.value.trim(), amt = Number(f.elements.pqa.value) || 0;
+      var type = (f.querySelector('[name=pqt]:checked') || {}).value || 'Walk-in', mode = (f.querySelector('[name=pqm]:checked') || {}).value || 'Cash';
+      if (!name || amt <= 0) { toast('Enter a name and an amount', 'error'); return; }
+      var btn = f.querySelector('[type=submit]'); btn.disabled = true;
+      try {
+        if (typeof window.recordQuickPayment === 'function') { await window.recordQuickPayment({ name: name, amount: amt, type: type, mode: mode }); }
+        else {
+          var now = new Date(), d = iso(now), list = window.allTransactions || [];
+          list.unshift({ id: 'tx-' + Date.now(), name: name, amount: amt, mode: mode, type: type, time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), date: d, d: d });
+          if (window.updateDashboardTransactions) window.updateDashboardTransactions(list.slice()); else render(false);
+          toast(type + ' payment of ' + inr(amt) + ' added (screen only: add recordQuickPayment to save it)');
+        }
+        quick(false);
+      } catch (err) { toast('Could not save: ' + err.message, 'error'); } finally { btn.disabled = false; }
+    });
+  }
+
+  /* ---------- hooks used by your existing code ---------- */
+  function install() {
+    window.initPaymentsTab = function () { render(true); };
+    window.updatePaymentsViewData = function () { if (visible()) render(false); };
+    window.renderPaymentsPage = render;
+    bindForm();
+    render(false);
+  }
+  if (document.readyState === 'complete') install(); else window.addEventListener('load', install);
+})();
+</script>
+</body></html>
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-11-08T11:10:05+05:30.
+
+The user's current state is as follows:
+Active Document: c:\Users\Dhruv Singh\Desktop\GYM system\index.html (LANGUAGE_UNSPECIFIED)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Dhruv Singh\Desktop\GYM system\scratch\check_payments_html.js (LANGUAGE_UNSPECIFIED)
+- c:\Users\Dhruv Singh\Desktop\GYM system\scratch\test_scenario_comprehensive2.js (LANGUAGE_UNSPECIFIED)
+- c:\Users\Dhruv Singh\Desktop\GYM system\scratch\check_pot_view.js (LANGUAGE_UNSPECIFIED)
+- c:\Users\Dhruv Singh\Desktop\GYM system\scratch\test_add_after_clear.js (LANGUAGE_UNSPECIFIED)
+- c:\Users\Dhruv Singh\Desktop\GYM system\scratch\test_scenario_comprehensive.js (LANGUAGE_UNSPECIFIED)
+</ADDITIONAL_METADATA>

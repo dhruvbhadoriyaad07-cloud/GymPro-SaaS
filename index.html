@@ -381,20 +381,32 @@
     /* Exact Claude Card Print Design */
     .stats {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 14px;
       margin-bottom: 24px;
     }
 
-    @media (max-width: 1024px) {
+    @media (max-width: 1200px) {
       .stats {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
     @media (max-width: 640px) {
       .stats {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+        margin-bottom: 16px !important;
+      }
+
+      .st:nth-child(5) {
+        grid-column: span 2 !important;
       }
     }
 
@@ -402,9 +414,9 @@
       position: relative;
       overflow: hidden;
       border-radius: 22px;
-      padding: 22px;
+      padding: 18px 18px 16px;
       color: #fff;
-      min-height: 168px;
+      min-height: 160px;
       transition: .2s;
     }
 
@@ -420,22 +432,27 @@
     .st>span {
       font-weight: 600;
       opacity: .9;
-      font-size: 13px;
+      font-size: 11.5px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
       display: block;
+      padding-right: 36px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .st b {
+    .st b,
+    .st h1 {
       display: block;
-      font: italic 700 58px/1 var(--d);
+      font: italic 700 clamp(38px, 3.4vw, 54px)/1 var(--d);
       margin: 8px 0 0;
       letter-spacing: .01em;
     }
 
     .st b small {
       display: inline;
-      font-size: 22px;
+      font-size: 20px;
       opacity: .65;
       margin: 0;
     }
@@ -443,7 +460,7 @@
     .st small {
       display: block;
       opacity: .85;
-      font-size: 12.5px;
+      font-size: 12px;
       margin-top: 8px;
     }
 
@@ -515,6 +532,24 @@
     .c-y .ic {
       background: rgba(58, 42, 0, .12);
       color: #3A2A00;
+    }
+
+    .c-r {
+      background: linear-gradient(135deg, #FF4D6D, #D90429);
+      color: #fff;
+    }
+
+    .c-r .bar {
+      background: rgba(255, 255, 255, .25);
+    }
+
+    .c-r .bar i {
+      background: #fff;
+    }
+
+    .c-r .ic {
+      background: rgba(255, 255, 255, .22);
+      color: #fff;
     }
 
     /* Main Card Container */
@@ -1265,145 +1300,1218 @@
       color: var(--org2) !important
     }
 
-    /* ---------- 5. Payments page = green (money) ---------- */
-    #payments-view h1+p,
-    #payments-view h2+p {
-      color: var(--muted) !important
-    }
-
-    #payments-view .text-amber-500,
-    #payments-view .text-emerald-400 {
-      color: var(--grn2) !important
-    }
-
-    #payments-total-counter {
-      color: var(--grn2) !important
-    }
-
-    #pot-mini-cash,
-    #channel-cash-amount {
-      color: var(--grn2) !important
-    }
-
-    #pot-mini-upi,
-    #channel-upi-amount {
-      color: var(--pur) !important
-    }
-
-    #pot-mini-card,
-    #channel-card-amount {
-      color: var(--blu) !important
-    }
-
-    #channel-cash-bar {
-      background: var(--grn) !important;
-      box-shadow: none !important
-    }
-
-    #channel-upi-bar {
-      background: var(--pur) !important;
-      box-shadow: none !important
-    }
-
-    #channel-card-bar {
-      background: var(--blu) !important;
-      box-shadow: none !important
-    }
-
-    #payments-view .w-2.h-2.bg-amber-400 {
-      background: var(--grn) !important;
-      box-shadow: none !important
-    }
-
-    #payments-view .w-2.h-2.bg-white {
-      background: var(--pur) !important;
-      box-shadow: none !important
-    }
-
-    #payments-view .w-2.h-2.bg-neutral-400 {
-      background: var(--blu) !important
-    }
-
-    #payments-view :is(.bg-white\/\[0\.04\], .bg-white\/\[0\.03\]) .block {
-      color: var(--muted) !important
-    }
-
-    /* Ledger mode badges: Cash green, UPI purple, Card blue (the "Paid" badge stays green) */
-    #payments-table-body [class*="bg-amber-500/10"] {
-      background: #DDF7E8 !important;
-      color: #0B7A43 !important;
-      border-color: #A7E8C6 !important
-    }
-
-    #payments-table-body [class*="bg-amber-500/10"] span {
-      background: var(--grn) !important;
-      box-shadow: none !important
-    }
-
-    #payments-table-body [class*="bg-emerald-500/10"] {
-      background: #EBE3FF !important;
-      color: #5B21B6 !important;
-      border-color: #D4C4FF !important
-    }
-
-    #payments-table-body [class*="bg-emerald-500/10"] span {
-      background: var(--pur) !important;
-      box-shadow: none !important
-    }
-
-    #payments-table-body [class*="bg-sky-500/10"] {
-      background: #E1E8FF !important;
-      color: #1E4FD8 !important;
-      border-color: #BFD0FF !important
-    }
-
-    #payments-table-body [class*="bg-sky-500/10"] span {
-      background: var(--blu) !important;
-      box-shadow: none !important
-    }
-
-    #payments-table-body td .font-mono.font-bold {
-      color: var(--grn2) !important
-    }
-
     #transactions-list .font-mono.font-bold {
       color: var(--grn2) !important
     }
 
-    /* The Money Pot card stays dark navy so the glass gullak and green liquid glow */
-    #payments-view .grid>.card:nth-child(2) {
-      background: linear-gradient(160deg, #0F1E3D, #0A1428) !important;
-      border: 0 !important;
-      box-shadow: 0 24px 50px -20px rgba(15, 30, 61, .6) !important
+    /* ===================== PAYMENTS PAGE (pay-*) ===================== */
+    .pay {
+      --cash: var(--grn);
+      --upi: var(--pur);
+      --cardc: var(--blu);
+      display: grid;
+      gap: 16px;
+      min-width: 0
     }
 
-    #payments-view .grid>.card:nth-child(2) :is(.text-white, .text-gradient-white) {
-      color: #fff !important
+    .pay * {
+      min-width: 0
     }
 
-    #payments-view .grid>.card:nth-child(2) [class*="text-neutral-"] {
-      color: #9FB0CF !important
+    .pay-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between
     }
 
-    #payments-view .grid>.card:nth-child(2) .text-amber-400 {
-      color: #FFC21A !important
+    .pay-bar h2 {
+      font: italic 700 28px/1 var(--d);
+      letter-spacing: .02em;
+      display: flex;
+      align-items: center;
+      gap: 10px
     }
 
-    #payments-view .grid>.card:nth-child(2) .text-emerald-200 {
-      color: #A7F3D0 !important
+    .pay-bar h2::before {
+      content: "";
+      width: 8px;
+      height: 26px;
+      border-radius: 4px;
+      background: var(--grn)
     }
 
-    #payments-view .grid>.card:nth-child(2) [class*="border-white/"] {
-      border-color: rgba(255, 255, 255, .14) !important
+    .pay-bar p {
+      color: var(--muted);
+      margin-top: 4px
     }
 
-    #payments-view .grid>.card:nth-child(2) :is([class*=" bg-white/["], [class^="bg-white/["]) {
-      background: rgba(255, 255, 255, .08) !important
+    .pay-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap
     }
 
-    #payments-view .grid>.card:nth-child(2) #squid-expected-revenue,
-    #payments-view .grid>.card:nth-child(2) #squid-pot-collected {
-      color: #4DE394 !important
+    .pay-btn {
+      height: 42px;
+      padding: 0 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      background: var(--ink);
+      color: #fff;
+      transition: .15s;
+      white-space: nowrap
+    }
+
+    .pay-btn:hover {
+      transform: translateY(-2px)
+    }
+
+    .pay-btn:active {
+      transform: scale(.97)
+    }
+
+    .pay-btn.ghost {
+      background: #fff;
+      color: var(--ink);
+      border: 1.5px solid var(--line)
+    }
+
+    .pay-btn.ghost:hover {
+      border-color: var(--grn);
+      color: var(--grn2)
+    }
+
+    .pay-btn.green {
+      background: linear-gradient(135deg, #1FCB7C, var(--grn2));
+      box-shadow: 0 8px 20px rgba(18, 183, 106, .3)
+    }
+
+    .pay-btn.sm {
+      height: 38px;
+      padding: 0 14px;
+      font-size: 13px
+    }
+
+    /* KPI cards */
+    .pay-kpis {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px
+    }
+
+    .pay-k {
+      position: relative;
+      border-radius: 22px;
+      padding: 20px 22px;
+      background: #fff;
+      border: 1px solid var(--line);
+      overflow: hidden;
+      transition: .2s
+    }
+
+    .pay-k:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 30px -12px rgba(15, 23, 42, .25)
+    }
+
+    .pay-k .l {
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--muted);
+      padding-right: 48px
+    }
+
+    .pay-k b {
+      display: block;
+      font: italic 700 46px/1 var(--d);
+      margin: 8px 0;
+      color: var(--grn2);
+      letter-spacing: .01em
+    }
+
+    .pay-k small {
+      display: block;
+      color: var(--muted);
+      font-size: 12.5px;
+      margin-top: 8px
+    }
+
+    .pay-k .ic {
+      background: #DDF7E8;
+      color: var(--grn2)
+    }
+
+    .pay-k.hero {
+      background: linear-gradient(135deg, #1FCB7C, #0B9A55);
+      border: 0;
+      color: #fff
+    }
+
+    .pay-k.hero .l,
+    .pay-k.hero small {
+      color: rgba(255, 255, 255, .85)
+    }
+
+    .pay-k.hero b {
+      color: #fff
+    }
+
+    .pay-k.hero .ic {
+      background: rgba(255, 255, 255, .22);
+      color: #fff
+    }
+
+    .pay-chip {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 99px
+    }
+
+    .pay-chip.up {
+      background: #DDF7E8;
+      color: #0B7A43
+    }
+
+    .pay-chip.down {
+      background: #FFDCDC;
+      color: #B4161F
+    }
+
+    .pay-chip.flat {
+      background: var(--bg);
+      color: var(--muted)
+    }
+
+    .pay-k.hero .pay-chip {
+      background: rgba(255, 255, 255, .24);
+      color: #fff
+    }
+
+    /* layout rows */
+    .pay-r2 {
+      display: grid;
+      grid-template-columns: minmax(500px, 560px) minmax(0, 1fr);
+      gap: 16px
+    }
+
+    .pay-r3 {
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: 14px
+    }
+
+    .pay-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 22px
+    }
+
+    .pay-card h3 {
+      font: italic 700 22px/1 var(--d);
+      letter-spacing: .03em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap
+    }
+
+    .pay-card h3::before {
+      content: "";
+      width: 8px;
+      height: 20px;
+      border-radius: 4px;
+      background: var(--c, var(--grn))
+    }
+
+    .pay-card h3 .r {
+      margin-left: auto;
+      font: 500 13px var(--b);
+      letter-spacing: 0;
+      color: var(--muted)
+    }
+
+    /* segmented control */
+    .pay-seg {
+      display: inline-flex;
+      gap: 4px;
+      background: var(--bg);
+      padding: 4px;
+      border-radius: 12px;
+      flex-wrap: wrap
+    }
+
+    .pay-seg button {
+      padding: 7px 14px;
+      border-radius: 9px;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--muted);
+      transition: .15s;
+      white-space: nowrap
+    }
+
+    .pay-seg button:hover {
+      color: var(--ink)
+    }
+
+    .pay-seg button.on {
+      background: #fff;
+      color: var(--grn2);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, .12)
+    }
+
+    .pay-rangebar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-weight: 600
+    }
+
+    .pay-rangebar .pay-seg {
+      background: #fff;
+      border: 1px solid var(--line)
+    }
+
+    .pay-rangebar .pay-seg button.on {
+      background: var(--grn);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(18, 183, 106, .3)
+    }
+
+    /* trend chart (stacked by payment mode) */
+    .pay-chartbox {
+      position: relative;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 12px; /* Extra padding for scrollbar */
+    }
+
+    /* Hide scrollbar for a cleaner look but keep functionality */
+    .pay-chartbox::-webkit-scrollbar { height: 4px; }
+    .pay-chartbox::-webkit-scrollbar-track { background: transparent; }
+    .pay-chartbox::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+
+    .pay-chart {
+      display: flex;
+      align-items: stretch;
+      gap: 6px;
+      height: 220px;
+      padding-top: 6px;
+      min-width: max-content; /* Forces container to expand beyond screen if items are many */
+    }
+
+    .pay-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      min-width: 28px; /* Ensures bars NEVER get paper-thin */
+    }
+
+    .pay-bw {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      min-height: 0
+    }
+
+    .pay-stack {
+      width: 100%;
+      max-width: 40px;
+      display: flex;
+      flex-direction: column-reverse;
+      border-radius: 9px 9px 3px 3px;
+      overflow: hidden;
+      min-height: 3px;
+      background: #E9EDF5;
+      transition: transform .15s
+    }
+
+    .pay-stack i {
+      display: block;
+      min-height: 2px
+    }
+
+    .pay-col:hover .pay-stack {
+      transform: scaleX(1.1)
+    }
+
+    .pay-col em {
+      font-style: normal;
+      font-size: 11.5px;
+      color: var(--muted);
+      font-weight: 600;
+      white-space: nowrap
+    }
+
+    .pay-col.t em {
+      color: var(--ink);
+      font-weight: 700
+    }
+
+    .pay-tip {
+      position: absolute;
+      pointer-events: none;
+      background: var(--ink);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font: 600 12.5px/1.45 var(--b);
+      opacity: 0;
+      transition: opacity .12s;
+      white-space: nowrap;
+      z-index: 5;
+      transform: translateX(-50%)
+    }
+
+    .pay-leg {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      font-size: 12.5px;
+      color: var(--muted)
+    }
+
+    .pay-scroll-hint {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 11.5px;
+      color: var(--muted);
+      font-weight: 500;
+      margin: 8px 0 2px;
+      letter-spacing: .2px;
+    }
+
+    .pay-scroll-hint svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .pay-leg i {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 3px;
+      margin-right: 6px
+    }
+
+    /* collection mix */
+    .pay-sub {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin: 4px 0 12px
+    }
+
+    .pay-sub.s2 {
+      margin-top: 20px
+    }
+
+    .pay-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 4px 10px;
+      align-items: center;
+      margin-bottom: 12px
+    }
+
+    .pay-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--k)
+    }
+
+    .pay-row b {
+      font-weight: 700
+    }
+
+    .pay-row .v {
+      font-weight: 700;
+      font-variant-numeric: tabular-nums
+    }
+
+    .pay-row .v small {
+      color: var(--muted);
+      font-weight: 500;
+      margin-left: 6px
+    }
+
+    .pay-track {
+      grid-column: 1/-1;
+      height: 8px;
+      border-radius: 8px;
+      background: var(--bg);
+      overflow: hidden
+    }
+
+    .pay-track i {
+      display: block;
+      height: 100%;
+      border-radius: 8px;
+      background: var(--k);
+      transition: width .6s
+    }
+
+    .pay-mixbar {
+      display: flex;
+      height: 12px;
+      border-radius: 12px;
+      overflow: hidden;
+      gap: 2px;
+      background: var(--bg)
+    }
+
+    .pay-mixbar i {
+      display: block;
+      min-width: 4px
+    }
+
+    .pay-types {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 18px;
+      margin-top: 12px
+    }
+
+    .pay-types div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px
+    }
+
+    .pay-types .pay-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 3px
+    }
+
+    .pay-types b {
+      margin-left: auto;
+      font-variant-numeric: tabular-nums
+    }
+
+    /* pending renewals */
+    .pay-sumline {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+      font-size: 13px;
+      color: var(--muted)
+    }
+
+    .pay-sumline b {
+      color: var(--ink);
+      font-size: 15px
+    }
+
+    .pay-sumline .x {
+      color: #B4161F
+    }
+
+    .pay-pr {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0
+    }
+
+    .pay-pr+.pay-pr {
+      border-top: 1px solid var(--line)
+    }
+
+    .pay-av {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: grid;
+      place-content: center;
+      color: #fff;
+      font-weight: 700;
+      flex: none;
+      text-transform: uppercase
+    }
+
+    .pay-who {
+      flex: 1;
+      min-width: 0
+    }
+
+    .pay-who b {
+      display: block;
+      font-weight: 700;
+      text-transform: capitalize;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .pay-who small {
+      color: var(--muted);
+      font-size: 12.5px
+    }
+
+    .pay-due {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 99px;
+      white-space: nowrap
+    }
+
+    .pay-due.x {
+      background: #FFDCDC;
+      color: #B4161F
+    }
+
+    .pay-due.e {
+      background: #FFF1BF;
+      color: #8A5A00
+    }
+
+    .pay-ib {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: grid;
+      place-content: center;
+      flex: none;
+      transition: .15s;
+      background: #DDF7E8;
+      color: #0B7A43
+    }
+
+    .pay-ib:hover {
+      background: var(--wa);
+      color: #fff;
+      transform: scale(1.06)
+    }
+
+    .pay-ib svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor
+    }
+
+    .pay-mini {
+      height: 34px;
+      padding: 0 14px;
+      border-radius: 10px;
+      background: var(--grn);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      transition: .15s
+    }
+
+    .pay-mini:hover {
+      background: var(--grn2)
+    }
+
+    .pay-more {
+      color: var(--muted);
+      font-size: 13px;
+      padding-top: 10px
+    }
+
+    .pay-empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 28px 8px
+    }
+
+    /* ledger */
+    .pay-lh {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px
+    }
+
+    .pay-lh h3 {
+      margin: 0
+    }
+
+    .pay-count {
+      font: 600 12px var(--b);
+      letter-spacing: 0;
+      background: var(--bg);
+      color: var(--muted);
+      padding: 3px 10px;
+      border-radius: 99px
+    }
+
+    .pay-tools {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center
+    }
+
+    .pay-in {
+      height: 38px;
+      border-radius: 10px;
+      border: 1.5px solid var(--line);
+      padding: 0 12px;
+      background: #fff;
+      font-weight: 600;
+      outline: 0;
+      color: var(--ink)
+    }
+
+    .pay-in:focus {
+      border-color: var(--grn)
+    }
+
+    .pay-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 38px;
+      padding: 0 12px;
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      background: #fff
+    }
+
+    .pay-search:focus-within {
+      border-color: var(--grn)
+    }
+
+    .pay-search input {
+      border: 0;
+      outline: 0;
+      background: none;
+      width: 150px;
+      cursor: text
+    }
+
+    .pay-search svg {
+      width: 15px;
+      stroke: var(--muted);
+      fill: none;
+      stroke-width: 2;
+      flex: none
+    }
+
+    .pay-tr {
+      display: grid;
+      grid-template-columns: minmax(190px, 1.7fr) 150px 100px 150px 110px 44px;
+      gap: 14px;
+      align-items: center;
+      padding: 13px 8px;
+      border-top: 1px solid var(--line);
+      border-radius: 12px
+    }
+
+    .pay-tr:not(.pay-th):hover {
+      background: #F8FAFC
+    }
+
+    .pay-th {
+      border: 0;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 13px;
+      padding-bottom: 8px
+    }
+
+    .pay-meta {
+      display: contents
+    }
+
+    .pay-amt {
+      font: italic 700 24px var(--d);
+      color: var(--grn2);
+      text-align: right;
+      white-space: nowrap
+    }
+
+    .pay-act {
+      display: flex;
+      justify-content: flex-end
+    }
+
+    .pay-dt b {
+      display: block;
+      font-weight: 600;
+      font-size: 13px
+    }
+
+    .pay-dt small {
+      color: var(--muted);
+      font-size: 12px
+    }
+
+    .pay-chip2 {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 99px;
+      background: var(--bg);
+      color: #475569;
+      white-space: nowrap;
+      justify-self: start
+    }
+
+    .pm {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 11px;
+      border-radius: 99px;
+      justify-self: start
+    }
+
+    .pm.cash {
+      background: #DDF7E8;
+      color: #0B7A43
+    }
+
+    .pm.upi {
+      background: #EBE3FF;
+      color: #5B21B6
+    }
+
+    .pm.card {
+      background: #E1E8FF;
+      color: #1E4FD8
+    }
+
+    .pay-lf {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      color: var(--muted)
+    }
+
+    .pay-lf b {
+      color: var(--grn2);
+      font-size: 16px
+    }
+
+    /* money pot card */
+    .pay-pot {
+      background: linear-gradient(160deg, #0F1E3D, #0A1428);
+      border: 1px solid rgba(255, 255, 255, .08);
+      color: #E2E8F0;
+      box-shadow: 0 24px 50px -20px rgba(15, 30, 61, .6);
+      display: flex;
+      flex-direction: column;
+      padding: 22px 24px
+    }
+
+    .pay-pot-h {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px
+    }
+
+    .pay-pot-h b {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: #C9D4EA
+    }
+
+    .pay-pot-h small {
+      color: #8FA0C2;
+      font-size: 12px
+    }
+
+    .pay-pill {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, .1);
+      color: #C9D4EA;
+      white-space: nowrap
+    }
+
+    .pay-pill.full {
+      background: #DDF7E8;
+      color: #0B7A43
+    }
+
+    .pay-pill.mid {
+      background: rgba(255, 194, 26, .18);
+      color: #FFD66B
+    }
+
+    /* ── Money Pot Body: Horizontal flex (Pot Left, Vertical Stats Right) ── */
+    .pay-pot-body {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-top: 12px;
+      flex: 1
+    }
+
+    .pay-pot-visual {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center
+    }
+
+    .pay-pot .gp-stage {
+      position: relative;
+      width: 216px;
+      height: 258px;
+      margin: 0
+    }
+
+    .pay-pot .gp-pct b {
+      font-size: 27px !important;
+      line-height: 1
+    }
+
+    .pay-pot .gp-pct span {
+      font-size: 8px !important;
+      letter-spacing: .18em;
+      margin-top: 3px
+    }
+
+    /* ── Vertical Stats Column ── */
+    .pay-pot-vstats {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      flex: 1;
+      min-width: 0
+    }
+
+    .pay-pv-card {
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 14px;
+      padding: 10px 14px;
+      transition: all .2s ease;
+      backdrop-filter: blur(8px)
+    }
+
+    .pay-pv-card:hover {
+      background: rgba(255, 255, 255, .07);
+      border-color: rgba(255, 255, 255, .15);
+      transform: translateX(2px)
+    }
+
+    .pay-pv-card.highlight-g {
+      background: linear-gradient(135deg, rgba(77, 227, 148, .08), rgba(18, 183, 106, .02));
+      border-color: rgba(77, 227, 148, .24)
+    }
+
+    .pay-pv-card.highlight-y {
+      background: linear-gradient(135deg, rgba(255, 194, 26, .08), rgba(240, 74, 0, .02));
+      border-color: rgba(255, 194, 26, .24)
+    }
+
+    .pay-pv-h {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 3px
+    }
+
+    .pay-pv-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0
+    }
+
+    .pay-pv-h small {
+      color: #8FA0C2;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase
+    }
+
+    .pay-pv-val {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px
+    }
+
+    .pay-pv-val strong {
+      font: 700 21px/1.1 ui-monospace, Menlo, Consolas, monospace;
+      color: #FFFFFF;
+      letter-spacing: -.02em
+    }
+
+    .pay-pv-val strong.g {
+      color: #4DE394;
+      text-shadow: 0 0 16px rgba(77, 227, 148, .3)
+    }
+
+    .pay-pv-val strong.y {
+      color: #FFC21A;
+      text-shadow: 0 0 16px rgba(255, 194, 26, .3)
+    }
+
+    .pay-pv-sub {
+      font-size: 11px;
+      font-weight: 600;
+      color: #8FA0C2;
+      background: rgba(255, 255, 255, .06);
+      padding: 2px 8px;
+      border-radius: 6px;
+      white-space: nowrap
+    }
+
+    .pay-pv-sub.g {
+      color: #4DE394;
+      background: rgba(77, 227, 148, .12)
+    }
+
+    .pay-pv-sub.y {
+      color: #FFC21A;
+      background: rgba(255, 194, 26, .12)
+    }
+
+    .pay-pot-f {
+      margin-top: 4px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      font-size: 11.5px;
+      color: #8FA0C2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px
+    }
+
+    .pay-pot-f span {
+      font-weight: 600;
+      color: #C9D4EA
+    }
+
+    .pay-pot-f-note {
+      font-size: 10.5px;
+      color: #64748B;
+      text-align: right
+    }
+
+    @media (max-width: 600px) {
+      .pay-pot-body {
+        flex-direction: column;
+        align-items: center
+      }
+
+      .pay-pot-vstats {
+        width: 100%
+      }
+    }
+
+    /* quick payment modal */
+    .pay-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background: rgba(15, 23, 42, .5);
+      backdrop-filter: blur(3px);
+      display: none;
+      place-items: center;
+      padding: 16px
+    }
+
+    .pay-modal.on {
+      display: grid
+    }
+
+    .pay-dlg {
+      background: #fff;
+      border-radius: 24px;
+      padding: 26px;
+      width: min(440px, 100%);
+      box-shadow: 0 30px 80px rgba(15, 23, 42, .35)
+    }
+
+    .pay-dlg h4 {
+      font: italic 700 32px/1 var(--d);
+      color: var(--grn2);
+      margin-bottom: 4px
+    }
+
+    .pay-dlg p {
+      color: var(--muted)
+    }
+
+    .pay-dlg label {
+      display: block;
+      font-weight: 600;
+      font-size: 13px;
+      margin: 14px 0 6px
+    }
+
+    .pay-dlg .pay-in {
+      width: 100%;
+      height: 46px;
+      border-radius: 12px
+    }
+
+    .pay-choice {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    .pay-choice label {
+      margin: 0;
+      flex: 1
+    }
+
+    .pay-choice input {
+      display: none
+    }
+
+    .pay-choice span {
+      display: block;
+      text-align: center;
+      padding: 10px 8px;
+      border-radius: 12px;
+      border: 1.5px solid var(--line);
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 13px;
+      white-space: nowrap
+    }
+
+    .pay-choice input:checked+span {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #fff
+    }
+
+    .pay-choice input[value="Cash"]:checked+span {
+      background: var(--grn);
+      border-color: var(--grn)
+    }
+
+    .pay-choice input[value="UPI"]:checked+span {
+      background: var(--pur);
+      border-color: var(--pur)
+    }
+
+    .pay-choice input[value="Card"]:checked+span {
+      background: var(--blu);
+      border-color: var(--blu)
+    }
+
+    .pay-acts {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px
+    }
+
+    .pay-acts .pay-btn {
+      flex: 1
+    }
+
+    @media (max-width:1180px) {
+      .pay-kpis {
+        grid-template-columns: repeat(3, minmax(0, 1fr))
+      }
+
+      .pay-r2,
+      .pay-r3 {
+        grid-template-columns: minmax(0, 1fr)
+      }
+    }
+
+    @media (max-width:900px) {
+      .pay-tr.pay-th {
+        display: none
+      }
+
+      .pay-tr {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 6px 12px;
+        padding: 12px 4px
+      }
+
+      .pay-tr>.pay-who {
+        grid-column: 1;
+        grid-row: 1
+      }
+
+      .pay-tr>.pay-amt {
+        grid-column: 2;
+        grid-row: 1
+      }
+
+      .pay-meta {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+        grid-column: 1;
+        grid-row: 2
+      }
+
+      .pay-tr>.pay-act {
+        grid-column: 2;
+        grid-row: 2
+      }
+
+      .pay-search input {
+        width: 110px
+      }
+    }
+
+    @media (max-width:560px) {
+      /* 2 columns for top cards, 10px gap to save space */
+      .pay-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      /* Make the 3rd card (This month) span the full width */
+      .pay-kpis > .pay-k:nth-child(3) { grid-column: 1 / -1; }
+      
+      /* Make cards more compact for side-by-side view */
+      .pay-k { padding: 14px 12px; }
+      .pay-k b { font-size: 26px; margin: 4px 0; }
+      .pay-k .l { padding-right: 28px; font-size: 11.5px; line-height: 1.2; }
+      .pay-k small { font-size: 11px; }
+      
+      /* Shrink the top-right icons so they don't overlap text */
+      .pay-k .ic { width: 28px; height: 28px; right: 10px; top: 10px; border-radius: 8px; }
+      .pay-k .ic svg { width: 14px; height: 14px; }
+      
+      .pay-types { grid-template-columns: 1fr; }
+      .pay-card { padding: 18px 16px; }
     }
 
     /* ---------- 6. Members: compact two-line rows on mobile ---------- */
@@ -1695,15 +2803,15 @@
           <div id="dashboard-statistics-section">
             <span id="stats-refresh-btn-text" class="hidden"></span>
             <div class="stats">
-              <!-- Card 1: Today's Cash -->
+              <!-- Card 1: Cash Collected -->
               <div class="st c-g">
                 <div class="ic"><svg viewBox="0 0 24 24">
                     <path d="M6 4h12M6 9h12M7 4c6 0 7 5 2 7H6m3 0l6 9" />
                   </svg></div>
-                <span>TODAY'S CASH</span>
+                <span>CASH COLLECTED</span>
                 <b id="total-cash"><span id="kpi-today-cash">₹0</span></b>
-                <div class="bar"><i id="kpi-cash-progress-bar" style="width:75%"></i></div>
-                <small><span id="kpi-cash-delta">↑ +₹930 vs yesterday</span></small>
+                <div class="bar"><i id="kpi-cash-progress-bar" style="width:0%"></i></div>
+                <small><span id="kpi-cash-delta">● Active members collection</span></small>
               </div>
 
               <!-- Card 2: Present Today -->
@@ -1727,7 +2835,7 @@
                 <span>ACTIVE MEMBERS</span>
                 <b><span id="kpi-active-members">0</span> <small>/ 400</small></b>
                 <div class="bar"><i id="kpi-occupancy-bar" style="width:1%"></i></div>
-                <small>● Total Registered: <span id="stat-total-members">0</span> &nbsp;&nbsp; ● Inactive: <span
+                <small>● Total Registered: <span id="stat-total-members">0</span> ● Inactive: <span
                     id="stat-inactive-members">0</span></small>
                 <div class="hidden"><span id="kpi-occupancy-text">1%</span><span id="stat-active-subtext">0</span></div>
               </div>
@@ -1742,6 +2850,17 @@
                 <div class="bar"><i style="width:100%"></i></div>
                 <small>● Action recommended (7 days)</small>
                 <div class="hidden"><span id="kpi-expiring-week">0</span><span id="kpi-new-joins">0</span></div>
+              </div>
+
+              <!-- Card 5: Expired Members -->
+              <div class="st c-r" style="cursor: pointer;" onclick="window.routeToExpiredMembers()">
+                <div class="ic"><svg viewBox="0 0 24 24">
+                    <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M8.5 11a4 4 0 100-8 4 4 0 000 8zM17 9l5 5M22 9l-5 5" />
+                  </svg></div>
+                <span>EXPIRED MEMBERS</span>
+                <h1 id="kpi-expired-count">0</h1>
+                <div class="bar"><i id="kpi-expired-30-bar" style="width:0%"></i></div>
+                <small><span id="kpi-expired-delta">● Total inactive plans</span></small>
               </div>
             </div>
           </div>
@@ -1878,89 +2997,29 @@
             <div class="bg-white border border-[#E3E8F1] rounded-2xl p-6 shadow-sm flex flex-col justify-between">
               <div class="flex items-center justify-between mb-3">
                 <div class="flex items-center gap-2">
-                  <span class="w-2 h-5 bg-[#12B76A] rounded-full inline-block"></span>
+                  <span id="weekly-chart-indicator" class="w-2 h-5 bg-[#12B76A] rounded-full inline-block transition-colors"></span>
                   <div>
                     <h2 class="text-base font-bold text-slate-900 font-sans">This week</h2>
-                    <p class="text-xs text-slate-400 mt-0.5 font-sans">Total revenue: <span
-                        class="font-bold text-slate-800">₹65,550</span></p>
+                    <p class="text-xs text-slate-400 mt-0.5 font-sans" id="weekly-chart-subtitle">Total revenue: <span
+                        class="font-bold text-slate-800" id="weekly-chart-total">₹0</span></p>
                   </div>
                 </div>
-                <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-semibold text-slate-600">
-                  <span class="bg-white px-2.5 py-1 rounded-lg shadow-xs text-slate-900">Revenue</span>
-                  <span class="px-2 py-1 text-slate-500 hover:text-slate-900 cursor-pointer">Check-ins</span>
-                  <span class="px-2 py-1 text-slate-500 hover:text-slate-900 cursor-pointer">New joins</span>
+                <div id="weekly-chart-toggles" class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-semibold text-slate-600">
+                  <button type="button" data-weekly-mode="revenue" class="weekly-mode-btn bg-white px-2.5 py-1 rounded-lg shadow-xs text-slate-900 transition-all cursor-pointer font-semibold">Revenue</button>
+                  <button type="button" data-weekly-mode="check-ins" class="weekly-mode-btn px-2.5 py-1 rounded-lg text-slate-500 hover:text-slate-900 cursor-pointer transition-all">Check-ins</button>
+                  <button type="button" data-weekly-mode="new-joins" class="weekly-mode-btn px-2.5 py-1 rounded-lg text-slate-500 hover:text-slate-900 cursor-pointer transition-all">New joins</button>
                 </div>
               </div>
 
               <!-- Responsive Bar Chart -->
-              <div class="relative h-44 flex items-end gap-2 sm:gap-3 pt-8 pb-6 px-1 border-b border-slate-100">
+              <div id="weekly-bar-chart-container" class="relative h-44 flex items-end gap-2 sm:gap-3 pt-8 pb-6 px-1 border-b border-slate-100">
                 <div class="absolute inset-x-0 top-8 border-b border-slate-100 border-dashed pointer-events-none"></div>
-                <div class="absolute inset-x-0 top-1/2 border-b border-slate-100 border-dashed pointer-events-none">
-                </div>
-
-                <!-- Sat -->
-                <div class="flex-1 flex flex-col items-center h-full justify-end group relative cursor-pointer">
-                  <div
-                    class="w-full max-w-[34px] bg-[#D1FADF]/60 group-hover:bg-[#A6F4C5] rounded-xl transition-all duration-200"
-                    style="height: 52%;"></div>
-                  <span class="text-[11px] font-medium text-slate-500 absolute -bottom-5 font-sans">Sat</span>
-                </div>
-
-                <!-- Sun -->
-                <div class="flex-1 flex flex-col items-center h-full justify-end group relative cursor-pointer">
-                  <div
-                    class="w-full max-w-[34px] bg-[#D1FADF]/60 group-hover:bg-[#A6F4C5] rounded-xl transition-all duration-200"
-                    style="height: 68%;"></div>
-                  <span class="text-[11px] font-medium text-slate-500 absolute -bottom-5 font-sans">Sun</span>
-                </div>
-
-                <!-- Mon -->
-                <div class="flex-1 flex flex-col items-center h-full justify-end group relative cursor-pointer">
-                  <div
-                    class="w-full max-w-[34px] bg-[#D1FADF]/60 group-hover:bg-[#A6F4C5] rounded-xl transition-all duration-200"
-                    style="height: 58%;"></div>
-                  <span class="text-[11px] font-medium text-slate-500 absolute -bottom-5 font-sans">Mon</span>
-                </div>
-
-                <!-- Tue -->
-                <div class="flex-1 flex flex-col items-center h-full justify-end group relative cursor-pointer">
-                  <div
-                    class="w-full max-w-[34px] bg-[#D1FADF]/60 group-hover:bg-[#A6F4C5] rounded-xl transition-all duration-200"
-                    style="height: 82%;"></div>
-                  <span class="text-[11px] font-medium text-slate-500 absolute -bottom-5 font-sans">Tue</span>
-                </div>
-
-                <!-- Wed -->
-                <div class="flex-1 flex flex-col items-center h-full justify-end group relative cursor-pointer">
-                  <div
-                    class="w-full max-w-[34px] bg-[#D1FADF]/60 group-hover:bg-[#A6F4C5] rounded-xl transition-all duration-200"
-                    style="height: 65%;"></div>
-                  <span class="text-[11px] font-medium text-slate-500 absolute -bottom-5 font-sans">Wed</span>
-                </div>
-
-                <!-- Thu -->
-                <div class="flex-1 flex flex-col items-center h-full justify-end group relative cursor-pointer">
-                  <div
-                    class="w-full max-w-[34px] bg-[#D1FADF]/60 group-hover:bg-[#A6F4C5] rounded-xl transition-all duration-200"
-                    style="height: 88%;"></div>
-                  <span class="text-[11px] font-medium text-slate-500 absolute -bottom-5 font-sans">Thu</span>
-                </div>
-
-                <!-- Fri (Active Day with Tooltip badge) -->
-                <div class="flex-1 flex flex-col items-center h-full justify-end group relative cursor-pointer">
-                  <span
-                    class="absolute -top-7 bg-slate-900 text-white text-[10px] font-bold py-1 px-2.5 rounded-lg shadow-md whitespace-nowrap z-10 font-sans">Fri
-                    · ₹7,300</span>
-                  <div
-                    class="w-full max-w-[34px] bg-[#12B76A] rounded-xl shadow-md shadow-emerald-500/25 transition-all duration-200"
-                    style="height: 72%;"></div>
-                  <span class="text-[11px] font-bold text-[#12B76A] absolute -bottom-5 font-sans">Fri</span>
-                </div>
+                <div class="absolute inset-x-0 top-1/2 border-b border-slate-100 border-dashed pointer-events-none"></div>
               </div>
 
               <div class="flex items-center justify-between text-xs text-slate-400 pt-3 font-mono">
-                <span>₹0</span>
-                <span>Max: ₹13,500</span>
+                <span id="weekly-chart-min">₹0</span>
+                <span id="weekly-chart-max">Max: ₹0</span>
               </div>
             </div>
 
@@ -2069,6 +3128,10 @@
                   class="filter-tab px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-slate-500 transition-all cursor-pointer font-sans hover:text-slate-900"
                   data-filter="month" onclick="filterTable(this, 'month')">This Month (<span
                     id="count-month">18</span>)</button>
+                <button
+                  class="filter-tab px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-slate-500 transition-all cursor-pointer font-sans hover:text-slate-900"
+                  data-filter="expired30" onclick="filterTable(this, 'expired30')">Expired >30D (<span
+                    id="count-expired-30">0</span>)</button>
               </div>
 
               <!-- Quick Table Search Bar -->
@@ -2247,7 +3310,7 @@
                 <button class="chip" data-filter="soon" onclick="filterMembersByStatus('soon')"
                   style="--k: var(--yel);"><i style="background: #FFC21A;"></i> Expiring soon <b
                     id="chip-count-soon">1</b></button>
-                <button class="chip" data-filter="due" onclick="filterMembersByStatus('due')"
+                <button class="chip member-filter-btn" data-filter="due" onclick="filterMembersByStatus('due')"
                   style="--k: var(--red);"><i style="background: #EF4444;"></i> Expired <b
                     id="chip-count-due">0</b></button>
               </div>
@@ -2283,354 +3346,187 @@
         <!-- ══════════════════════════════════════
          VIEW 4: PAYMENTS & COLLECTIONS VIEW (SPA TAB)
     ══════════════════════════════════════ -->
-        <div id="payments-view" class="hidden space-y-6">
+        <div id="payments-view" class="hidden">
+  <div class="pay">
 
-          <!-- Header & Quick Actions -->
-          <div class="flex flex-wrap items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-              <div
-                class="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/10 text-amber-500 flex items-center justify-center font-bold shrink-0 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </div>
-              <div>
-                <div class="flex items-center gap-2">
-                  <h1 class="text-xl font-extrabold text-white tracking-tight">Payments & Financial Hub</h1>
-                  <span
-                    class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-white/[0.05] border border-white/10 text-neutral-300">
-                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-                    Dynamic Target Synced
-                  </span>
-                </div>
-                <p class="text-xs text-neutral-400 mt-0.5">Real-time collections, dynamic expected targets & transaction
-                  ledger</p>
-              </div>
-            </div>
+    <div class="pay-bar">
+      <div>
+        <h2>Money overview</h2>
+        <p>What came in, what&rsquo;s pending, and who needs a nudge.</p>
+      </div>
+      <div class="pay-actions">
+        <button class="pay-btn ghost" type="button" data-pgo="members">View members</button>
+        <button class="pay-btn" type="button" data-pquick>+ Quick payment</button>
+        <button class="pay-btn green" type="button" onclick="openAddMemberModal()">+ New / renew member</button>
+      </div>
+    </div>
 
-            <div class="flex items-center gap-3">
-              <button onclick="openAddMemberModal()"
-                class="btn-primary-glass inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs cursor-pointer">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                <span>+ Record Entry</span>
-              </button>
-            </div>
-          </div>
+    <div class="pay-kpis" id="pay-kpis"></div>
 
-          <!-- ══════════════════════════════════════
-           CARDS ROW: TOTAL COLLECTION, SQUID GAME POT & CHANNELS
-      ══════════════════════════════════════ -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="pay-r2">
+      <!-- MONEY POT (kept, moved next to the trend) -->
+      <section class="pay-card pay-pot">
+        <div class="pay-pot-h">
+          <div><b>THE MONEY POT</b><small>Value of active plans vs all plans</small></div>
+          <span class="pay-pill" id="squid-pot-status">0%</span>
+        </div>
 
-            <!-- CARD 1: Total Collection (Animated Counter) -->
-            <div class="card p-6 relative overflow-hidden flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-semibold uppercase tracking-wider text-neutral-400">Total Collection
-                    (Today)</span>
-                  <div
-                    class="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/10 text-white flex items-center justify-center font-bold shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
-                    <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                </div>
-
-                <!-- Animated Number Counter -->
-                <p id="payments-total-counter"
-                  class="text-3xl sm:text-4xl font-extrabold tracking-tight text-gradient-white mt-4 font-mono">₹0</p>
-                <div class="flex items-center gap-2 mt-2 text-xs text-neutral-400 font-medium">
-                  <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                  </svg>
-                  <span id="payments-today-count-text">0 transactions today</span>
-                </div>
-              </div>
-
-              <!-- Bottom Mini Pills -->
-              <div class="grid grid-cols-3 gap-2 pt-4 mt-4 border-t border-white/10">
-                <div
-                  class="p-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-center shadow-inner hover:bg-white/[0.06] transition-all duration-200">
-                  <span class="block text-[10px] uppercase font-bold text-neutral-400">Cash</span>
-                  <span id="pot-mini-cash" class="text-xs font-bold text-amber-400 font-mono">₹0</span>
-                </div>
-                <div
-                  class="p-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-center shadow-inner hover:bg-white/[0.06] transition-all duration-200">
-                  <span class="block text-[10px] uppercase font-bold text-neutral-400">UPI</span>
-                  <span id="pot-mini-upi" class="text-xs font-bold text-white font-mono">₹0</span>
-                </div>
-                <div
-                  class="p-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-center shadow-inner hover:bg-white/[0.06] transition-all duration-200">
-                  <span class="block text-[10px] uppercase font-bold text-neutral-400">Card</span>
-                  <span id="pot-mini-card" class="text-xs font-bold text-neutral-300 font-mono">₹0</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- CARD 2: SQUID GAME MONEY POT / FROSTED GLASS ORB (DYNAMIC EXPECTED REVENUE TARGET) -->
-            <div class="card p-5 sm:p-6 relative overflow-hidden flex flex-col justify-between">
-              <div>
-                <!-- Header -->
-                <div class="flex items-center justify-between mb-1">
-                  <div class="flex items-center gap-2">
-                    <span class="text-base select-none">🔮</span>
-                    <div>
-                      <span class="text-xs font-bold uppercase tracking-wider text-neutral-200 block">The Money
-                        Pot</span>
-                      <span class="text-[11px] font-medium text-neutral-400">Dynamic Expected Target</span>
-                    </div>
-                  </div>
-                  <span id="squid-pot-status"
-                    class="text-[11px] font-medium px-2.5 py-1 rounded-lg bg-white/[0.05] border border-white/10 text-neutral-300 backdrop-blur-md">
-                    In Progress
-                  </span>
-                </div>
-
-                <!-- Glass Gullak Animated Money Pot Stage -->
-                <!-- PASTE-2-START  ·  HTML: replace your whole <div class="stage ..." id="stage"> ... </div> block with this -->
-                <div class="gp-stage" id="stage">
-                  <div class="gp-aura"></div>
-                  <svg class="gp-jar" viewBox="0 0 300 360" aria-hidden="true">
-                    <defs>
-                      <path id="gpOutline"
-                        d="M150,14 C138,14 129,25 130,38 C131,49 139,53 140,62 C141,78 104,88 72,118 C42,146 26,186 28,226 C30,268 58,304 96,320 C86,324 72,330 68,338 C66,348 100,356 150,356 C200,356 234,348 232,338 C228,330 214,324 204,320 C242,304 270,268 272,226 C274,186 258,146 228,118 C196,88 159,78 160,62 C161,53 169,49 170,38 C171,25 162,14 150,14 Z" />
-                      <clipPath id="gpClip">
-                        <use href="#gpOutline" />
-                      </clipPath>
-                      <linearGradient id="gpSheen" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0" stop-color="#fff" stop-opacity=".34" />
-                        <stop offset="1" stop-color="#fff" stop-opacity="0" />
-                      </linearGradient>
-                      <radialGradient id="gpGlass" cx="50%" cy="48%" r="62%">
-                        <stop offset=".58" stop-color="#fff" stop-opacity="0" />
-                        <stop offset="1" stop-color="#fff" stop-opacity=".18" />
-                      </radialGradient>
-                      <radialGradient id="gpSpec" cx="50%" cy="50%" r="50%">
-                        <stop offset="0" stop-color="#fff" stop-opacity=".6" />
-                        <stop offset="1" stop-color="#fff" stop-opacity="0" />
-                      </radialGradient>
-                      <g id="gpBill">
-                        <rect width="60" height="28" rx="3" style="fill:var(--c)" />
-                        <rect width="60" height="28" rx="3" fill="url(#gpSheen)" />
-                        <rect x="3.5" y="3.5" width="53" height="21" rx="2" fill="none" stroke="#E8F9D6"
-                          stroke-opacity=".5" stroke-dasharray="3 2" />
-                        <circle cx="30" cy="14" r="7.5" fill="#E8F9D6" fill-opacity=".22" stroke="#E8F9D6"
-                          stroke-opacity=".65" />
-                        <text x="30" y="18.2" text-anchor="middle" font-size="11" font-weight="700" fill="#F2FCE6"
-                          font-family="system-ui,sans-serif">₹</text>
-                      </g>
-                    </defs>
-                    <ellipse cx="150" cy="354" rx="96" ry="8" fill="rgba(0,0,0,.5)" style="filter:blur(5px)" />
-                    <use href="#gpOutline" fill="rgba(255,255,255,.05)" />
-                    <g clip-path="url(#gpClip)">
-                      <g id="gpPile"></g>
-                      <g id="gpFaller" style="opacity:0">
-                        <use href="#gpBill" transform="translate(-24 -11) scale(.8)" style="--c:#3DD07B" />
-                      </g>
-                      <g id="gpFaller2" style="opacity:0">
-                        <use href="#gpBill" transform="translate(-24 -11) scale(.78)" style="--c:#2FBF6A" />
-                      </g>
-                      <g id="gpFaller3" style="opacity:0">
-                        <use href="#gpBill" transform="translate(-24 -11) scale(.82)" style="--c:#25A85C" />
-                      </g>
-                      <g id="gpFaller4" style="opacity:0">
-                        <use href="#gpBill" transform="translate(-24 -11) scale(.76)" style="--c:#1D9150" />
-                      </g>
-                    </g>
-                    <use href="#gpOutline" fill="url(#gpGlass)" />
-                    <path d="M70 124C44 150 32 186 34 226" stroke="#fff" stroke-opacity=".55" stroke-width="3"
-                      fill="none" stroke-linecap="round" />
-                    <path d="M264 196C264 234 248 282 214 312" stroke="#fff" stroke-opacity=".22" stroke-width="3"
-                      fill="none" stroke-linecap="round" />
-                    <path d="M137 24C134 32 134 42 138 50" stroke="#fff" stroke-opacity=".65" stroke-width="2.5"
-                      fill="none" stroke-linecap="round" />
-                    <ellipse cx="100" cy="158" rx="17" ry="34" transform="rotate(-28 100 158)" fill="url(#gpSpec)" />
-                    <ellipse cx="150" cy="345" rx="62" ry="7" fill="none" stroke="#fff" stroke-opacity=".3" />
-                    <use href="#gpOutline" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2" />
-                    <rect x="116" y="126" width="68" height="3.4" rx="1.7" fill="#08101F" opacity=".92" />
-                    <rect x="116" y="129.6" width="68" height="1" rx=".5" fill="#fff" opacity=".3" />
-                  </svg>
-                  <div class="gp-pct"><b id="squid-pot-percentage">0%</b><span>COLLECTED</span></div>
-                </div>
-                <!-- PASTE-2-END -->
-              </div>
-
-              <!-- Bottom Dynamic Expected Revenue Metrics -->
-              <div class="space-y-2 pt-3 border-t border-white/10 text-xs">
-                <div class="flex items-center justify-between">
-                  <div>
-                    <span class="text-[10px] uppercase font-bold text-neutral-400 block">Expected Revenue</span>
-                    <span id="squid-expected-revenue"
-                      class="text-sm font-extrabold text-gradient-white font-mono">₹0</span>
-                  </div>
-                  <div class="text-right">
-                    <span class="text-[10px] uppercase font-bold text-neutral-400 block">Current Members</span>
-                    <span id="squid-members-count" class="text-xs font-semibold text-neutral-300 font-mono">0
-                      Members</span>
-                  </div>
-                </div>
-
-                <div class="flex items-center justify-between text-[11px] pt-1.5 border-t border-white/[0.06]">
-                  <span class="text-neutral-400">Collected: <strong id="squid-pot-collected"
-                      class="text-white font-mono font-bold">₹0</strong></span>
-                  <span class="text-neutral-400">Remaining: <strong id="squid-remaining-revenue"
-                      class="text-amber-400 font-mono font-bold">₹0</strong></span>
-                </div>
-              </div>
-            </div>
-
-            <!-- CARD 3: Payment Modes Split (Distribution Channels) -->
-            <div class="card p-6 relative overflow-hidden flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between mb-4">
-                  <span class="text-xs font-semibold uppercase tracking-wider text-neutral-400">Payment Modes
-                    Split</span>
-                  <span class="text-[11px] font-medium text-neutral-400">Distribution</span>
-                </div>
-
-                <!-- 3 Channel Rows -->
-                <div class="space-y-3.5">
-                  <!-- Cash Channel -->
-                  <div>
-                    <div class="flex items-center justify-between text-xs font-semibold mb-1.5">
-                      <span class="flex items-center gap-1.5 text-neutral-300">
-                        <span class="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_6px_rgba(245,158,11,0.5)]"></span>
-                        💵 Cash
-                      </span>
-                      <span id="channel-cash-amount" class="text-white font-mono font-semibold">₹0</span>
-                    </div>
-                    <div class="h-2 w-full rounded-full bg-white/[0.04] border border-white/10 overflow-hidden">
-                      <div id="channel-cash-bar"
-                        class="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all duration-700 ease-out shadow-[0_0_8px_rgba(245,158,11,0.4)]"
-                        style="width: 0%"></div>
-                    </div>
-                  </div>
-
-                  <!-- UPI Channel -->
-                  <div>
-                    <div class="flex items-center justify-between text-xs font-semibold mb-1.5">
-                      <span class="flex items-center gap-1.5 text-neutral-300">
-                        <span class="w-2 h-2 rounded-full bg-white shadow-[0_0_6px_rgba(255,255,255,0.6)]"></span>
-                        📲 UPI
-                      </span>
-                      <span id="channel-upi-amount" class="text-white font-mono font-semibold">₹0</span>
-                    </div>
-                    <div class="h-2 w-full rounded-full bg-white/[0.04] border border-white/10 overflow-hidden">
-                      <div id="channel-upi-bar"
-                        class="h-full bg-gradient-to-r from-neutral-200 to-white rounded-full transition-all duration-700 ease-out shadow-[0_0_8px_rgba(255,255,255,0.4)]"
-                        style="width: 0%"></div>
-                    </div>
-                  </div>
-
-                  <!-- Card Channel -->
-                  <div>
-                    <div class="flex items-center justify-between text-xs font-semibold mb-1.5">
-                      <span class="flex items-center gap-1.5 text-neutral-300">
-                        <span class="w-2 h-2 rounded-full bg-neutral-400"></span>
-                        💳 Card
-                      </span>
-                      <span id="channel-card-amount" class="text-white font-mono font-semibold">₹0</span>
-                    </div>
-                    <div class="h-2 w-full rounded-full bg-white/[0.04] border border-white/10 overflow-hidden">
-                      <div id="channel-card-bar"
-                        class="h-full bg-neutral-400 rounded-full transition-all duration-700 ease-out"
-                        style="width: 0%"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Bottom Ratio Display -->
-              <div class="flex items-center justify-between pt-3 border-t border-white/10 text-[11px] text-neutral-400">
-                <span>Ratio Today:</span>
-                <span id="channel-ratio-text" class="font-bold text-white font-mono">0% Cash · 0% UPI · 0% Card</span>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- ══════════════════════════════════════
-           TRANSACTIONS LEDGER TABLE CARD
-      ══════════════════════════════════════ -->
-          <div class="card p-5 sm:p-6 text-neutral-100">
-            <!-- Top Toolbar -->
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
-              <div>
-                <div class="flex items-center gap-2">
-                  <h2 class="text-base font-bold text-white tracking-wide">Recent Transactions Ledger</h2>
-                  <span id="payments-count-badge"
-                    class="px-2.5 py-0.5 rounded-md text-xs font-mono bg-white/[0.04] border border-white/10 text-neutral-300">
-                    0 Records
-                  </span>
-                </div>
-                <p class="text-xs text-neutral-400 mt-0.5">Filter and review all payments received</p>
-              </div>
-
-              <!-- Filter Tabs & Search -->
-              <div class="flex flex-wrap items-center gap-3">
-                <!-- Filter Pills -->
-                <div
-                  class="flex items-center p-1 rounded-xl bg-white/[0.03] border border-white/10 text-xs shadow-inner">
-                  <button onclick="setPaymentsFilter('all')" id="pay-filter-all"
-                    class="px-3 py-1.5 rounded-lg font-semibold transition-all duration-200 cursor-pointer active-payment-filter">
-                    All
-                  </button>
-                  <button onclick="setPaymentsFilter('Cash')" id="pay-filter-cash"
-                    class="px-3 py-1.5 rounded-lg font-medium text-neutral-400 hover:text-white transition-all duration-200 cursor-pointer">
-                    💵 Cash
-                  </button>
-                  <button onclick="setPaymentsFilter('UPI')" id="pay-filter-upi"
-                    class="px-3 py-1.5 rounded-lg font-medium text-neutral-400 hover:text-white transition-all duration-200 cursor-pointer">
-                    📲 UPI
-                  </button>
-                  <button onclick="setPaymentsFilter('Card')" id="pay-filter-card"
-                    class="px-3 py-1.5 rounded-lg font-medium text-neutral-400 hover:text-white transition-all duration-200 cursor-pointer">
-                    💳 Card
-                  </button>
-                </div>
-
-                <!-- Search input -->
-                <div class="relative w-full sm:w-56">
-                  <svg
-                    class="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-400 pointer-events-none"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                  <input type="text" id="payments-search-input" oninput="handlePaymentsSearch(event)"
-                    placeholder="Search transactions..."
-                    class="w-full pl-9 pr-3 py-1.5 text-xs glass-input rounded-lg border border-white/10 text-white placeholder-neutral-500 outline-none transition-all duration-300" />
-                </div>
-              </div>
-            </div>
-
-            <!-- Transactions Table -->
-            <div class="overflow-x-auto rounded-xl border border-white/10">
-              <table class="w-full text-left text-xs whitespace-nowrap">
-                <thead
-                  class="bg-white/[0.02] uppercase font-semibold text-neutral-400 tracking-wider border-b border-white/10 text-[11px] font-mono">
-                  <tr>
-                    <th class="py-3 px-4">Member</th>
-                    <th class="py-3 px-4">Type</th>
-                    <th class="py-3 px-4">Payment Mode</th>
-                    <th class="py-3 px-4">Date & Time</th>
-                    <th class="py-3 px-4 text-right">Amount (₹)</th>
-                    <th class="py-3 px-4 text-center">Status</th>
-                  </tr>
-                </thead>
-                <tbody id="payments-table-body" class="divide-y divide-white/[0.06]">
-                  <!-- Rendered dynamically -->
-                </tbody>
-              </table>
+        <div class="pay-pot-body">
+          <!-- Left: Compact Glass Gullak Pot -->
+          <div class="pay-pot-visual">
+            <div class="gp-stage" id="stage">
+              <div class="gp-aura"></div>
+              <svg class="gp-jar" viewBox="0 0 300 360" aria-hidden="true">
+                <defs>
+                  <path id="gpOutline" d="M150,14 C138,14 129,25 130,38 C131,49 139,53 140,62 C141,78 104,88 72,118 C42,146 26,186 28,226 C30,268 58,304 96,320 C86,324 72,330 68,338 C66,348 100,356 150,356 C200,356 234,348 232,338 C228,330 214,324 204,320 C242,304 270,268 272,226 C274,186 258,146 228,118 C196,88 159,78 160,62 C161,53 169,49 170,38 C171,25 162,14 150,14 Z"/>
+                  <clipPath id="gpClip"><use href="#gpOutline"/></clipPath>
+                  <linearGradient id="gpSheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".34"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+                  <radialGradient id="gpGlass" cx="50%" cy="48%" r="62%"><stop offset=".58" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".18"/></radialGradient>
+                  <radialGradient id="gpSpec" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+                  <g id="gpBill">
+                    <rect width="60" height="28" rx="3" style="fill:var(--c)"/>
+                    <rect width="60" height="28" rx="3" fill="url(#gpSheen)"/>
+                    <rect x="3.5" y="3.5" width="53" height="21" rx="2" fill="none" stroke="#E8F9D6" stroke-opacity=".5" stroke-dasharray="3 2"/>
+                    <circle cx="30" cy="14" r="7.5" fill="#E8F9D6" fill-opacity=".22" stroke="#E8F9D6" stroke-opacity=".65"/>
+                    <text x="30" y="18.2" text-anchor="middle" font-size="11" font-weight="700" fill="#F2FCE6" font-family="system-ui,sans-serif">₹</text>
+                  </g>
+                </defs>
+                <ellipse cx="150" cy="354" rx="96" ry="8" fill="rgba(0,0,0,.5)" style="filter:blur(5px)"/>
+                <use href="#gpOutline" fill="rgba(255,255,255,.05)"/>
+                <g clip-path="url(#gpClip)"><g id="gpPile"></g></g>
+                <use href="#gpOutline" fill="url(#gpGlass)"/>
+                <path d="M70 124C44 150 32 186 34 226" stroke="#fff" stroke-opacity=".55" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path d="M264 196C264 234 248 282 214 312" stroke="#fff" stroke-opacity=".22" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path d="M137 24C134 32 134 42 138 50" stroke="#fff" stroke-opacity=".65" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <ellipse cx="100" cy="158" rx="17" ry="34" transform="rotate(-28 100 158)" fill="url(#gpSpec)"/>
+                <ellipse cx="150" cy="345" rx="62" ry="7" fill="none" stroke="#fff" stroke-opacity=".3"/>
+                <use href="#gpOutline" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2"/>
+                <rect x="116" y="126" width="68" height="3.4" rx="1.7" fill="#08101F" opacity=".92"/>
+                <rect x="116" y="129.6" width="68" height="1" rx=".5" fill="#fff" opacity=".3"/>
+              </svg>
+              <div class="gp-pct"><b id="squid-pot-percentage">0%</b><span>COLLECTED</span></div>
             </div>
           </div>
 
-        </div><!-- ════ End #payments-view ════ -->
+          <!-- Right: Vertical Statistics Cards -->
+          <div class="pay-pot-vstats">
+            <div class="pay-pv-card">
+              <div class="pay-pv-h">
+                <span class="pay-pv-dot" style="background:#8FA0C2"></span>
+                <small>Total plan value</small>
+              </div>
+              <div class="pay-pv-val">
+                <strong id="squid-expected-revenue">₹0</strong>
+                <span class="pay-pv-sub">Target</span>
+              </div>
+            </div>
+
+            <div class="pay-pv-card highlight-g">
+              <div class="pay-pv-h">
+                <span class="pay-pv-dot" style="background:#4DE394"></span>
+                <small>Collected</small>
+              </div>
+              <div class="pay-pv-val">
+                <strong id="squid-pot-collected" class="g">₹0</strong>
+                <span class="pay-pv-sub g">Active plans</span>
+              </div>
+            </div>
+
+            <div class="pay-pv-card highlight-y">
+              <div class="pay-pv-h">
+                <span class="pay-pv-dot" style="background:#FFC21A"></span>
+                <small>Overdue / Pending</small>
+              </div>
+              <div class="pay-pv-val">
+                <strong id="squid-remaining-revenue" class="y">₹0</strong>
+                <span class="pay-pv-sub y">To recover</span>
+              </div>
+            </div>
+
+            <div class="pay-pot-f">
+              <span id="squid-members-count">0 Members</span>
+              <span class="pay-pot-f-note">Collected = running plans</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pay-card" id="pay-trend" style="--c:var(--grn)"></section>
+    </div>
+
+    <div class="pay-rangebar">
+      <span>Breakdown &amp; ledger for</span>
+      <div class="pay-seg" id="pay-range">
+        <button type="button" data-pr="today">Today</button>
+        <button type="button" data-pr="week">Last 7 days</button>
+        <button type="button" data-pr="month">This month</button>
+        <button type="button" data-pr="all">All time</button>
+      </div>
+    </div>
+
+    <div class="pay-r3">
+      <section class="pay-card" id="pay-mix" style="--c:var(--blu)"></section>
+      <section class="pay-card" id="pay-pending" style="--c:var(--yel)"></section>
+    </div>
+
+    <section class="pay-card" style="--c:var(--grn)">
+      <div class="pay-lh">
+        <h3>Payment ledger <span class="pay-count" id="pl-count">0</span></h3>
+        <div class="pay-tools">
+          <div class="pay-seg" id="pl-modes">
+            <button type="button" data-pm="all">All</button>
+            <button type="button" data-pm="Cash">Cash</button>
+            <button type="button" data-pm="UPI">UPI</button>
+            <button type="button" data-pm="Card">Card</button>
+          </div>
+          <select id="pl-type" class="pay-in" aria-label="Filter by type">
+            <option value="all">All types</option>
+            <option>New Membership</option>
+            <option>Renewal</option>
+            <option>Walk-in</option>
+            <option>Personal Training</option>
+            <option>Other</option>
+          </select>
+          <label class="pay-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="pl-q" type="search" placeholder="Search name or ID"></label>
+          <button class="pay-btn ghost sm" type="button" data-pexport>Export CSV</button>
+        </div>
+      </div>
+      <div class="pay-tr pay-th"><span>Member</span><span>Type</span><span>Mode</span><span>Date &amp; time</span><span style="text-align:right">Amount</span><span></span></div>
+      <div id="pl-rows"></div>
+      <div class="pay-lf" id="pl-foot"></div>
+    </section>
+
+  </div>
+
+  <!-- Quick payment (walk-in / personal training / other) -->
+  <div class="pay-modal" id="pay-quick" data-pclose-bg>
+    <form class="pay-dlg" id="pay-quick-form" autocomplete="off">
+      <h4>Quick payment</h4>
+      <p>For walk-ins, personal training and other one-off payments.</p>
+      <label for="pqn">Name</label>
+      <input class="pay-in" id="pqn" name="pqn" list="pay-names" required placeholder="e.g. Karan Mehta">
+      <datalist id="pay-names"></datalist>
+      <label>What is it for?</label>
+      <div class="pay-choice">
+        <label><input type="radio" name="pqt" value="Walk-in" checked><span>Walk-in</span></label>
+        <label><input type="radio" name="pqt" value="Personal Training"><span>Personal training</span></label>
+        <label><input type="radio" name="pqt" value="Other"><span>Other</span></label>
+      </div>
+      <label for="pqa">Amount (₹)</label>
+      <input class="pay-in" id="pqa" name="pqa" type="number" min="1" required placeholder="500">
+      <label>Payment mode</label>
+      <div class="pay-choice">
+        <label><input type="radio" name="pqm" value="Cash" checked><span>Cash</span></label>
+        <label><input type="radio" name="pqm" value="UPI"><span>UPI</span></label>
+        <label><input type="radio" name="pqm" value="Card"><span>Card</span></label>
+      </div>
+      <div class="pay-acts">
+        <button type="button" class="pay-btn ghost" data-pclose>Cancel</button>
+        <button type="submit" class="pay-btn green">Record payment</button>
+      </div>
+    </form>
+  </div>
+</div><!-- ════ End #payments-view ════ -->
 
       </main>
     </div>
@@ -3096,6 +3992,7 @@
     function total(list = allTransactions) {
       const targetList = Array.isArray(list) ? list : (allTransactions || []);
       return targetList
+        .filter(t => isToday(t))
         .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
     }
 
@@ -3103,7 +4000,7 @@
       const targetList = Array.isArray(list) ? list : (allTransactions || []);
       const modeLower = (mode || '').toLowerCase().trim();
       return targetList
-        .filter(t => (t.mode || '').toLowerCase().trim() === modeLower)
+        .filter(t => isToday(t) && (t.mode || '').toLowerCase().trim() === modeLower)
         .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
     }
 
@@ -3307,6 +4204,7 @@
       // Active vs Inactive count
       let activeCount = 0;
       let inactiveCount = 0;
+      let expiredOver30 = 0;
 
       membersList.forEach(m => {
         const expDateStr = m.expiryDate || m.expiry;
@@ -3321,6 +4219,11 @@
         } else {
           activeCount++;
         }
+
+        const days = daysLeft(expDateStr);
+        if (days < -30) {
+          expiredOver30++;
+        }
       });
 
       // Render directly into HTML cards
@@ -3329,12 +4232,23 @@
       const elExpiring = document.getElementById('stat-expiring-soon') || document.getElementById('expiring-count');
       const elActive = document.getElementById('kpi-active-members');
       const elInactive = document.getElementById('stat-inactive-members');
+      const expiredCount = (membersList || []).filter(m => (m.status || '').toLowerCase() === 'expired' || daysLeft(m.expiryDate || m.expiry) < 0).length;
+      if (document.getElementById('kpi-expired-count')) {
+        document.getElementById('kpi-expired-count').textContent = expiredCount;
+      }
+      const elExpired30 = document.getElementById('stat-expired-30') || document.getElementById('expired-30-count');
+      const elExpired30Bar = document.getElementById('kpi-expired-30-bar');
 
       if (elTotal) elTotal.textContent = totalMembers.toLocaleString('en-IN');
       if (elPresent) elPresent.textContent = presentToday.toLocaleString('en-IN');
       if (elExpiring) elExpiring.textContent = expiringSoon.toLocaleString('en-IN');
       if (elActive) elActive.textContent = activeCount.toLocaleString('en-IN');
       if (elInactive) elInactive.textContent = inactiveCount.toLocaleString('en-IN');
+      if (elExpired30) elExpired30.textContent = expiredCount.toLocaleString('en-IN');
+      if (elExpired30Bar) {
+        const pct30 = totalMembers > 0 ? Math.min(100, Math.round((expiredCount / totalMembers) * 100)) : 0;
+        elExpired30Bar.style.width = `${pct30}%`;
+      }
     }
 
     // ── Fetch Members Collection from Firestore & Calculate Live Stats ────
@@ -3411,6 +4325,7 @@
       let countToday = 0;
       let countWeek = 0;
       let countMonth = 0;
+      let countExpired30 = 0;
 
       // Plans breakdown
       let planCounts = { Monthly: 0, Quarterly: 0, Annual: 0, 'Walk-in': 0 };
@@ -3420,6 +4335,7 @@
         if (days === 0) countToday++;
         if (days >= 0 && days <= 7) countWeek++;
         if (days >= 0 && days <= 30) countMonth++;
+        if (days < -30) countExpired30++;
 
         if (planCounts[m.plan] !== undefined) {
           planCounts[m.plan]++;
@@ -3438,10 +4354,26 @@
       const cToday = document.getElementById('count-today');
       const cWeek = document.getElementById('count-week');
       const cMonth = document.getElementById('count-month');
+      const cExpired30 = document.getElementById('count-expired-30');
       if (cAll) cAll.textContent = membersList.length;
       if (cToday) cToday.textContent = countToday;
       if (cWeek) cWeek.textContent = countWeek;
       if (cMonth) cMonth.textContent = countMonth;
+      if (cExpired30) cExpired30.textContent = countExpired30;
+
+      // Total Expired Members count for Red KPI Card
+      const expiredCount = (membersList || []).filter(m => (m.status || '').toLowerCase() === 'expired' || daysLeft(m.expiryDate || m.expiry) < 0).length;
+      if (document.getElementById('kpi-expired-count')) {
+        document.getElementById('kpi-expired-count').textContent = expiredCount;
+      }
+
+      const elExpired30 = document.getElementById('stat-expired-30') || document.getElementById('expired-30-count');
+      if (elExpired30) elExpired30.textContent = expiredCount.toLocaleString('en-IN');
+      const elExpired30Bar = document.getElementById('kpi-expired-30-bar');
+      if (elExpired30Bar) {
+        const pct30 = membersList.length > 0 ? Math.min(100, Math.round((expiredCount / membersList.length) * 100)) : 0;
+        elExpired30Bar.style.width = `${pct30}%`;
+      }
 
       // 3. Update Membership Plans Card & Donut
       const totalPlans = membersList.length || 1;
@@ -3485,6 +4417,14 @@
       if (typeof updatePaymentsViewData === 'function') {
         updatePaymentsViewData(allTransactions);
       }
+
+      // 7. Update Dashboard Top KPI Card (Active Members Collected Amount)
+      updateCollectedKpi();
+
+      // 8. Update Dashboard Weekly Chart
+      if (typeof renderWeeklyChart === 'function') {
+        renderWeeklyChart();
+      }
     }
 
     function renderTable(filter) {
@@ -3497,6 +4437,7 @@
         if (filter === 'today') return days === 0;
         if (filter === 'week') return days >= 0 && days <= 7;
         if (filter === 'month') return days >= 0 && days <= 30;
+        if (filter === 'expired30' || filter === 'expired') return days < -30;
         return true; // 'all'
       });
 
@@ -3576,22 +4517,67 @@
       }
     }
 
+    function updateCollectedKpi() {
+      const planPrices = { '1 Month': 1500, 'Monthly': 1500, '2 Months': 2500, '3 Months': 4000, 'Quarterly': 4000, '6 Months': 7500, '1 Year': 12000, 'Yearly': 12000, 'Annual': 12000, 'Walk-in': 300 };
+      const membersList = (typeof allMembers !== 'undefined' && Array.isArray(allMembers) && allMembers.length > 0)
+        ? allMembers
+        : ((typeof window.allMembers !== 'undefined' && Array.isArray(window.allMembers)) ? window.allMembers : []);
+      
+      let expected = 0;
+      let collected = 0;
+
+      membersList.forEach(m => {
+        let fee = Number(m.amount) || Number(m.dueAmount) || planPrices[m.plan] || 1500;
+        expected += fee;
+        if (m.status === 'active') {
+          collected += fee;
+        }
+      });
+
+      const finalCollected = collected > 0 ? collected : (window.currentPotCollected || 0);
+      window.currentPotCollected = finalCollected;
+
+      const kpiCollectedEl = document.getElementById('kpi-today-cash');
+      if (kpiCollectedEl) {
+        kpiCollectedEl.textContent = `₹${finalCollected.toLocaleString('en-IN')}`;
+      }
+
+      const pct = expected > 0 ? Math.min(100, Math.round((finalCollected / expected) * 100)) : 0;
+      const barEl = document.getElementById('kpi-cash-progress-bar');
+      if (barEl) {
+        barEl.style.width = `${pct}%`;
+      }
+
+      const deltaEl = document.getElementById('kpi-cash-delta');
+      if (deltaEl) {
+        deltaEl.textContent = `● Active members collection`;
+      }
+    }
+    window.updateCollectedKpi = updateCollectedKpi;
+
     function updateDashboardTransactions(txList) {
       const targetList = Array.isArray(txList) ? txList : (Array.isArray(allTransactions) ? allTransactions : []);
       allTransactions = targetList;
       window.allTransactions = targetList;
 
-      // 1. Calculate Ledger Totals & Breakdown across all transactions
-      const totalCashAll = total(targetList);
+      // 1. COLLECTED AMOUNT (Active members collected from Money Pot)
+      updateCollectedKpi();
+
+      // 2. TODAY'S TOTAL (For Dashboard Lower Detailed Section)
+      const todayTxList = (targetList || []).filter(t => isToday(t));
+      const totalCashToday = (typeof window.total === 'function') ? window.total(todayTxList) : total(todayTxList);
+      if (document.getElementById('detailed-total-cash')) {
+        document.getElementById('detailed-total-cash').textContent = `₹${totalCashToday.toLocaleString('en-IN')}`;
+      }
 
       let breakdown = { newMemberships: 0, renewals: 0, walkIns: 0, pt: 0 };
       let modes = {
-        Cash: by('Cash', targetList),
-        UPI: by('UPI', targetList),
-        Card: by('Card', targetList)
+        Cash: by('Cash', todayTxList),
+        UPI: by('UPI', todayTxList),
+        Card: by('Card', todayTxList)
       };
 
-      targetList.forEach(t => {
+      todayTxList.forEach(t => {
         const amt = Number(t.amount) || 0;
         const typeStr = (t.type || '').trim();
         const typeLower = typeStr.toLowerCase();
@@ -3607,16 +4593,6 @@
           breakdown.pt += amt;
         }
       });
-
-      const formattedTotal = `₹${totalCashAll.toLocaleString('en-IN')}`;
-
-      // KPI Card
-      const kpiCash = document.getElementById('kpi-today-cash') || document.getElementById('total-cash');
-      if (kpiCash) kpiCash.textContent = formattedTotal;
-
-      // Detailed Card Total
-      const detailedCash = document.getElementById('detailed-total-cash');
-      if (detailedCash) detailedCash.textContent = formattedTotal;
 
       // Breakdown
       const bNew = document.getElementById('breakdown-new-memberships');
@@ -3650,11 +4626,14 @@
 
       // Badge
       const txBadge = document.getElementById('tx-count-badge');
-      if (txBadge) txBadge.textContent = `${targetList.length} transactions total`;
+      if (txBadge) txBadge.textContent = `${todayTxList.length} transactions today`;
 
       // Real-Time Money Pot Target & Payments View Sync
       if (typeof updatePaymentsViewData === 'function') {
         updatePaymentsViewData(targetList);
+      }
+      if (typeof window.renderPaymentsPage === 'function') {
+        window.renderPaymentsPage(false);
       }
 
       // 2. Render Recent Transactions List (Sorted newest first with Date & Time)
@@ -3679,16 +4658,238 @@
               ${modeIcon(t.mode)}
               <span class="text-sm font-bold text-white font-mono">₹${Number(t.amount).toLocaleString('en-IN')}</span>
             </div>
-          </div>`;
+          </div>
+        `;
           }).join('');
         }
       }
 
-      // 3. Sync dedicated Payments View in real-time
-      if (typeof updatePaymentsViewData === 'function') {
-        updatePaymentsViewData(txList);
+      if (typeof renderWeeklyChart === 'function') {
+        renderWeeklyChart();
       }
     }
+
+    // ── Interactive Dashboard Weekly Chart Logic ────────────
+    let currentWeeklyMode = 'revenue';
+    window.currentWeeklyMode = currentWeeklyMode;
+
+    function renderWeeklyChart() {
+      const container = document.getElementById('weekly-bar-chart-container');
+      if (!container) return;
+
+      const subtitleEl = document.getElementById('weekly-chart-subtitle');
+      const minEl = document.getElementById('weekly-chart-min');
+      const maxEl = document.getElementById('weekly-chart-max');
+      const indicatorEl = document.getElementById('weekly-chart-indicator');
+
+      const config = {
+        'revenue': {
+          activeColor: '#12B76A',
+          lightColor: '#D1FADF',
+          shadowColor: 'rgba(18, 183, 106, 0.25)',
+          prefix: '₹',
+          label: 'Total revenue: '
+        },
+        'check-ins': {
+          activeColor: '#FF6A1F',
+          lightColor: '#FFEDD5',
+          shadowColor: 'rgba(255, 106, 31, 0.25)',
+          prefix: '',
+          label: 'Total check-ins: '
+        },
+        'new joins': {
+          activeColor: '#2F6BFF',
+          lightColor: '#DBEAFE',
+          shadowColor: 'rgba(47, 107, 255, 0.25)',
+          prefix: '',
+          label: 'New joins: '
+        }
+      };
+
+      const currentCfg = config[currentWeeklyMode] || config['revenue'];
+      const activeColor = currentCfg.activeColor;
+      const lightColor = currentCfg.lightColor;
+      const prefix = currentCfg.prefix;
+
+      if (indicatorEl) {
+        indicatorEl.style.backgroundColor = activeColor;
+      }
+
+      const days = [];
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
+        const dateStr = `${yyyy}-${mm}-${dd}`;
+        const dayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()];
+        days.push({
+          date: d,
+          dateStr: dateStr,
+          dayName: dayName,
+          isToday: (i === 0)
+        });
+      }
+
+      const txList = (typeof allTransactions !== 'undefined' && Array.isArray(allTransactions))
+        ? allTransactions
+        : (Array.isArray(window.allTransactions) ? window.allTransactions : []);
+      const membersList = (typeof allMembers !== 'undefined' && Array.isArray(allMembers))
+        ? allMembers
+        : (Array.isArray(window.allMembers) ? window.allMembers : []);
+
+      const getDocDate = (item) => {
+        if (!item) return '';
+        const val = item.d || item.date || item.joinDate || item.createdAt;
+        if (!val) return '';
+        if (typeof val === 'string') return val.slice(0, 10);
+        if (val instanceof Date) {
+          const y = val.getFullYear(), m = String(val.getMonth() + 1).padStart(2, '0'), day = String(val.getDate()).padStart(2, '0');
+          return `${y}-${m}-${day}`;
+        }
+        if (val.seconds) {
+          const dt = new Date(val.seconds * 1000);
+          const y = dt.getFullYear(), m = String(dt.getMonth() + 1).padStart(2, '0'), day = String(dt.getDate()).padStart(2, '0');
+          return `${y}-${m}-${day}`;
+        }
+        return '';
+      };
+
+      let totalPeriodSum = 0;
+      const dayData = days.map(day => {
+        let val = 0;
+
+        if (currentWeeklyMode === 'revenue') {
+          txList.forEach(t => {
+            if (getDocDate(t) === day.dateStr) {
+              val += (Number(t.amount) || 0);
+            }
+          });
+        } else if (currentWeeklyMode === 'check-ins') {
+          const attData = (typeof attendanceData !== 'undefined' && Array.isArray(attendanceData))
+            ? attendanceData
+            : (Array.isArray(window.attendanceData) ? window.attendanceData : null);
+
+          if (attData && attData.length > 0) {
+            val = attData.filter(a => {
+              const aDate = a.date || a.d || (a.timestamp ? a.timestamp.slice(0, 10) : '');
+              return aDate === day.dateStr;
+            }).length;
+          } else {
+            membersList.forEach(m => {
+              const hist = Array.isArray(m.attendanceHistory) ? m.attendanceHistory : [];
+              if (hist.includes(day.dateStr) || m.lastCheckIn === day.dateStr) {
+                val++;
+              }
+            });
+          }
+        } else if (currentWeeklyMode === 'new joins') {
+          const txJoins = txList.filter(t => {
+            const tDate = getDocDate(t);
+            const typeLower = (t.type || '').toLowerCase();
+            return tDate === day.dateStr && (typeLower.includes('new') || typeLower.includes('membership'));
+          }).length;
+
+          const memberJoins = membersList.filter(m => {
+            return getDocDate(m) === day.dateStr;
+          }).length;
+
+          val = Math.max(txJoins, memberJoins);
+        }
+
+        totalPeriodSum += val;
+        return { ...day, val };
+      });
+
+      if (subtitleEl) {
+        const formattedSum = prefix + totalPeriodSum.toLocaleString('en-IN');
+        subtitleEl.innerHTML = `${currentCfg.label}<span class="font-bold text-slate-800" id="weekly-chart-total">${formattedSum}</span>`;
+      }
+
+      const maxVal = Math.max(...dayData.map(d => d.val), 0);
+
+      if (minEl) {
+        minEl.textContent = prefix + '0';
+      }
+      if (maxEl) {
+        maxEl.textContent = `Max: ${prefix}${maxVal.toLocaleString('en-IN')}`;
+      }
+
+      const barsHtml = dayData.map(d => {
+        let heightPct = 6;
+        if (maxVal > 0) {
+          heightPct = Math.max(10, Math.round((d.val / maxVal) * 82));
+        }
+
+        const valDisplay = prefix + d.val.toLocaleString('en-IN');
+        const badgeText = `${d.dayName} · ${valDisplay}`;
+
+        if (d.isToday) {
+          return `
+            <div class="flex-1 flex flex-col items-center h-full justify-end group relative cursor-pointer" title="${badgeText}">
+              <span class="absolute -top-7 bg-slate-900 text-white text-[10px] font-bold py-1 px-2.5 rounded-lg shadow-md whitespace-nowrap z-10 font-sans pointer-events-none">${badgeText}</span>
+              <div class="w-full max-w-[34px] rounded-xl transition-all duration-200"
+                   style="height: ${heightPct}%; background-color: ${activeColor}; box-shadow: 0 4px 12px ${currentCfg.shadowColor};"></div>
+              <span class="text-[11px] font-bold absolute -bottom-5 font-sans" style="color: ${activeColor};">${d.dayName}</span>
+            </div>
+          `;
+        } else {
+          return `
+            <div class="flex-1 flex flex-col items-center h-full justify-end group relative cursor-pointer" title="${badgeText}">
+              <span class="absolute -top-7 bg-slate-900 text-white text-[10px] font-bold py-1 px-2.5 rounded-lg shadow-md whitespace-nowrap z-10 font-sans pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150">${badgeText}</span>
+              <div class="w-full max-w-[34px] rounded-xl transition-all duration-200 group-hover:brightness-95"
+                   style="height: ${heightPct}%; background-color: ${lightColor};"></div>
+              <span class="text-[11px] font-medium text-slate-500 absolute -bottom-5 font-sans">${d.dayName}</span>
+            </div>
+          `;
+        }
+      }).join('');
+
+      container.innerHTML = `
+        <div class="absolute inset-x-0 top-8 border-b border-slate-100 border-dashed pointer-events-none"></div>
+        <div class="absolute inset-x-0 top-1/2 border-b border-slate-100 border-dashed pointer-events-none"></div>
+        ${barsHtml}
+      `;
+    }
+
+    function setupWeeklyChartListeners() {
+      const toggleButtons = document.querySelectorAll('#weekly-chart-toggles button, #weekly-chart-toggles span, .weekly-mode-btn');
+      toggleButtons.forEach(btn => {
+        btn.addEventListener('click', function () {
+          const modeAttr = this.getAttribute('data-weekly-mode') || this.getAttribute('data-mode') || this.textContent;
+          const clean = (modeAttr || '').trim().toLowerCase();
+
+          if (clean.includes('rev')) {
+            currentWeeklyMode = 'revenue';
+          } else if (clean.includes('check')) {
+            currentWeeklyMode = 'check-ins';
+          } else if (clean.includes('join')) {
+            currentWeeklyMode = 'new joins';
+          }
+
+          toggleButtons.forEach(b => {
+            const bText = (b.getAttribute('data-weekly-mode') || b.getAttribute('data-mode') || b.textContent || '').trim().toLowerCase();
+            const isActive = (currentWeeklyMode === 'revenue' && bText.includes('rev')) ||
+                             (currentWeeklyMode === 'check-ins' && bText.includes('check')) ||
+                             (currentWeeklyMode === 'new joins' && bText.includes('join'));
+            if (isActive) {
+              b.className = 'weekly-mode-btn bg-white px-2.5 py-1 rounded-lg shadow-xs text-slate-900 transition-all cursor-pointer font-semibold';
+            } else {
+              b.className = 'weekly-mode-btn px-2.5 py-1 rounded-lg text-slate-500 hover:text-slate-900 cursor-pointer transition-all';
+            }
+          });
+
+          renderWeeklyChart();
+        });
+      });
+    }
+
+    window.renderWeeklyChart = renderWeeklyChart;
+    window.setupWeeklyChartListeners = setupWeeklyChartListeners;
 
     function renderActivities() {
       const feed = document.getElementById('activity-feed');
@@ -3721,6 +4922,7 @@
       if (badgeEl) badgeEl.textContent = count;
       const statPresentEl = document.getElementById('stat-present-today');
       if (statPresentEl) statPresentEl.textContent = count.toLocaleString('en-IN');
+      if (typeof renderWeeklyChart === 'function') renderWeeklyChart();
 
       if (!tbody) return;
 
@@ -4083,6 +5285,8 @@
     }
 
     window.renderMembersDirectoryTable = renderMembersDirectoryTable;
+    window.updateDashboardMembers = updateDashboardMembers;
+    window.updateDashboardTransactions = updateDashboardTransactions;
 
     // ── Firestore Setup & Real-Time Listeners ────────────
     function initFirestoreListeners() {
@@ -5337,10 +6541,85 @@
       }
     }
 
+    window.recordQuickPayment = async function(p) {
+      const now = new Date();
+      const d = iso(now);
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const amt = Number(p.amount) || 0;
+      const txDoc = {
+        name: p.name,
+        amount: amt,
+        mode: p.mode || 'Cash',
+        type: p.type || 'Walk-in',
+        time: timeStr,
+        date: d,
+        d: d
+      };
+
+      if (isFirebaseLive && db) {
+        try {
+          const docRef = await addDoc(collection(db, "transactions"), {
+            ...txDoc,
+            createdAt: serverTimestamp()
+          });
+          txDoc.id = docRef.id;
+        } catch (err) {
+          console.error("Firestore quick payment error:", err);
+          txDoc.id = 'tx-' + Date.now();
+        }
+      } else {
+        txDoc.id = 'tx-' + Date.now();
+      }
+
+      allTransactions.unshift(txDoc);
+      window.allTransactions = allTransactions;
+      updateDashboardTransactions([...allTransactions]);
+      if (typeof window.renderPaymentsPage === 'function') {
+        window.renderPaymentsPage(false);
+      }
+      showToast(`${p.type || 'Payment'} of ₹${amt.toLocaleString('en-IN')} recorded successfully!`, 'success');
+    };
+
     window.switchView = switchView;
     window.setActive = function (el) {
       const view = el.getAttribute('data-view') || 'dashboard';
       switchView(view);
+    };
+
+    window.routeToExpiredMembers = function() {
+      // 1. Switch to the members tab
+      if (typeof window.switchView === 'function') {
+        window.switchView('members');
+      } else {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+        const membersView = document.getElementById('members-view');
+        if (membersView) membersView.classList.remove('hidden');
+      }
+      
+      // 2. Trigger the 'Expired' filter on the members page
+      const filterBtns = document.querySelectorAll('.filter-btn, .member-filter-btn, .chip');
+      let expiredBtnFound = false;
+      filterBtns.forEach(btn => {
+        if (btn.textContent.toLowerCase().includes('expired') || btn.dataset.filter === 'expired' || btn.dataset.filter === 'due') {
+          btn.click();
+          expiredBtnFound = true;
+        }
+      });
+      
+      // Direct fallback function call
+      if (!expiredBtnFound && typeof window.filterMembersByStatus === 'function') {
+        window.filterMembersByStatus('due');
+        expiredBtnFound = true;
+      }
+      
+      // Fallback if it's a dropdown filter
+      if (!expiredBtnFound) {
+        const statusSelect = document.getElementById('filter-status');
+        if (statusSelect) {
+          statusSelect.value = 'expired';
+          statusSelect.dispatchEvent(new Event('change'));
+        }
+      }
     };
 
     // ── PAYMENTS TAB STATE & ANIMATIONS ───────────────────
@@ -5691,15 +6970,15 @@
     // 🔥 OVERRIDE TOTALS & MONEY POT TO MATCH ALL-TIME LEDGER
     // ---------------------------------------------------------
     
-    // 1. Remove 'isToday' filters so ALL transactions are counted in Total Cash
+    // 1. Restore 'isToday' filters for Daily Cash calculations
     window.total = function(list) {
-      return (list || allTransactions || []).reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
+      return (list || allTransactions || []).filter(t => isToday(t)).reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
     };
 
     window.by = function(mode, list) {
       const modeLower = (mode || '').toLowerCase().trim();
       return (list || allTransactions || [])
-        .filter(t => (t.mode || '').toLowerCase().trim() === modeLower)
+        .filter(t => isToday(t) && (t.mode || '').toLowerCase().trim() === modeLower)
         .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
     };
 
@@ -5726,27 +7005,28 @@
       return expected;
     };
 
-    // 3. Ensure updateDashboardTransactions does NOT use the 'isToday' filter for calculations
+    // 3. Strictly filter todayTxList inside updateDashboardTransactions for Daily Cash
     window.updateDashboardTransactions = function(txList) {
       allTransactions = txList;
       window.allTransactions = txList;
 
-      // Calculate Total Cash directly from all transactions (No 'Today' filter)
-      const totalCashAll = (txList || []).reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
+      // 1. COLLECTED AMOUNT (Active members collected from Money Pot)
+      if (typeof window.updateCollectedKpi === 'function') {
+        window.updateCollectedKpi();
+      }
+
+      // 2. TODAY'S TOTAL (For Dashboard Lower Detailed Section)
+      const todayTxList = (txList || []).filter(t => isToday(t));
+      const totalCashToday = (typeof window.total === 'function') ? window.total(todayTxList) : total(todayTxList);
+      if (document.getElementById('detailed-total-cash')) {
+        document.getElementById('detailed-total-cash').textContent = `₹${totalCashToday.toLocaleString('en-IN')}`;
+      }
 
       let breakdown = { newMemberships: 0, renewals: 0, walkIns: 0, pt: 0 };
-      let modes = { Cash: 0, UPI: 0, Card: 0 };
+      let modes = { Cash: window.by('Cash', todayTxList), UPI: window.by('UPI', todayTxList), Card: window.by('Card', todayTxList) };
 
-      (txList || []).forEach(t => {
+      todayTxList.forEach(t => {
         const amt = Number(t.amount) || 0;
-        
-        // Mode Split logic
-        const modeLower = (t.mode || 'cash').toLowerCase();
-        if (modeLower.includes('upi')) modes.UPI += amt;
-        else if (modeLower.includes('card')) modes.Card += amt;
-        else modes.Cash += amt;
-
-        // Breakdown logic
         const typeLower = (t.type || '').trim().toLowerCase();
         if (typeLower === 'new membership' || (typeLower.includes('new') && !typeLower.includes('renewal'))) {
           breakdown.newMemberships += amt;
@@ -5758,18 +7038,11 @@
           breakdown.pt += amt;
         }
       });
-
-      const formattedTotal = `₹${totalCashAll.toLocaleString('en-IN')}`;
-      if (document.getElementById('kpi-today-cash')) document.getElementById('kpi-today-cash').textContent = formattedTotal;
-      if (document.getElementById('detailed-total-cash')) document.getElementById('detailed-total-cash').textContent = formattedTotal;
       
       if (document.getElementById('breakdown-new-memberships')) document.getElementById('breakdown-new-memberships').textContent = `₹${breakdown.newMemberships.toLocaleString('en-IN')}`;
       if (document.getElementById('breakdown-renewals')) document.getElementById('breakdown-renewals').textContent = `₹${breakdown.renewals.toLocaleString('en-IN')}`;
       if (document.getElementById('breakdown-walkins')) document.getElementById('breakdown-walkins').textContent = `₹${breakdown.walkIns.toLocaleString('en-IN')}`;
       if (document.getElementById('breakdown-pt')) document.getElementById('breakdown-pt').textContent = `₹${breakdown.pt.toLocaleString('en-IN')}`;
-
-      // Update UI elements
-      if (document.getElementById('tx-count-badge')) document.getElementById('tx-count-badge').textContent = `${(txList || []).length} transactions recorded`;
       
       const totalForModes = (modes.Cash + modes.UPI + modes.Card) || 1;
       const cashPct = Math.round((modes.Cash / totalForModes) * 100);
@@ -5782,7 +7055,10 @@
       if (document.getElementById('split-label-cash')) document.getElementById('split-label-cash').textContent = `Cash ${cashPct}%`;
       if (document.getElementById('split-label-upi')) document.getElementById('split-label-upi').textContent = `UPI ${upiPct}%`;
       if (document.getElementById('split-label-card')) document.getElementById('split-label-card').textContent = `Card ${cardPct}%`;
+      
+      if (document.getElementById('tx-count-badge')) document.getElementById('tx-count-badge').textContent = `${todayTxList.length} transactions today`;
 
+      // Render recent transactions on dashboard
       const txListContainer = document.getElementById('transactions-list');
       if (txListContainer) {
         if (!txList || txList.length === 0) {
@@ -5812,6 +7088,7 @@
 
       if (typeof updatePaymentsViewData === 'function') updatePaymentsViewData(txList);
       if (typeof renderPaymentsLedger === 'function') renderPaymentsLedger(txList);
+      if (typeof renderWeeklyChart === 'function') renderWeeklyChart();
     };
 
     window.initPaymentsTab = function () {
@@ -5878,6 +7155,361 @@
     calculateExpectedRevenue = window.calculateExpectedRevenue;
     updateDashboardTransactions = window.updateDashboardTransactions;
     initPaymentsTab = window.initPaymentsTab;
+
+    // Initialize Dashboard Weekly Chart
+    if (typeof setupWeeklyChartListeners === 'function') setupWeeklyChartListeners();
+    if (typeof renderWeeklyChart === 'function') renderWeeklyChart();
+  </script>
+
+  <!-- ── Redesigned Payments Page Controller & Interactions ── -->
+  <script>
+/* ===================== PAYMENTS PAGE LOGIC =====================
+   Reads window.allTransactions / window.allMembers (your module already keeps these in sync)
+   and takes over window.initPaymentsTab + window.updatePaymentsViewData after the module loads. */
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var COLORS = ['#2F6BFF', '#7C3AED', '#0EA5A4', '#E11D74', '#FF6A1F', '#0B9A55'];
+  var PRICES = { '1 Month': 1500, 'Monthly': 1500, '2 Months': 2500, '3 Months': 4000, 'Quarterly': 4000, '6 Months': 7500, '1 Year': 12000, 'Yearly': 12000, 'Annual': 12000, 'Walk-in': 300 };
+  var TYPES = [['New Membership', '#2F6BFF'], ['Renewal', '#12B76A'], ['Walk-in', '#FF6A1F'], ['Personal Training', '#7C3AED'], ['Other', '#94A3B8']];
+  var MODES = [['cash', 'Cash', '#12B76A'], ['upi', 'UPI', '#7C3AED'], ['card', 'Card', '#2F6BFF']];
+  var RANGE_LABEL = { today: 'Today', week: 'Last 7 days', month: 'This month', all: 'All time' };
+  var WA = '<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3.1.8.8-3-.2-.3A8 8 0 1 1 12 20zm4.4-6c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1s-.7.8-.8 1c-.1.1-.3.2-.5.1a6.6 6.6 0 0 1-2-1.3 7.3 7.3 0 0 1-1.4-1.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.1.2-.3.3-.4a.4.4 0 0 0 0-.4l-.8-2c-.2-.5-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3A3.1 3.1 0 0 0 7 8.2a5.4 5.4 0 0 0 1.1 2.9 12.3 12.3 0 0 0 4.8 4.2c.7.3 1.2.5 1.6.6a3.8 3.8 0 0 0 1.8.1 3 3 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.5-.3z"/></svg>';
+  var ICON = {
+    inr: 'M6 4h12M6 9h12M7 4c6 0 7 5 2 7H6m3 0l6 9',
+    cal: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
+    bars: 'M4 20V10M10 20V4M16 20v-7M22 20H2',
+    tick: 'M5 8a2 2 0 012-2h10a2 2 0 012 2v2a2 2 0 000 4v2a2 2 0 01-2 2H7a2 2 0 01-2-2v-2a2 2 0 000-4z'
+  };
+  var S = { range: 'month', mode: 'all', type: 'all', q: '', limit: 10, days: 14 };
+  var lastPct = -1;
+
+  /* ---------- helpers ---------- */
+  var inr = function (n) { return '\u20B9' + Math.round(Number(n) || 0).toLocaleString('en-IN'); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var pad = function (n) { return String(n).padStart(2, '0'); };
+  function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function today() { var d = new Date(); d.setHours(0, 0, 0, 0); return d; }
+  function addDays(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+  function fmt(d) { if (typeof d === 'string') d = new Date(d.slice(0, 10) + 'T00:00:00'); return d ? d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '\u2014'; }
+  function txs() { return Array.isArray(window.allTransactions) ? window.allTransactions : []; }
+  function mems() { return Array.isArray(window.allMembers) ? window.allMembers : []; }
+  function sum(l) { return l.reduce(function (a, t) { return a + (Number(t.amount) || 0); }, 0); }
+  function txDate(t) { var v = t.date || t.d; if (!v) return ''; if (typeof v === 'string') return v.slice(0, 10); if (v.seconds) return iso(new Date(v.seconds * 1000)); if (v instanceof Date) return iso(v); return ''; }
+  function txTs(t) {
+    var ts = Date.parse(txDate(t) + 'T00:00:00') || 0, m = /(\d{1,2}):(\d{2})\s*(AM|PM)?/i.exec(t.time || '');
+    if (m) { var h = +m[1] % 12; if (/pm/i.test(m[3] || '')) h += 12; if (!m[3]) h = +m[1]; ts += h * 3600000 + (+m[2]) * 60000; }
+    return ts;
+  }
+  function modeOf(t) { var m = String(t.mode || 'Cash').toLowerCase(); return m === 'upi' ? 'upi' : m === 'card' ? 'card' : 'cash'; }
+  function typeOf(t) {
+    var s = String(t.type || '').toLowerCase();
+    if (s.indexOf('renew') > -1) return 'Renewal';
+    if (s.indexOf('walk') > -1) return 'Walk-in';
+    if (s.indexOf('personal') > -1 || s === 'pt') return 'Personal Training';
+    if (s.indexOf('new') > -1) return 'New Membership';
+    return 'Other';
+  }
+  function inRange(t, r) {
+    var d = txDate(t), T = today(), tk = iso(T);
+    if (r === 'all') return true;
+    if (r === 'today') return d === tk;
+    if (r === 'week') return d >= iso(addDays(T, -6)) && d <= tk;
+    if (r === 'month') return d.slice(0, 7) === tk.slice(0, 7);
+    return true;
+  }
+  function fee(m) { return Number(m.amount) || Number(m.dueAmount) || PRICES[m.plan] || 1500; }
+  function expOf(m) {
+    var v = m.expiryDate || m.planExpiryDate || m.expiry; if (!v) return null;
+    var d = typeof v.toDate === 'function' ? v.toDate() : v.seconds ? new Date(v.seconds * 1000) : new Date(v);
+    if (isNaN(d.getTime())) return null; d.setHours(0, 0, 0, 0); return d;
+  }
+  function daysLeft(m) { var e = expOf(m); return e ? Math.round((e - today()) / 864e5) : null; }
+  function state(m) {
+    var d = daysLeft(m), s = String(m.status || '').toLowerCase();
+    if (s === 'expired' || s === 'inactive' || d === null || d < 0) return 'x';
+    return d <= 7 ? 'e' : 'a';
+  }
+  function memberBy(id) { return mems().filter(function (m) { return m.id === id || m.memberId === id; })[0] || null; }
+  function memberOfTx(t) {
+    var L = mems(), nm = String(t.name || '').toLowerCase().trim();
+    return (t.memberId && memberBy(t.memberId)) || L.filter(function (m) { return String(m.name || '').toLowerCase().trim() === nm; })[0] || null;
+  }
+  function phoneOf(m) { var d = String((m && (m.phone || m.phoneNumber || m.mobile || m.contact)) || '').replace(/\D/g, ''); return d.length >= 10 ? d.slice(-10) : ''; }
+  function colorOf(name) { var h = 0, s = String(name || '').toLowerCase(); for (var i = 0; i < s.length; i++) h = s.charCodeAt(i) + ((h << 5) - h); return COLORS[Math.abs(h) % COLORS.length]; }
+  function view() { return $('#payments-view'); }
+  function visible() { var v = view(); return v && !v.classList.contains('hidden'); }
+
+  function toast(msg, type) {
+    var t = $('#toast'); if (!t) return;
+    var ic = $('#toast-icon'), tx = $('#toast-msg');
+    if (ic) ic.textContent = type === 'error' ? '\u26A0\uFE0F' : '\u2705';
+    if (tx) tx.textContent = msg;
+    t.classList.remove('translate-y-20', 'opacity-0');
+    clearTimeout(toast.t); toast.t = setTimeout(function () { t.classList.add('translate-y-20', 'opacity-0'); }, 3200);
+  }
+  function setNum(el, to, pre, suf, anim) {
+    if (!el) return; to = Math.round(to); pre = pre || ''; suf = suf || '';
+    var from = +el.dataset.v || 0; el.dataset.v = to;
+    if (!anim || from === to) { el.textContent = pre + to.toLocaleString('en-IN') + suf; return; }
+    var t0 = performance.now();
+    (function step(t) { var p = Math.min((t - t0) / 900, 1), e = 1 - Math.pow(1 - p, 3); el.textContent = pre + Math.round(from + (to - from) * e).toLocaleString('en-IN') + suf; if (p < 1) requestAnimationFrame(step); })(t0);
+  }
+  function delta(cur, prev, txt) {
+    if (!cur && !prev) return '<span class="pay-chip flat">No payments yet</span>';
+    if (!prev) return '<span class="pay-chip up">New</span>';
+    var p = Math.round((cur - prev) / prev * 100);
+    if (p === 0) return '<span class="pay-chip flat">Same ' + txt + '</span>';
+    return '<span class="pay-chip ' + (p > 0 ? 'up' : 'down') + '">' + (p > 0 ? '\u25B2 ' : '\u25BC ') + Math.abs(p) + '% ' + txt + '</span>';
+  }
+
+  /* ---------- KPI cards ---------- */
+  function kpis(anim) {
+    var T = today(), tk = iso(T), all = txs();
+    var dayL = function (k) { return all.filter(function (t) { return txDate(t) === k; }); };
+    var td = dayL(tk), yd = sum(dayL(iso(addDays(T, -1))));
+    var mk = tk.slice(0, 7), pmk = iso(new Date(T.getFullYear(), T.getMonth() - 1, 1)).slice(0, 7);
+    var mL = all.filter(function (t) { return txDate(t).slice(0, 7) === mk; }), mo = sum(mL);
+    var pmo = sum(all.filter(function (t) { return txDate(t).slice(0, 7) === pmk; }));
+
+    // 1. Calculate Total Cash Collected from Active Members
+    var totalActiveCollected = 0, totalPlanValue = 0;
+    mems().forEach(function (m) {
+      var f = fee(m);
+      totalPlanValue += f;
+      if (state(m) !== 'x') { // 'x' means expired
+        totalActiveCollected += f;
+      }
+    });
+    var pct = totalPlanValue ? Math.min(100, Math.round(totalActiveCollected / totalPlanValue * 100)) : 82;
+
+    var card = function (cls, ic, label, val, chip, small) {
+      return '<div class="pay-k ' + cls + '"><span class="ic"><svg viewBox="0 0 24 24"><path d="' + ic + '"/></svg></span><div class="l">' + label + '</div><b data-to="' + Math.round(val) + '">' + inr(val) + '</b>' + (chip || '') + '<small>' + small + '</small></div>';
+    };
+    var host = $('#pay-kpis'); if (!host) return;
+    host.innerHTML =
+      card('hero', ICON.inr, 'Collected today', sum(td), delta(sum(td), yd, 'vs yesterday'), td.length + (td.length === 1 ? ' payment' : ' payments') + ' today') +
+      card('hero', ICON.inr, 'CASH COLLECTED', totalActiveCollected, '<div class="pay-track" style="margin: 10px 0; background: rgba(255,255,255,.3);"><i style="width: ' + pct + '%; background: #fff;"></i></div>', '● Active members collection') +
+      card('', ICON.bars, 'This month', mo, delta(mo, pmo, 'vs last month'), 'Last month ' + inr(pmo));
+    $$('b[data-to]', host).forEach(function (b) { delete b.dataset.v; setNum(b, +b.dataset.to, '\u20B9', '', anim); });
+  }
+
+  /* ---------- Money pot ---------- */
+  function pot(anim) {
+    var L = mems(), expected = 0, collected = 0;
+    L.forEach(function (m) { var f = fee(m); expected += f; if (state(m) !== 'x') collected += f; });
+    var pct = expected ? Math.min(100, Math.round(collected / expected * 100)) : 0;
+    setNum($('#squid-expected-revenue'), expected, '\u20B9', '', anim);
+    setNum($('#squid-pot-collected'), collected, '\u20B9', '', anim);
+    setNum($('#squid-remaining-revenue'), expected - collected, '\u20B9', '', anim);
+    setNum($('#squid-pot-percentage'), pct, '', '%', anim);
+    var mc = $('#squid-members-count'); if (mc) mc.textContent = L.length + (L.length === 1 ? ' member' : ' members');
+    var st = $('#squid-pot-status');
+    if (st) { st.textContent = pct >= 100 ? 'All plans active' : pct + '% active'; st.className = 'pay-pill' + (pct >= 100 ? ' full' : pct >= 50 ? ' mid' : ''); }
+    if (typeof window.setGullakFill === 'function' && (anim || pct !== lastPct)) {
+      if (anim) { window.setGullakFill(0); setTimeout(function () { window.setGullakFill(pct); }, 120); } else window.setGullakFill(pct);
+    }
+    lastPct = pct;
+  }
+
+  /* ---------- Trend chart ---------- */
+  function trend() {
+    var host = $('#pay-trend'); if (!host) return;
+    var n = S.days, T = today(), all = txs(), cols = [], mx = 1, total = 0, best = null;
+    for (var i = n - 1; i >= 0; i--) {
+      var d = addDays(T, -i), k = iso(d), o = { k: k, d: d, cash: 0, upi: 0, card: 0, tot: 0, n: 0, today: i === 0 };
+      all.forEach(function (t) { if (txDate(t) === k) { var a = Number(t.amount) || 0; o[modeOf(t)] += a; o.tot += a; o.n++; } });
+      mx = Math.max(mx, o.tot); total += o.tot; if (!best || o.tot > best.tot) best = o; cols.push(o);
+    }
+    var wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    var bars = cols.map(function (o, idx) {
+      var lbl = n <= 7 ? wd[o.d.getDay()] : (n <= 14 || idx % 5 === 0 || o.today) ? String(o.d.getDate()) : '';
+      var tip = wd[o.d.getDay()] + ', ' + fmt(o.d) + ' \u00B7 ' + inr(o.tot) + (o.tot ? '<br>' + MODES.filter(function (m) { return o[m[0]]; }).map(function (m) { return m[1] + ' ' + inr(o[m[0]]); }).join(' \u00B7 ') : '<br>No payments');
+      var segs = MODES.map(function (m) { return o[m[0]] ? '<i style="flex:' + o[m[0]] + ';background:' + m[2] + '"></i>' : ''; }).join('');
+      return '<div class="pay-col' + (o.today ? ' t' : '') + '" data-tip="' + esc(tip) + '"><div class="pay-bw"><div class="pay-stack" style="height:' + (o.tot ? Math.max(4, o.tot / mx * 100) : 2) + '%">' + segs + '</div></div><em>' + lbl + '</em></div>';
+    }).join('');
+    var scrollHint = n === 30
+      ? '<div class="pay-scroll-hint"><svg viewBox="0 0 24 24"><path d="M7 16l-4-4m0 0l4-4m-4 4h18m-4 4l4-4m0 0l-4-4"/></svg><span>Swipe / scroll to see all 30 days</span></div>'
+      : '';
+
+    host.innerHTML =
+      '<h3>Collection trend<span class="r"><div class="pay-seg">' + [7, 14, 30].map(function (d) { return '<button type="button" data-pd="' + d + '" class="' + (S.days === d ? 'on' : '') + '">' + d + ' days</button>'; }).join('') + '</div></span></h3>' +
+      '<div class="pay-sumline"><span>Total <b>' + inr(total) + '</b></span><span>Daily average <b>' + inr(total / n) + '</b></span>' + (best && best.tot ? '<span>Best day <b>' + fmt(best.d).slice(0, 6) + ' \u00B7 ' + inr(best.tot) + '</b></span>' : '') + '</div>' +
+      '<div class="pay-chartbox"><div class="pay-tip" id="pay-tip"></div><div class="pay-chart">' + bars + '</div></div>' +
+      scrollHint +
+      '<div class="pay-leg">' + MODES.map(function (m) { return '<span><i style="background:' + m[2] + '"></i>' + m[1] + '</span>'; }).join('') + '</div>';
+
+    if (n === 30) {
+      var box = host.querySelector('.pay-chartbox');
+      if (box) {
+        requestAnimationFrame(function () {
+          box.scrollLeft = box.scrollWidth;
+        });
+      }
+    }
+  }
+
+  /* ---------- Collection mix ---------- */
+  function mix() {
+    var host = $('#pay-mix'); if (!host) return;
+    var L = txs().filter(function (t) { return inRange(t, S.range); }), tot = sum(L);
+    var h = '<h3>Collection mix<span class="r">' + RANGE_LABEL[S.range] + ' \u00B7 ' + inr(tot) + '</span></h3>';
+    if (!L.length) { host.innerHTML = h + '<div class="pay-empty">No payments in this period yet.</div>'; return; }
+    h += '<div class="pay-sub">By payment mode</div>' + MODES.map(function (m) {
+      var a = sum(L.filter(function (t) { return modeOf(t) === m[0]; })), p = tot ? Math.round(a / tot * 100) : 0;
+      return '<div class="pay-row" style="--k:' + m[2] + '"><i class="pay-dot"></i><b>' + m[1] + '</b><span class="v">' + inr(a) + '<small>' + p + '%</small></span><div class="pay-track"><i style="width:' + p + '%"></i></div></div>';
+    }).join('');
+    var ty = TYPES.map(function (t) { return { n: t[0], c: t[1], a: sum(L.filter(function (x) { return typeOf(x) === t[0]; })) }; }).filter(function (x) { return x.a > 0; });
+    h += '<div class="pay-sub s2">By type</div><div class="pay-mixbar">' + ty.map(function (x) { return '<i style="flex:' + x.a + ';background:' + x.c + '" title="' + esc(x.n) + '"></i>'; }).join('') + '</div>' +
+      '<div class="pay-types">' + ty.map(function (x) { return '<div><i class="pay-dot" style="background:' + x.c + '"></i>' + esc(x.n) + '<b>' + inr(x.a) + '</b></div>'; }).join('') + '</div>';
+    host.innerHTML = h;
+  }
+
+  /* ---------- Pending renewals ---------- */
+  function pending() {
+    var host = $('#pay-pending'); if (!host) return;
+    var list = mems().filter(function (m) { return state(m) !== 'a'; }).sort(function (a, b) {
+      var x = daysLeft(a), y = daysLeft(b); return (x === null ? -9999 : x) - (y === null ? -9999 : y);
+    });
+    var over = list.filter(function (m) { return state(m) === 'x'; }), soon = list.filter(function (m) { return state(m) === 'e'; });
+    var h = '<h3>Pending renewals<span class="r">' + list.length + (list.length === 1 ? ' member' : ' members') + '</span></h3>';
+    if (!list.length) { host.innerHTML = h + '<div class="pay-empty">Everyone is up to date. Nothing pending.</div>'; return; }
+    h += '<div class="pay-sumline"><span>Overdue <b class="x">' + inr(sum(over.map(function (m) { return { amount: fee(m) }; }))) + '</b> (' + over.length + ')</span><span>Expiring in 7 days <b>' + inr(sum(soon.map(function (m) { return { amount: fee(m) }; }))) + '</b> (' + soon.length + ')</span></div>';
+    h += list.slice(0, 6).map(function (m) {
+      var d = daysLeft(m), x = state(m) === 'x', key = m.id || m.memberId;
+      var badge = x ? (d === null ? 'No expiry' : 'Expired ' + Math.abs(d) + 'd ago') : (d === 0 ? 'Ends today' : d + 'd left');
+      return '<div class="pay-pr"><span class="pay-av" style="background:' + colorOf(m.name) + '">' + esc((m.name || 'M')[0]) + '</span>' +
+        '<div class="pay-who"><b>' + esc(m.name) + '</b><small>' + esc(m.plan || 'Plan') + ' \u00B7 ' + inr(fee(m)) + '</small></div>' +
+        '<span class="pay-due ' + (x ? 'x' : 'e') + '">' + badge + '</span>' +
+        '<button class="pay-ib" type="button" data-prem="' + esc(key) + '" title="Remind on WhatsApp" aria-label="Remind ' + esc(m.name) + ' on WhatsApp">' + WA + '</button>' +
+        '<button class="pay-mini" type="button" data-pren="' + esc(key) + '">Renew</button></div>';
+    }).join('');
+    if (list.length > 6) h += '<div class="pay-more">+ ' + (list.length - 6) + ' more &middot; <a href="#" data-pgo="members" style="color:var(--blu);font-weight:600">see all in Members</a></div>';
+    host.innerHTML = h;
+  }
+
+  /* ---------- Ledger ---------- */
+  function ledgerList() {
+    var q = S.q.toLowerCase().trim();
+    return txs().filter(function (t) {
+      if (!inRange(t, S.range)) return false;
+      if (S.mode !== 'all' && String(t.mode || 'Cash').toLowerCase() !== S.mode.toLowerCase()) return false;
+      if (S.type !== 'all' && typeOf(t) !== S.type) return false;
+      if (q && (String(t.name || '') + ' ' + String(t.id || '') + ' ' + String(t.memberId || '') + ' ' + String(t.type || '')).toLowerCase().indexOf(q) < 0) return false;
+      return true;
+    }).sort(function (a, b) { return txTs(b) - txTs(a); });
+  }
+  function ledger() {
+    var L = ledgerList(), shown = L.slice(0, S.limit);
+    var cnt = $('#pl-count'); if (cnt) cnt.textContent = L.length;
+    var rows = $('#pl-rows'), foot = $('#pl-foot'); if (!rows) return;
+    rows.innerHTML = shown.length ? shown.map(function (t) {
+      var m = memberOfTx(t), ph = phoneOf(m), md = modeOf(t), id = String(t.id || '');
+      var mm = MODES.filter(function (x) { return x[0] === md; })[0][1];
+      return '<div class="pay-tr"><div class="pay-who" style="display:flex;align-items:center;gap:12px"><span class="pay-av" style="background:' + colorOf(t.name) + '">' + esc((t.name || 'M')[0]) + '</span><div class="pay-who"><b>' + esc(t.name || 'Anonymous') + '</b><small>' + esc((t.memberId || id).toString().slice(0, 12)) + '</small></div></div>' +
+        '<div class="pay-meta"><span class="pay-chip2">' + esc(typeOf(t)) + '</span><span class="pm ' + md + '">' + mm + '</span><div class="pay-dt"><b>' + fmt(txDate(t)) + '</b><small>' + esc(t.time || '') + '</small></div></div>' +
+        '<div class="pay-amt">+' + inr(t.amount) + '</div>' +
+        '<div class="pay-act">' + (ph ? '<button class="pay-ib" type="button" data-pwa="' + esc(id) + '" title="Send receipt on WhatsApp" aria-label="Send receipt">' + WA + '</button>' : '') + '</div></div>';
+    }).join('') : '<div class="pay-empty">No payments match these filters.</div>';
+    foot.innerHTML = '<span>Showing ' + shown.length + ' of ' + L.length + ' payments</span>' +
+      (L.length > shown.length ? '<button class="pay-btn ghost sm" type="button" data-pmore>Show more</button>' : '') +
+      '<span>Total <b>' + inr(sum(L)) + '</b></span>';
+  }
+
+  function syncCtl() {
+    $$('#pay-range button').forEach(function (b) { b.classList.toggle('on', b.dataset.pr === S.range); });
+    $$('#pl-modes button').forEach(function (b) { b.classList.toggle('on', b.dataset.pm === S.mode); });
+    var dl = $('#pay-names'); if (dl && !dl.dataset.n || (dl && +dl.dataset.n !== mems().length)) { dl.innerHTML = mems().map(function (m) { return '<option value="' + esc(m.name) + '">'; }).join(''); dl.dataset.n = mems().length; }
+  }
+
+  function render(anim) {
+    if (!view()) return;
+    kpis(anim); pot(anim); trend(); mix(); pending(); ledger(); syncCtl();
+  }
+
+  /* ---------- CSV + receipts + quick payment ---------- */
+  function exportCsv() {
+    var L = ledgerList(); if (!L.length) { toast('Nothing to export for these filters', 'error'); return; }
+    var rows = [['Date', 'Time', 'Member', 'Type', 'Mode', 'Amount', 'ID']].concat(L.map(function (t) { return [txDate(t), t.time || '', t.name || '', t.type || '', t.mode || '', Number(t.amount) || 0, t.id || '']; }));
+    var csv = rows.map(function (r) { return r.map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(','); }).join('\n');
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'gympro-payments-' + iso(new Date()) + '.csv'; document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    toast('Exported ' + L.length + ' payments');
+  }
+  function receipt(id) {
+    var t = txs().filter(function (x) { return String(x.id) === id; })[0]; if (!t) return;
+    var ph = phoneOf(memberOfTx(t)); if (!ph) { toast('No phone number found for ' + (t.name || 'this member'), 'error'); return; }
+    var msg = 'Hi ' + t.name + ', we received ' + inr(t.amount) + ' (' + (t.mode || 'Cash') + ') for ' + typeOf(t) + ' on ' + fmt(txDate(t)) + '. Thank you! Regards, Gym Admin';
+    window.open('https://wa.me/91' + ph + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    toast('Opening WhatsApp receipt for ' + t.name);
+  }
+  function quick(open) {
+    var m = $('#pay-quick'); if (!m) return; m.classList.toggle('on', !!open);
+    if (open) { setTimeout(function () { var n = $('#pqn'); if (n) n.focus(); }, 30); } else { var f = $('#pay-quick-form'); if (f) f.reset(); }
+  }
+
+  /* ---------- events ---------- */
+  document.addEventListener('click', function (e) {
+    var root = view(); if (!root) return;
+    var t = e.target.closest('[data-pr],[data-pm],[data-pd],[data-pmore],[data-pexport],[data-pquick],[data-pclose],[data-pwa],[data-prem],[data-pren],[data-pgo],[data-pclose-bg]');
+    if (!t || !root.contains(t)) return;
+    var D = t.dataset;
+    if (t.hasAttribute('data-pclose-bg')) { if (e.target === t) quick(false); return; }
+    if (D.pgo) { e.preventDefault(); if (window.switchView) window.switchView(D.pgo); }
+    else if (D.pr) { S.range = D.pr; S.limit = 10; mix(); ledger(); syncCtl(); }
+    else if (D.pm) { S.mode = D.pm; S.limit = 10; ledger(); syncCtl(); }
+    else if (D.pd) { S.days = +D.pd; trend(); }
+    else if ('pmore' in D) { S.limit += 10; ledger(); }
+    else if ('pexport' in D) exportCsv();
+    else if ('pquick' in D) quick(true);
+    else if ('pclose' in D) quick(false);
+    else if (D.pwa) receipt(D.pwa);
+    else if (D.prem) { var m = memberBy(D.prem); if (m && window.sendWhatsAppReminder) window.sendWhatsAppReminder(m.name, phoneOf(m) || m.phone || '', fmt(expOf(m)), fee(m)); }
+    else if (D.pren) { var r = memberBy(D.pren); if (r && window.renewMember) window.renewMember(r.id || r.memberId, r.name, phoneOf(r)); }
+  });
+  document.addEventListener('mouseover', function (e) {
+    var c = e.target.closest && e.target.closest('#pay-trend .pay-col'); var tip = $('#pay-tip');
+    if (!tip) return; if (!c) { tip.style.opacity = 0; return; }
+    var box = c.closest('.pay-chartbox'), cr = c.getBoundingClientRect(), br = box.getBoundingClientRect();
+    tip.innerHTML = c.getAttribute('data-tip'); tip.style.left = Math.min(Math.max(cr.left - br.left + cr.width / 2, 90), br.width - 90) + 'px'; tip.style.top = '-6px'; tip.style.opacity = 1;
+  });
+  document.addEventListener('input', function (e) { if (e.target && e.target.id === 'pl-q') { S.q = e.target.value; S.limit = 10; ledger(); } });
+  document.addEventListener('change', function (e) { if (e.target && e.target.id === 'pl-type') { S.type = e.target.value; S.limit = 10; ledger(); } });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') quick(false); });
+
+  function bindForm() {
+    var f = $('#pay-quick-form'); if (!f) return;
+    f.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var name = f.elements.pqn.value.trim(), amt = Number(f.elements.pqa.value) || 0;
+      var type = (f.querySelector('[name=pqt]:checked') || {}).value || 'Walk-in', mode = (f.querySelector('[name=pqm]:checked') || {}).value || 'Cash';
+      if (!name || amt <= 0) { toast('Enter a name and an amount', 'error'); return; }
+      var btn = f.querySelector('[type=submit]'); btn.disabled = true;
+      try {
+        if (typeof window.recordQuickPayment === 'function') { await window.recordQuickPayment({ name: name, amount: amt, type: type, mode: mode }); }
+        else {
+          var now = new Date(), d = iso(now), list = window.allTransactions || [];
+          list.unshift({ id: 'tx-' + Date.now(), name: name, amount: amt, mode: mode, type: type, time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), date: d, d: d });
+          if (window.updateDashboardTransactions) window.updateDashboardTransactions(list.slice()); else render(false);
+          toast(type + ' payment of ' + inr(amt) + ' added (screen only: add recordQuickPayment to save it)');
+        }
+        quick(false);
+      } catch (err) { toast('Could not save: ' + err.message, 'error'); } finally { btn.disabled = false; }
+    });
+  }
+
+  /* ---------- hooks used by your existing code ---------- */
+  function install() {
+    window.initPaymentsTab = function () { render(true); };
+    window.updatePaymentsViewData = function () { if (visible()) render(false); };
+    window.renderPaymentsPage = render;
+    bindForm();
+    render(false);
+  }
+  if (document.readyState === 'complete') install(); else window.addEventListener('load', install);
+})();
   </script>
 
   <!-- ── Glass Gullak Money Pot Animation Script ── -->

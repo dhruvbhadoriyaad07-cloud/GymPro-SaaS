@@ -1,0 +1,140 @@
+<div id="payments-view" >
+  <div class="pay">
+
+    <div class="pay-bar">
+      <div>
+        <h2>Money overview</h2>
+        <p>What came in, what&rsquo;s pending, and who needs a nudge.</p>
+      </div>
+      <div class="pay-actions">
+        <button class="pay-btn ghost" type="button" data-pgo="members">View members</button>
+        <button class="pay-btn" type="button" data-pquick>+ Quick payment</button>
+        <button class="pay-btn green" type="button" onclick="openAddMemberModal()">+ New / renew member</button>
+      </div>
+    </div>
+
+    <div class="pay-kpis" id="pay-kpis"></div>
+
+    <div class="pay-r2">
+      <!-- MONEY POT (kept, moved next to the trend) -->
+      <section class="pay-card pay-pot">
+        <div class="pay-pot-h">
+          <div><b>THE MONEY POT</b><small>Value of active plans vs all plans</small></div>
+          <span class="pay-pill" id="squid-pot-status">0%</span>
+        </div>
+        <div class="gp-stage" id="stage">
+          <div class="gp-aura"></div>
+          <svg class="gp-jar" viewBox="0 0 300 360" aria-hidden="true">
+            <defs>
+              <path id="gpOutline" d="M150,14 C138,14 129,25 130,38 C131,49 139,53 140,62 C141,78 104,88 72,118 C42,146 26,186 28,226 C30,268 58,304 96,320 C86,324 72,330 68,338 C66,348 100,356 150,356 C200,356 234,348 232,338 C228,330 214,324 204,320 C242,304 270,268 272,226 C274,186 258,146 228,118 C196,88 159,78 160,62 C161,53 169,49 170,38 C171,25 162,14 150,14 Z"/>
+              <clipPath id="gpClip"><use href="#gpOutline"/></clipPath>
+              <linearGradient id="gpSheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".34"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+              <radialGradient id="gpGlass" cx="50%" cy="48%" r="62%"><stop offset=".58" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".18"/></radialGradient>
+              <radialGradient id="gpSpec" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+              <g id="gpBill">
+                <rect width="60" height="28" rx="3" style="fill:var(--c)"/>
+                <rect width="60" height="28" rx="3" fill="url(#gpSheen)"/>
+                <rect x="3.5" y="3.5" width="53" height="21" rx="2" fill="none" stroke="#E8F9D6" stroke-opacity=".5" stroke-dasharray="3 2"/>
+                <circle cx="30" cy="14" r="7.5" fill="#E8F9D6" fill-opacity=".22" stroke="#E8F9D6" stroke-opacity=".65"/>
+                <text x="30" y="18.2" text-anchor="middle" font-size="11" font-weight="700" fill="#F2FCE6" font-family="system-ui,sans-serif">₹</text>
+              </g>
+            </defs>
+            <ellipse cx="150" cy="354" rx="96" ry="8" fill="rgba(0,0,0,.5)" style="filter:blur(5px)"/>
+            <use href="#gpOutline" fill="rgba(255,255,255,.05)"/>
+            <g clip-path="url(#gpClip)"><g id="gpPile"></g></g>
+            <use href="#gpOutline" fill="url(#gpGlass)"/>
+            <path d="M70 124C44 150 32 186 34 226" stroke="#fff" stroke-opacity=".55" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M264 196C264 234 248 282 214 312" stroke="#fff" stroke-opacity=".22" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M137 24C134 32 134 42 138 50" stroke="#fff" stroke-opacity=".65" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <ellipse cx="100" cy="158" rx="17" ry="34" transform="rotate(-28 100 158)" fill="url(#gpSpec)"/>
+            <ellipse cx="150" cy="345" rx="62" ry="7" fill="none" stroke="#fff" stroke-opacity=".3"/>
+            <use href="#gpOutline" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2"/>
+            <rect x="116" y="126" width="68" height="3.4" rx="1.7" fill="#08101F" opacity=".92"/>
+            <rect x="116" y="129.6" width="68" height="1" rx=".5" fill="#fff" opacity=".3"/>
+          </svg>
+          <div class="gp-pct"><b id="squid-pot-percentage">0%</b><span>COLLECTED</span></div>
+        </div>
+        <div class="pay-pot-m">
+          <div><small>Total plan value</small><strong id="squid-expected-revenue">₹0</strong></div>
+          <div><small>Collected</small><strong id="squid-pot-collected" class="g">₹0</strong></div>
+          <div><small>Overdue</small><strong id="squid-remaining-revenue" class="y">₹0</strong></div>
+        </div>
+        <div class="pay-pot-f"><span id="squid-members-count">0 Members</span> &middot; collected = members whose plan is still running</div>
+      </section>
+
+      <section class="pay-card" id="pay-trend" style="--c:var(--grn)"></section>
+    </div>
+
+    <div class="pay-rangebar">
+      <span>Breakdown &amp; ledger for</span>
+      <div class="pay-seg" id="pay-range">
+        <button type="button" data-pr="today">Today</button>
+        <button type="button" data-pr="week">Last 7 days</button>
+        <button type="button" data-pr="month">This month</button>
+        <button type="button" data-pr="all">All time</button>
+      </div>
+    </div>
+
+    <div class="pay-r3">
+      <section class="pay-card" id="pay-mix" style="--c:var(--blu)"></section>
+      <section class="pay-card" id="pay-pending" style="--c:var(--yel)"></section>
+    </div>
+
+    <section class="pay-card" style="--c:var(--grn)">
+      <div class="pay-lh">
+        <h3>Payment ledger <span class="pay-count" id="pl-count">0</span></h3>
+        <div class="pay-tools">
+          <div class="pay-seg" id="pl-modes">
+            <button type="button" data-pm="all">All</button>
+            <button type="button" data-pm="Cash">Cash</button>
+            <button type="button" data-pm="UPI">UPI</button>
+            <button type="button" data-pm="Card">Card</button>
+          </div>
+          <select id="pl-type" class="pay-in" aria-label="Filter by type">
+            <option value="all">All types</option>
+            <option>New Membership</option>
+            <option>Renewal</option>
+            <option>Walk-in</option>
+            <option>Personal Training</option>
+            <option>Other</option>
+          </select>
+          <label class="pay-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="pl-q" type="search" placeholder="Search name or ID"></label>
+          <button class="pay-btn ghost sm" type="button" data-pexport>Export CSV</button>
+        </div>
+      </div>
+      <div class="pay-tr pay-th"><span>Member</span><span>Type</span><span>Mode</span><span>Date &amp; time</span><span style="text-align:right">Amount</span><span></span></div>
+      <div id="pl-rows"></div>
+      <div class="pay-lf" id="pl-foot"></div>
+    </section>
+
+  </div>
+
+  <!-- Quick payment (walk-in / personal training / other) -->
+  <div class="pay-modal" id="pay-quick" data-pclose-bg>
+    <form class="pay-dlg" id="pay-quick-form" autocomplete="off">
+      <h4>Quick payment</h4>
+      <p>For walk-ins, personal training and other one-off payments.</p>
+      <label for="pqn">Name</label>
+      <input class="pay-in" id="pqn" name="pqn" list="pay-names" required placeholder="e.g. Karan Mehta">
+      <datalist id="pay-names"></datalist>
+      <label>What is it for?</label>
+      <div class="pay-choice">
+        <label><input type="radio" name="pqt" value="Walk-in" checked><span>Walk-in</span></label>
+        <label><input type="radio" name="pqt" value="Personal Training"><span>Personal training</span></label>
+        <label><input type="radio" name="pqt" value="Other"><span>Other</span></label>
+      </div>
+      <label for="pqa">Amount (₹)</label>
+      <input class="pay-in" id="pqa" name="pqa" type="number" min="1" required placeholder="500">
+      <label>Payment mode</label>
+      <div class="pay-choice">
+        <label><input type="radio" name="pqm" value="Cash" checked><span>Cash</span></label>
+        <label><input type="radio" name="pqm" value="UPI"><span>UPI</span></label>
+        <label><input type="radio" name="pqm" value="Card"><span>Card</span></label>
+      </div>
+      <div class="pay-acts">
+        <button type="button" class="pay-btn ghost" data-pclose>Cancel</button>
+        <button type="submit" class="pay-btn green">Record payment</button>
+      </div>
+    </form>
+  </div>
+</div><!-- ════ End #payments-view ════ -->
