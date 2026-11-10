@@ -4014,6 +4014,8 @@
       collection,
       doc,
       addDoc,
+      setDoc,
+      getDoc,
       updateDoc,
       deleteDoc,
       getDocs,
@@ -4630,9 +4632,10 @@
 
     function updateCollectedKpi() {
       const planPrices = { '1 Month': 1500, 'Monthly': 1500, '2 Months': 2500, '3 Months': 4000, 'Quarterly': 4000, '6 Months': 7500, '1 Year': 12000, 'Yearly': 12000, 'Annual': 12000, 'Walk-in': 300 };
-      const membersList = (typeof allMembers !== 'undefined' && Array.isArray(allMembers) && allMembers.length > 0)
-        ? allMembers
-        : ((typeof window.allMembers !== 'undefined' && Array.isArray(window.allMembers)) ? window.allMembers : []);
+      const membersList = Array.isArray(allMembers) ? allMembers : (Array.isArray(window.allMembers) ? window.allMembers : []);
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
 
       let expected = 0;
       let collected = 0;
@@ -4640,20 +4643,33 @@
       membersList.forEach(m => {
         let fee = Number(m.amount) || Number(m.dueAmount) || planPrices[m.plan] || 1500;
         expected += fee;
-        if (m.status === 'active') {
+
+        const expDateStr = m.expiryDate || m.planExpiryDate || m.expiry;
+        let isExpired = false;
+        if (expDateStr) {
+          let expDate = null;
+          if (typeof expDateStr.toDate === 'function') expDate = expDateStr.toDate();
+          else if (expDateStr.seconds) expDate = new Date(expDateStr.seconds * 1000);
+          else expDate = new Date(expDateStr);
+          if (expDate && !isNaN(expDate.getTime())) {
+            expDate.setHours(0, 0, 0, 0);
+            if (expDate.getTime() < today.getTime()) isExpired = true;
+          }
+        }
+        const s = (m.status || '').toLowerCase();
+        if (s === 'active' || (!isExpired && s !== 'inactive' && s !== 'expired')) {
           collected += fee;
         }
       });
 
-      const finalCollected = collected > 0 ? collected : (window.currentPotCollected || 0);
-      window.currentPotCollected = finalCollected;
+      window.currentPotCollected = collected;
 
       const kpiCollectedEl = document.getElementById('kpi-today-cash');
       if (kpiCollectedEl) {
-        kpiCollectedEl.textContent = `₹${finalCollected.toLocaleString('en-IN')}`;
+        kpiCollectedEl.textContent = `₹${collected.toLocaleString('en-IN')}`;
       }
 
-      const pct = expected > 0 ? Math.min(100, Math.round((finalCollected / expected) * 100)) : 0;
+      const pct = expected > 0 ? Math.min(100, Math.round((collected / expected) * 100)) : 0;
       const barEl = document.getElementById('kpi-cash-progress-bar');
       if (barEl) {
         barEl.style.width = `${pct}%`;
@@ -5837,7 +5853,7 @@
             attendanceHistory: [],
             status: memberStatus
           };
-          const localMember = { id: `local-${Date.now()}`, ...newMemberDoc };
+          const localMember = { id: phone, ...newMemberDoc };
           allMembers.unshift(localMember);
           updateDashboardMembers([...allMembers]);
         }
@@ -5867,8 +5883,8 @@
                 status: memberStatus,
                 updatedAt: serverTimestamp()
               });
-            } else if (!isRenewal) {
-              await addDoc(collection(db, "members"), {
+            } else {
+              await setDoc(doc(db, "members", phone), {
                 memberId: targetMemberId,
                 name: name,
                 phone: phone,
@@ -5878,7 +5894,7 @@
                 expiryDate: planExpiryDate,
                 amount: amount,
                 paymentMode: paymentMode,
-                attendanceHistory: [],
+                attendanceHistory: (existingMember && existingMember.attendanceHistory) ? existingMember.attendanceHistory : [],
                 status: memberStatus,
                 createdAt: serverTimestamp()
               });
@@ -5943,7 +5959,8 @@
 
       try {
         for (const m of initialMembersData) {
-          await addDoc(collection(db, "members"), {
+          const docId = m.phone ? String(m.phone).trim() : (m.memberId || `demo-${Date.now()}`);
+          await setDoc(doc(db, "members", docId), {
             ...m,
             createdAt: serverTimestamp()
           });
@@ -6892,12 +6909,29 @@
       }
       const planPrices = { '1 Month': 1500, 'Monthly': 1500, '2 Months': 2500, '3 Months': 4000, 'Quarterly': 4000, '6 Months': 7500, '1 Year': 12000, 'Yearly': 12000, 'Annual': 12000, 'Walk-in': 300 };
       const membersList = (typeof allMembers !== 'undefined' && Array.isArray(allMembers)) ? allMembers : [];
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
       let expected = 0;
       let collected = 0;
       membersList.forEach(m => {
         let fee = Number(m.amount) || Number(m.dueAmount) || planPrices[m.plan] || 1500;
         expected += fee;
-        if (m.status === 'active') collected += fee;
+        const expDateStr = m.expiryDate || m.planExpiryDate || m.expiry;
+        let isExpired = false;
+        if (expDateStr) {
+          let expDate = null;
+          if (typeof expDateStr.toDate === 'function') expDate = expDateStr.toDate();
+          else if (expDateStr.seconds) expDate = new Date(expDateStr.seconds * 1000);
+          else expDate = new Date(expDateStr);
+          if (expDate && !isNaN(expDate.getTime())) {
+            expDate.setHours(0, 0, 0, 0);
+            if (expDate.getTime() < today.getTime()) isExpired = true;
+          }
+        }
+        const s = (m.status || '').toLowerCase();
+        if (s === 'active' || (!isExpired && s !== 'inactive' && s !== 'expired')) {
+          collected += fee;
+        }
       });
       window.currentPotCollected = collected;
       return expected;
@@ -7244,6 +7278,8 @@
     window.calculateExpectedRevenue = function () {
       const planPrices = { '1 Month': 1500, 'Monthly': 1500, '2 Months': 2500, '3 Months': 4000, 'Quarterly': 4000, '6 Months': 7500, '1 Year': 12000, 'Yearly': 12000, 'Annual': 12000, 'Walk-in': 300 };
       const membersList = (typeof allMembers !== 'undefined' && Array.isArray(allMembers)) ? allMembers : [];
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
 
       let expected = 0;
       let collected = 0;
@@ -7252,10 +7288,23 @@
         // Get the specific saved amount, or fallback to the plan's standard price
         let fee = Number(m.amount) || Number(m.dueAmount) || planPrices[m.plan] || 1500;
 
-        expected += fee; // Sum of ALL members' fees goes to Expected (16000)
+        expected += fee;
 
-        if (m.status === 'active') {
-          collected += fee; // Only ACTIVE (Paid) members go to Collected (8500)
+        const expDateStr = m.expiryDate || m.planExpiryDate || m.expiry;
+        let isExpired = false;
+        if (expDateStr) {
+          let expDate = null;
+          if (typeof expDateStr.toDate === 'function') expDate = expDateStr.toDate();
+          else if (expDateStr.seconds) expDate = new Date(expDateStr.seconds * 1000);
+          else expDate = new Date(expDateStr);
+          if (expDate && !isNaN(expDate.getTime())) {
+            expDate.setHours(0, 0, 0, 0);
+            if (expDate.getTime() < today.getTime()) isExpired = true;
+          }
+        }
+        const s = (m.status || '').toLowerCase();
+        if (s === 'active' || (!isExpired && s !== 'inactive' && s !== 'expired')) {
+          collected += fee;
         }
       });
 

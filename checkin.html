@@ -380,63 +380,41 @@
     }
 
     // ─────────────────────────────────────────
-    // CORE: query Firestore & mark attendance
+    // CORE: Direct getDoc lookup & mark attendance
     // ─────────────────────────────────────────
     async function markAttendance(phone) {
       const today = todayStr();
+      const enteredPhone = String(phone).trim();
 
-      // Variations of phone numbers: string, with country codes, number type
-      const phoneVariants = [
-        phone,
-        '+91' + phone,
-        '+91 ' + phone,
-        '91' + phone,
-        Number(phone)
-      ];
+      // Direct document lookup by Phone Number ID (O(1) lookup, adheres to strict 'allow get' Firestore rules)
+      let docRef = doc(db, 'members', enteredPhone);
+      let docSnap = await getDoc(docRef);
 
-      let targetDocRef = null;
+      if (docSnap.exists()) {
+        return await processMemberDoc(docSnap, docRef, today);
+      }
 
-      // 1. Query 'phone' field
-      for (const val of phoneVariants) {
-        try {
-          const q = query(collection(db, 'members'), where('phone', '==', val));
-          const snap = await getDocs(q);
-          if (!snap.empty) {
-            targetDocRef = doc(db, 'members', snap.docs[0].id);
-            break;
-          }
-        } catch (e) {
-          console.error("Firestore query error for phone=" + val, e);
-          throw e; // rethrow so error handler can display specific permission/connection error
+      // Fallback: If not found under exact entered string, check 10-digit variant
+      const digitsOnly = enteredPhone.replace(/\D/g, '');
+      const last10 = digitsOnly.length > 10 ? digitsOnly.slice(-10) : digitsOnly;
+      if (last10 && last10 !== enteredPhone) {
+        docRef = doc(db, 'members', last10);
+        docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          return await processMemberDoc(docSnap, docRef, today);
         }
       }
 
-      // 2. Query fallback fields (contact, phoneNumber, mobile) if not found
-      if (!targetDocRef) {
-        for (const field of ['contact', 'phoneNumber', 'mobile']) {
-          for (const val of [phone, '+91' + phone, Number(phone)]) {
-            try {
-              const q = query(collection(db, 'members'), where(field, '==', val));
-              const snap = await getDocs(q);
-              if (!snap.empty) {
-                targetDocRef = doc(db, 'members', snap.docs[0].id);
-                break;
-              }
-            } catch (e) {
-              // ignore fallback query errors
-            }
-          }
-          if (targetDocRef) break;
+      // Fallback: Check if saved with +91 country prefix
+      if (last10) {
+        docRef = doc(db, 'members', '+91' + last10);
+        docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          return await processMemberDoc(docSnap, docRef, today);
         }
       }
 
-      if (!targetDocRef) return null;
-
-      // Fetch fresh member document using getDoc
-      const memberSnap = await getDoc(targetDocRef);
-      if (!memberSnap.exists()) return null;
-
-      return await processMemberDoc(memberSnap, targetDocRef, today);
+      return null;
     }
 
     async function processMemberDoc(docSnap, docRef, today) {
