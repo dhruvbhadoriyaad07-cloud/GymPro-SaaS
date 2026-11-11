@@ -624,45 +624,48 @@
     /* Table Styling */
     .id {
       display: inline-block;
-      padding: 4px 14px;
+      padding: 2px 10px;
       border-radius: 99px;
       background: #EEF4FF;
       color: var(--blu);
       font-weight: 700;
-      font-size: 12px;
+      font-size: 11.5px;
+      line-height: 1.4;
     }
 
     .who {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
       min-width: 0;
     }
 
     .who b {
       display: block;
       font-weight: 700;
-      font-size: 15px;
+      font-size: 14px;
       color: var(--ink);
       text-transform: capitalize;
+      line-height: 1.2;
     }
 
     .who small {
       color: var(--muted);
-      font-size: 12.5px;
-      margin-top: 2px;
+      font-size: 11.5px;
+      margin-top: 1px;
       display: block;
+      line-height: 1.2;
     }
 
     .av {
-      width: 40px;
-      height: 40px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       display: grid;
       place-content: center;
       color: #fff;
       font-weight: 700;
-      font-size: 15px;
+      font-size: 13px;
       text-transform: uppercase;
       shrink: 0;
     }
@@ -701,7 +704,7 @@
 
     .tr {
       display: grid;
-      grid-template-columns: 140px minmax(200px, 1.6fr) minmax(150px, 1.1fr) minmax(150px, 1.1fr) 140px 70px;
+      grid-template-columns: 140px minmax(200px, 1.6fr) minmax(150px, 1.1fr) minmax(150px, 1.1fr) 140px minmax(80px, auto);
       gap: 16px;
       align-items: center;
       padding: 16px 8px;
@@ -749,42 +752,49 @@
       border-radius: 14px;
     }
 
-    /* Dashboard Expiry Table & Member Rows text color overrides for white cards */
+    /* Dashboard Expiry Table & Member Rows Premium Typography */
     #expiry-section table thead th {
-      color: #64708A !important;
+      color: #4b5563 !important; /* text-gray-600 */
+      font-size: 0.75rem !important; /* text-xs */
+      font-weight: 700 !important; /* font-bold */
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important; /* tracking-wider */
       border-bottom-color: #E3E8F1 !important;
     }
 
     #expiry-table-body tr,
+    tr.member-row {
+      font-weight: 500;
+    }
+
     #expiry-table-body tr td,
-    #expiry-table-body tr td *,
-    #expiry-table-body tr .member-name,
-    tr.member-row,
-    tr.member-row td,
-    tr.member-row .member-name {
-      color: #0F172A !important;
+    tr.member-row td {
+      color: #1f2937;
     }
 
     #expiry-table-body tr .member-name,
     tr.member-row .member-name {
-      font-weight: 600;
-      color: #0F172A !important;
+      font-size: 1rem !important; /* text-base */
+      font-weight: 600 !important; /* font-semibold */
+      color: #111827 !important; /* text-gray-900 */
     }
 
+    #expiry-table-body tr .member-id,
+    tr.member-row .member-id {
+      font-size: 0.875rem !important; /* text-sm */
+      font-weight: 400 !important; /* font-normal */
+      color: #6b7280 !important; /* text-gray-500 */
+    }
+
+    #expiry-table-body tr .member-plan,
+    #expiry-table-body tr .member-expiry-date,
     #expiry-table-body tr .member-phone,
-    tr.member-row .member-phone,
-    #expiry-table-body tr .font-mono,
-    tr.member-row .font-mono {
-      color: #334155 !important;
-    }
-
-    #expiry-table-body tr .text-neutral-500,
-    #expiry-table-body tr .text-neutral-400,
-    #expiry-table-body tr .text-neutral-300,
-    tr.member-row .text-neutral-500,
-    tr.member-row .text-neutral-400,
-    tr.member-row .text-neutral-300 {
-      color: #64708A !important;
+    tr.member-row .member-plan,
+    tr.member-row .member-expiry-date,
+    tr.member-row .member-phone {
+      font-size: 0.875rem !important; /* text-sm */
+      font-weight: 500 !important; /* font-medium */
+      color: #1f2937 !important; /* text-gray-800 */
     }
 
     #expiry-table-body tr .w-8.h-8,
@@ -794,11 +804,18 @@
       color: #2F6BFF !important;
     }
 
-    #expiry-table-body tr .badge,
-    tr.member-row .badge {
-      background: #F1F4F9 !important;
-      color: #0F172A !important;
-      border-color: #E2E8F0 !important;
+    #expiry-table-body tr .badge:not(.bg-red-100),
+    tr.member-row .badge:not(.bg-red-100) {
+      background: #F1F4F9;
+      color: #0F172A;
+      border-color: #E2E8F0;
+    }
+
+    #expiry-table-body tr .bg-red-100,
+    tr.member-row .bg-red-100 {
+      background-color: #fee2e2 !important;
+      color: #dc2626 !important;
+      border-color: transparent !important;
     }
 
     #expiry-table-body tr .badge.text-amber-300,
@@ -824,14 +841,31 @@
       background: #F8FAFC !important;
     }
 
-    #expiry-table-body tr button svg,
-    tr.member-row button svg {
+    #expiry-table-body tr button svg:not(.text-green-500):not(.text-red-500),
+    tr.member-row button svg:not(.text-green-500):not(.text-red-500) {
       color: #64708A;
     }
 
-    #expiry-table-body tr button:hover svg,
-    tr.member-row button:hover svg {
+    #expiry-table-body tr button:hover svg:not(.text-green-500):not(.text-red-500),
+    tr.member-row button:hover svg:not(.text-green-500):not(.text-red-500) {
       color: #0F172A;
+    }
+
+    #expiry-table-body tr button svg.text-green-500,
+    tr.member-row button svg.text-green-500 {
+      color: #22c55e !important;
+    }
+
+    #expiry-table-body tr button svg.text-red-500,
+    tr.member-row button svg.text-red-500 {
+      color: #ef4444 !important;
+    }
+
+    #expiry-table-body tr button:hover svg.text-red-500,
+    #expiry-table-body tr button svg.text-red-500:hover,
+    tr.member-row button:hover svg.text-red-500,
+    tr.member-row button svg.text-red-500:hover {
+      color: #b91c1c !important;
     }
 
     /* Status Pills inside table */
@@ -855,27 +889,39 @@
       display: none;
     }
 
+    .tr .st>span,
+    .tr .st .pill,
     .pill {
-      font-size: 12px;
-      font-weight: 700;
-      padding: 5px 16px;
-      border-radius: 99px;
-      white-space: nowrap;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-align: center !important;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      padding: 2px 10px !important;
+      padding-left: 10px !important;
+      padding-right: 10px !important;
+      border-radius: 99px !important;
+      white-space: nowrap !important;
+      width: auto !important;
+      min-width: 0 !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
     }
 
     .p-a {
-      background: #DDF7E8;
-      color: #0B7A43;
+      background: #DDF7E8 !important;
+      color: #0B7A43 !important;
     }
 
     .p-e {
-      background: #FFF1BF;
-      color: #8A5A00;
+      background: #FFF1BF !important;
+      color: #8A5A00 !important;
     }
 
     .p-x {
-      background: #FFDCDC;
-      color: #B4161F;
+      background: #FFDCDC !important;
+      color: #B4161F !important;
     }
 
     /* Action Buttons (WhatsApp/Edit) */
@@ -887,9 +933,9 @@
     }
 
     .ib {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
       display: grid;
       place-content: center;
       transition: .15s;
@@ -900,8 +946,8 @@
     }
 
     .ib svg {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       stroke: currentColor;
       fill: none;
       stroke-width: 1.8;
@@ -2576,64 +2622,6 @@
         min-width: 0 !important
       }
 
-      #members-directory-section .overflow-x-auto {
-        overflow-x: visible
-      }
-
-      .tr.th {
-        display: none !important
-      }
-
-      .tr {
-        grid-template-columns: minmax(0, 1fr) auto !important;
-        gap: 4px 12px !important;
-        padding: 12px 4px !important
-      }
-
-      #members-directory-body .tr>div:first-child {
-        display: none
-      }
-
-      #members-directory-body .tr .who {
-        grid-column: 1;
-        grid-row: 1
-      }
-
-      #members-directory-body .tr .act {
-        grid-column: 2;
-        grid-row: 1
-      }
-
-      #members-directory-body .tr .ph {
-        display: none
-      }
-
-      #members-directory-body .tr .ex {
-        grid-column: 1;
-        grid-row: 2;
-        padding-left: 54px;
-        display: flex;
-        align-items: baseline;
-        gap: 4px 8px;
-        flex-wrap: wrap
-      }
-
-      #members-directory-body .tr .ex b,
-      #members-directory-body .tr .ex small {
-        display: inline !important
-      }
-
-      #members-directory-body .tr .st {
-        grid-column: 2;
-        grid-row: 2;
-        justify-content: flex-end
-      }
-
-      #members-directory-body .pill {
-        font-size: 12px;
-        padding: 3px 10px
-      }
-
       .mp {
         display: inline
       }
@@ -3217,13 +3205,13 @@
               <table class="w-full text-sm text-left min-w-[720px]">
                 <thead>
                   <tr
-                    class="text-xs font-semibold text-slate-400 uppercase tracking-wide border-b border-slate-100 font-sans">
-                    <th class="pb-3 pr-4">Member</th>
-                    <th class="pb-3 pr-4">Plan</th>
-                    <th class="pb-3 pr-4">Expiry Date</th>
-                    <th class="pb-3 pr-4">Days Left</th>
-                    <th class="pb-3 pr-4">Contact</th>
-                    <th class="pb-3 min-w-[165px]">Actions</th>
+                    class="text-xs font-bold uppercase tracking-wider text-gray-600 border-b border-slate-200 font-sans">
+                    <th class="pb-3 pr-4 text-xs font-bold uppercase tracking-wider text-gray-600">MEMBER</th>
+                    <th class="pb-3 pr-4 text-xs font-bold uppercase tracking-wider text-gray-600">PLAN</th>
+                    <th class="pb-3 pr-4 text-xs font-bold uppercase tracking-wider text-gray-600">EXPIRY DATE</th>
+                    <th class="pb-3 pr-4 text-xs font-bold uppercase tracking-wider text-gray-600">DAYS LEFT</th>
+                    <th class="pb-3 pr-4 text-xs font-bold uppercase tracking-wider text-gray-600">CONTACT</th>
+                    <th class="pb-3 min-w-[165px] text-xs font-bold uppercase tracking-wider text-gray-600">ACTIONS</th>
                   </tr>
                 </thead>
                 <tbody id="expiry-table-body" class="divide-y divide-slate-100">
@@ -3376,23 +3364,9 @@
               <span class="hint">Filters as you type</span>
             </div>
 
-            <!-- Table Header & Body -->
-            <div class="overflow-x-auto">
-              <div style="min-width: 760px;">
-                <div class="tr th">
-                  <div>Member ID</div>
-                  <div>Name</div>
-                  <div>Phone</div>
-                  <div>Plan expiry</div>
-                  <div style="text-align: right;">Status</div>
-                  <div></div>
-                </div>
-
-                <!-- Table Rows Body -->
-                <div id="members-directory-body">
-                  <!-- Dynamically rendered via JS -->
-                </div>
-              </div>
+            <!-- Members Directory Body (Responsive: Desktop Table + Mobile Cards) -->
+            <div id="members-directory-body" class="w-full">
+              <!-- Dynamically rendered via JS -->
             </div>
 
             <!-- Compatibility hidden elements for search -->
@@ -3877,12 +3851,12 @@
           </div>
         </div>
 
-        <!-- Plan Dropdown & Expiry Date -->
+        <!-- Plan Dropdown & Start Date -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">Plan <span
                 class="text-white">*</span></label>
-            <select id="edit-member-plan" onchange="window.onEditPlanChange()"
+            <select id="edit-member-plan" onchange="window.onEditPlanChange('plan')" oninput="window.onEditPlanChange('plan')"
               class="w-full px-3 py-2.5 text-sm glass-input rounded-lg text-white outline-none transition-all duration-300 cursor-pointer">
               <option value="1 Month" data-months="1" data-price="1500" class="bg-neutral-900 text-white">1 Month -
                 ₹1500</option>
@@ -3898,22 +3872,20 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">Expiry Date <span
+            <label class="block text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">Start Date <span
                 class="text-white">*</span></label>
-            <input type="date" id="edit-member-expiry" required
+            <input type="date" id="edit-member-start-date" required onchange="window.onEditPlanChange('start-date')" oninput="window.onEditPlanChange('start-date')"
               class="w-full px-3 py-2.5 text-sm glass-input rounded-lg text-white outline-none transition-all duration-300 [color-scheme:dark]" />
           </div>
         </div>
 
-        <!-- Status & Amount -->
+        <!-- Expiry Date & Amount -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">Status</label>
-            <select id="edit-member-status"
-              class="w-full px-3 py-2.5 text-sm glass-input rounded-lg text-white outline-none transition-all duration-300 cursor-pointer">
-              <option value="active" class="bg-neutral-900 text-neutral-200">Active</option>
-              <option value="expired" class="bg-neutral-900 text-rose-400">Expired</option>
-            </select>
+            <label class="block text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">Expiry Date <span
+                class="text-white">*</span></label>
+            <input type="date" id="edit-member-expiry" required
+              class="w-full px-3 py-2.5 text-sm glass-input rounded-lg text-white outline-none transition-all duration-300 [color-scheme:dark]" />
           </div>
 
           <div>
@@ -4119,15 +4091,15 @@
     }
 
     function daysLeftBadge(days) {
-      if (days < 0) return `<span class="badge bg-rose-50 text-rose-700 border border-rose-200">Expired</span>`;
-      if (days === 0) return `<span class="badge bg-amber-50 text-amber-800 border border-amber-200">Today</span>`;
-      if (days <= 3) return `<span class="badge bg-amber-50 text-amber-800 border border-amber-200 font-semibold">${days}d left</span>`;
-      if (days <= 7) return `<span class="badge bg-amber-50/70 text-amber-700 border border-amber-200">${days}d left</span>`;
-      return `<span class="badge bg-slate-100 text-slate-700 border border-slate-200">${days}d left</span>`;
+      if (days < 0) return `<span class="badge bg-red-100 text-red-600 font-bold px-2.5 py-1 rounded-md text-xs">Expired</span>`;
+      if (days === 0) return `<span class="badge bg-amber-50 text-amber-800 border border-amber-200 text-xs font-semibold px-2.5 py-1 rounded-md">Today</span>`;
+      if (days <= 3) return `<span class="badge bg-amber-50 text-amber-800 border border-amber-200 text-xs font-semibold px-2.5 py-1 rounded-md">${days}d left</span>`;
+      if (days <= 7) return `<span class="badge bg-amber-50/70 text-amber-700 border border-amber-200 text-xs font-semibold px-2.5 py-1 rounded-md">${days}d left</span>`;
+      return `<span class="badge bg-slate-100 text-slate-800 border border-slate-200 text-xs font-medium px-2.5 py-1 rounded-md">${days}d left</span>`;
     }
 
     function planBadge(plan) {
-      return `<span class="badge bg-slate-100 text-slate-800 border border-slate-200 font-medium">${plan || 'Standard'}</span>`;
+      return `<span class="badge bg-slate-100 text-gray-800 border border-slate-200 text-xs sm:text-sm font-medium px-2.5 py-1 rounded-md inline-block">${plan || 'Standard'}</span>`;
     }
 
     function modeIcon(mode) {
@@ -4413,16 +4385,66 @@
       let countMonth = 0;
       let countExpired30 = 0;
 
-      // Plans breakdown
-      let planCounts = { Monthly: 0, Quarterly: 0, Annual: 0, 'Walk-in': 0 };
-
       membersList.forEach(m => {
-        const days = daysLeft(m.expiryDate || m.expiry);
+        const days = daysLeft(m.expiryDate || m.planExpiryDate || m.expiry);
         if (days === 0) countToday++;
         if (days >= 0 && days <= 7) countWeek++;
         if (days >= 0 && days <= 30) countMonth++;
         if (days < -30) countExpired30++;
+      });
 
+      const expWeekEl = document.getElementById('kpi-expiring-week');
+      if (expWeekEl) expWeekEl.textContent = countWeek;
+
+      // Filter tab counts
+      const cAll = document.getElementById('count-all');
+      const cToday = document.getElementById('count-today');
+      const cWeek = document.getElementById('count-week');
+      const cMonth = document.getElementById('count-month');
+      const cExpired30 = document.getElementById('count-expired-30');
+      if (cAll) cAll.textContent = membersList.length;
+      if (cToday) cToday.textContent = countToday;
+      if (cWeek) cWeek.textContent = countWeek;
+      if (cMonth) cMonth.textContent = countMonth;
+      if (cExpired30) cExpired30.textContent = countExpired30;
+
+      // Total Expired Members count for Red KPI Card
+      const expiredCount = (membersList || []).filter(m => (m.status || '').toLowerCase() === 'expired' || daysLeft(m.expiryDate || m.planExpiryDate || m.expiry) < 0).length;
+      if (document.getElementById('kpi-expired-count')) {
+        document.getElementById('kpi-expired-count').textContent = expiredCount;
+      }
+
+      const elExpired30 = document.getElementById('stat-expired-30') || document.getElementById('expired-30-count');
+      if (elExpired30) elExpired30.textContent = expiredCount.toLocaleString('en-IN');
+      const elExpired30Bar = document.getElementById('kpi-expired-30-bar');
+      if (elExpired30Bar) {
+        const pct30 = membersList.length > 0 ? Math.min(100, Math.round((expiredCount / membersList.length) * 100)) : 0;
+        elExpired30Bar.style.width = `${pct30}%`;
+      }
+
+      // 3. Update Membership Plans Card & Donut (Only Active / Unexpired Members)
+      const activeMembers = (membersList || []).filter(m => {
+        const s = (m.status || '').toLowerCase().trim();
+        if (s === 'inactive' || s === 'expired') return false;
+
+        const expDateStr = m.expiryDate || m.planExpiryDate || m.expiry;
+        if (!expDateStr) return false;
+
+        let expDate = null;
+        if (typeof expDateStr.toDate === 'function') expDate = expDateStr.toDate();
+        else if (expDateStr.seconds) expDate = new Date(expDateStr.seconds * 1000);
+        else expDate = new Date(expDateStr);
+
+        if (!expDate || isNaN(expDate.getTime())) return false;
+        expDate.setHours(0, 0, 0, 0);
+
+        return expDate.getTime() >= today.getTime();
+      });
+
+      const totalActivePlans = activeMembers.length;
+      const planCounts = { Monthly: 0, Quarterly: 0, Annual: 0, 'Walk-in': 0 };
+
+      activeMembers.forEach(m => {
         const rawPlan = (m.plan || '').toString().toLowerCase().trim();
         let planCat = 'Monthly';
 
@@ -4445,46 +4467,16 @@
         }
       });
 
-      const expWeekEl = document.getElementById('kpi-expiring-week');
-      if (expWeekEl) expWeekEl.textContent = countWeek;
-
-      // Filter tab counts
-      const cAll = document.getElementById('count-all');
-      const cToday = document.getElementById('count-today');
-      const cWeek = document.getElementById('count-week');
-      const cMonth = document.getElementById('count-month');
-      const cExpired30 = document.getElementById('count-expired-30');
-      if (cAll) cAll.textContent = membersList.length;
-      if (cToday) cToday.textContent = countToday;
-      if (cWeek) cWeek.textContent = countWeek;
-      if (cMonth) cMonth.textContent = countMonth;
-      if (cExpired30) cExpired30.textContent = countExpired30;
-
-      // Total Expired Members count for Red KPI Card
-      const expiredCount = (membersList || []).filter(m => (m.status || '').toLowerCase() === 'expired' || daysLeft(m.expiryDate || m.expiry) < 0).length;
-      if (document.getElementById('kpi-expired-count')) {
-        document.getElementById('kpi-expired-count').textContent = expiredCount;
-      }
-
-      const elExpired30 = document.getElementById('stat-expired-30') || document.getElementById('expired-30-count');
-      if (elExpired30) elExpired30.textContent = expiredCount.toLocaleString('en-IN');
-      const elExpired30Bar = document.getElementById('kpi-expired-30-bar');
-      if (elExpired30Bar) {
-        const pct30 = membersList.length > 0 ? Math.min(100, Math.round((expiredCount / membersList.length) * 100)) : 0;
-        elExpired30Bar.style.width = `${pct30}%`;
-      }
-
-      // 3. Update Membership Plans Card & Donut
-      const totalPlans = membersList.length || 1;
       const pMonthly = planCounts.Monthly;
       const pQuarterly = planCounts.Quarterly;
       const pAnnual = planCounts.Annual;
       const pWalkin = planCounts['Walk-in'];
 
-      const pctMonthly = membersList.length > 0 ? ((pMonthly / totalPlans) * 100).toFixed(1) : 0;
-      const pctQuarterly = membersList.length > 0 ? ((pQuarterly / totalPlans) * 100).toFixed(1) : 0;
-      const pctAnnual = membersList.length > 0 ? ((pAnnual / totalPlans) * 100).toFixed(1) : 0;
-      const pctWalkin = membersList.length > 0 ? Math.max(0, 100 - pctMonthly - pctQuarterly - pctAnnual).toFixed(1) : 0;
+      const totalForPct = totalActivePlans > 0 ? totalActivePlans : 1;
+      const pctMonthly = totalActivePlans > 0 ? ((pMonthly / totalForPct) * 100).toFixed(1) : 0;
+      const pctQuarterly = totalActivePlans > 0 ? ((pQuarterly / totalForPct) * 100).toFixed(1) : 0;
+      const pctAnnual = totalActivePlans > 0 ? ((pAnnual / totalForPct) * 100).toFixed(1) : 0;
+      const pctWalkin = totalActivePlans > 0 ? Math.max(0, 100 - pctMonthly - pctQuarterly - pctAnnual).toFixed(1) : 0;
 
       const elM = document.getElementById('plan-count-monthly');
       const elQ = document.getElementById('plan-count-quarterly');
@@ -4496,7 +4488,7 @@
       if (elQ) elQ.textContent = pQuarterly;
       if (elA) elA.textContent = pAnnual;
       if (elW) elW.textContent = pWalkin;
-      if (elT) elT.textContent = membersList.length;
+      if (elT) elT.textContent = totalActivePlans;
 
       const elPctM = document.getElementById('plan-pct-monthly');
       const elPctQ = document.getElementById('plan-pct-quarterly');
@@ -4510,7 +4502,7 @@
 
       const donut = document.getElementById('donut-chart-circle');
       if (donut) {
-        if (membersList.length === 0) {
+        if (totalActivePlans === 0) {
           donut.style.background = '#e2e8f0';
         } else {
           const stop1 = Number(pctMonthly);
@@ -4558,7 +4550,7 @@
       if (filtered.length === 0) {
         tbody.innerHTML = `
         <tr>
-          <td colspan="6" class="py-8 text-center text-sm text-gray-400">
+          <td colspan="6" class="py-8 text-center text-sm font-medium text-gray-500">
             No matching members found for this filter.
           </td>
         </tr>`;
@@ -4566,7 +4558,7 @@
       }
 
       tbody.innerHTML = filtered.map(m => {
-        const dateStr = m.expiryDate || m.expiry;
+        const dateStr = m.expiryDate || m.planExpiryDate || m.expiry;
         const days = daysLeft(dateStr);
         const isDue = days <= 0;
         const expDate = dateStr ? new Date(dateStr).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
@@ -4576,13 +4568,13 @@
         const safeName = (m.name || 'Member').replace(/'/g, "\\'");
 
         return `
-        <tr class="hover:bg-slate-50/80 transition-all duration-200 member-row" data-name="${(m.name || '').toLowerCase()}" data-phone="${(m.phone || '').toLowerCase()}">
-          <td class="py-3 pr-4">
+        <tr class="hover:bg-slate-50/80 transition-all duration-200 member-row font-medium" data-name="${(m.name || '').toLowerCase()}" data-phone="${(m.phone || '').toLowerCase()}">
+          <td class="py-3.5 pr-4">
             <div class="flex items-center gap-2.5">
               <div class="w-8 h-8 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 text-xs font-bold shrink-0 shadow-sm">${m.name ? m.name[0].toUpperCase() : 'M'}</div>
               <div>
                 <div class="flex items-center gap-2 flex-wrap">
-                  <p class="font-semibold text-slate-900 member-name">${m.name}</p>
+                  <p class="text-base font-semibold text-gray-900 member-name tracking-tight">${m.name}</p>
                   ${isDue ? `
                     <button type="button" onclick="window.sendWhatsAppReminder('${safeName}', '${m.phone || ''}', '${expDate}', ${dueAmount})" class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-md transition-all duration-200 cursor-pointer shadow-sm" title="Fee is due: Send WhatsApp Fee Reminder">
                       <svg class="w-3 h-3 fill-current text-amber-600" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
@@ -4590,15 +4582,17 @@
                     </button>
                   ` : ''}
                 </div>
-                <p class="text-xs text-slate-500 font-mono">${mId}</p>
+                <p class="text-sm font-normal text-gray-500 member-id mt-0.5">${mId}</p>
               </div>
             </div>
           </td>
-          <td class="py-3 pr-4">${planBadge(m.plan)}</td>
-          <td class="py-3 pr-4 text-slate-700 font-mono text-xs">${expDate}</td>
-          <td class="py-3 pr-4">${daysLeftBadge(days)}</td>
-          <td class="py-3 pr-4 text-slate-600 font-mono text-xs member-phone">${m.phone}</td>
-          <td class="py-3">
+          <td class="py-3.5 pr-4 text-sm font-medium text-gray-800 member-plan">${planBadge(m.plan)}</td>
+          <td class="py-3.5 pr-4 text-sm font-medium text-gray-800 member-expiry-date font-sans">${expDate}</td>
+          <td class="py-3.5 pr-4 text-sm font-medium member-days-left">
+            <span class="badge px-2.5 py-1 rounded-md text-xs ${days < 0 ? 'bg-red-100 text-red-600 font-bold' : (days <= 7 ? 'bg-amber-50 text-amber-800 border border-amber-200 font-semibold' : 'bg-slate-100 text-slate-800 border border-slate-200 font-medium')}">${days < 0 ? 'Expired' : (days === 0 ? 'Today' : days + 'd left')}</span>
+          </td>
+          <td class="py-3.5 pr-4 text-sm font-medium text-gray-800 member-phone font-sans">${m.phone || '—'}</td>
+          <td class="py-3.5">
             <div class="flex items-center gap-1.5">
               <!-- Edit Button -->
               <button type="button" onclick="window.openEditMemberModal('${m.id || mId}', '${(m.phone || '').replace(/'/g, '')}')" class="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-all duration-200 cursor-pointer" title="Edit member details" aria-label="Edit member">
@@ -4606,13 +4600,13 @@
               </button>
 
               <!-- Delete Button -->
-              <button type="button" onclick="window.deleteMember('${m.id || mId}', '${safeName}')" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-all duration-200 cursor-pointer" title="Delete member from Firestore" aria-label="Delete member">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              <button type="button" onclick="window.deleteMember('${m.id || mId}', '${safeName}')" class="p-1.5 hover:bg-red-50 rounded-md transition-all duration-200 cursor-pointer" title="Delete member from Firestore" aria-label="Delete member">
+                <svg class="w-4 h-4 text-red-500 hover:text-red-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
               </button>
 
               <!-- WhatsApp Fee Reminder Button -->
-              <button type="button" onclick="window.sendWhatsAppReminder('${safeName}', '${m.phone || ''}', '${expDate}', ${dueAmount})" class="p-1.5 ${isDue ? 'text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200' : 'text-slate-400 hover:text-green-600 hover:bg-green-50'} rounded-md transition-all duration-200 cursor-pointer" title="${isDue ? 'Fee Due: Send WhatsApp Reminder' : 'Send WhatsApp Reminder'}" aria-label="WhatsApp reminder">
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+              <button type="button" onclick="window.sendWhatsAppReminder('${safeName}', '${m.phone || ''}', '${expDate}', ${dueAmount})" class="p-1.5 hover:bg-green-50 rounded-md transition-all duration-200 cursor-pointer" title="Send WhatsApp Reminder" aria-label="WhatsApp reminder">
+                <svg class="w-4 h-4 fill-current text-green-500" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
               </button>
 
               <!-- Renew Button -->
@@ -5303,7 +5297,7 @@
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
-      container.innerHTML = list.map(m => {
+      const items = list.map(m => {
         const memberId = m.memberId || m.id || 'GYM-NEW';
         const name = m.name || 'Member';
         const initial = name ? name[0].toUpperCase() : 'M';
@@ -5347,68 +5341,160 @@
         const safePlan = (m.plan || 'Monthly').replace(/'/g, "\\'");
 
         let pillHtml = '';
-        let exClass = '';
         let daysText = '';
 
         if (status === 'active') {
-          pillHtml = '<span class="pill p-a">Active</span>';
-          exClass = '';
+          pillHtml = '<span class="inline-flex items-center justify-center px-2.5 py-1 text-xs font-bold bg-green-100 text-green-700 rounded-full">ACTIVE</span>';
           daysText = `${daysRemaining != null ? daysRemaining + ' days left' : 'Active'}`;
         } else if (status === 'soon') {
-          pillHtml = '<span class="pill p-e">Expiring soon</span>';
-          exClass = 'e';
-          daysText = `(${daysRemaining}d left)`;
+          pillHtml = '<span class="inline-flex items-center justify-center px-2.5 py-1 text-xs font-bold bg-amber-100 text-amber-700 rounded-full">EXPIRING SOON</span>';
+          daysText = `${daysRemaining} days left`;
         } else {
-          pillHtml = '<span class="pill p-x">Expired</span>';
-          exClass = 'x';
+          pillHtml = '<span class="inline-flex items-center justify-center px-2.5 py-1 text-xs font-bold bg-red-100 text-red-700 rounded-full">EXPIRED</span>';
           daysText = 'Expired';
         }
 
         const color = getAvatarColor(name);
         const planText = m.plan || 'Monthly';
 
-        return `
-        <div class="tr">
-          <!-- Member ID -->
-          <div>
-            <span class="id">${memberId}</span>
-          </div>
+        // Desktop Table Row (md:table view)
+        const desktopRow = `
+        <tr class="hover:bg-gray-50 transition-colors">
+          <!-- ID -->
+          <td class="px-4 py-2 whitespace-nowrap">
+            <span class="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-full">${memberId}</span>
+          </td>
 
-          <!-- Name & Avatar & Plan -->
-          <div class="who">
-            <div class="av" style="background: ${color};">${initial}</div>
-            <div>
-              <b>${name}</b>
-              <small>${planText}</small>
+          <!-- Name & Plan -->
+          <td class="px-4 py-2 whitespace-nowrap">
+            <div class="flex items-center gap-3">
+              <div class="flex-shrink-0 w-8 h-8 rounded-full text-white flex items-center justify-center font-bold text-sm" style="background: ${color};">${initial}</div>
+              <div>
+                <p class="text-sm font-semibold text-gray-900">${name}</p>
+                <p class="text-xs text-gray-500">${planText}</p>
+              </div>
+            </div>
+          </td>
+
+          <!-- Phone -->
+          <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900 font-sans">
+            ${displayPhone}
+          </td>
+
+          <!-- Expiry -->
+          <td class="px-4 py-2 whitespace-nowrap">
+            <p class="text-sm font-semibold text-gray-900 font-sans">${expDateFormatted}</p>
+            <p class="text-xs ${status === 'due' ? 'text-red-500 font-medium' : (status === 'soon' ? 'text-amber-500 font-medium' : 'text-gray-500')}">${daysText}</p>
+          </td>
+
+          <!-- Status -->
+          <td class="px-4 py-2 whitespace-nowrap text-center">
+            ${pillHtml}
+          </td>
+
+          <!-- Actions (Fixed width container for WhatsApp/Edit/Delete) -->
+          <td class="px-4 py-2 whitespace-nowrap">
+            <div class="flex items-center justify-end gap-2 w-24 ml-auto">
+              ${status !== 'active' ? `
+              <button type="button" onclick="sendWhatsAppReminder('${safeName}', '${safePhone}', '${expDateFormatted}')" class="p-1.5 text-green-500 hover:text-green-700 hover:bg-green-50 rounded-md transition-colors cursor-pointer" title="Send WhatsApp Reminder">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3.1.8.8-3-.2-.3A8 8 0 1 1 12 20zm4.4-6c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1s-.7.8-.8 1c-.1.1-.3.2-.5.1a6.6 6.6 0 0 1-2-1.3 7.3 7.3 0 0 1-1.4-1.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.1.2-.3.3-.4a.4.4 0 0 0 0-.4l-.8-2c-.2-.5-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3A3.1 3.1 0 0 0 7 8.2a5.4 5.4 0 0 0 1.1 2.9 12.3 12.3 0 0 0 4.8 4.2c.7.3 1.2.5 1.6.6a3.8 3.8 0 0 0 1.8.1 3 3 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.5-.3z"/></svg>
+              </button>` : ''}
+              <button type="button" onclick="openEditMemberModal('${m.id || memberId}', '${safePhone}')" class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors cursor-pointer" title="Edit Member">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+              </button>
+              <button type="button" onclick="window.deleteMember('${m.id || memberId}', '${safeName}')" class="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors cursor-pointer" title="Delete Member">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+              </button>
+            </div>
+          </td>
+        </tr>`;
+
+        // Mobile Card (block md:hidden view)
+        const mobileCard = `
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-sm space-y-3">
+          <!-- Top Row: Member Name & ID at top left, Status Badge at top right -->
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white text-sm shrink-0" style="background: ${color};">
+                ${initial}
+              </div>
+              <div class="min-w-0">
+                <h4 class="text-base font-bold text-gray-900 truncate tracking-tight leading-snug">${name}</h4>
+                <span class="inline-block text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md mt-0.5 tracking-wide">${memberId}</span>
+              </div>
+            </div>
+            <div class="shrink-0 pt-0.5">
+              ${pillHtml}
             </div>
           </div>
 
-          <!-- Phone -->
-          <div class="ph">${displayPhone}</div>
-
-          <!-- Plan Expiry -->
-          <div class="ex ${exClass}">
-            <b>${expDateFormatted}</b>
-            <small>${daysText}</small>
+          <!-- Middle: Phone number, Plan type, Expiry Date stacked cleanly -->
+          <div class="pt-2.5 border-t border-slate-100 space-y-2 text-sm">
+            <div class="flex items-center justify-between text-slate-600">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Phone</span>
+              <span class="font-medium text-slate-800 font-sans">${displayPhone}</span>
+            </div>
+            <div class="flex items-center justify-between text-slate-600">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Plan</span>
+              <span class="font-semibold text-slate-800">${planText}</span>
+            </div>
+            <div class="flex items-center justify-between text-slate-600">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Expiry Date</span>
+              <div class="text-right">
+                <span class="font-medium text-slate-800 font-sans">${expDateFormatted}</span>
+                ${daysText ? `<span class="text-xs ml-1 font-semibold ${status === 'due' ? 'text-red-600' : (status === 'soon' ? 'text-amber-600' : 'text-slate-500')}">(${daysText})</span>` : ''}
+              </div>
+            </div>
           </div>
 
-          <!-- Status -->
-          <div class="st">
-            ${pillHtml}
-          </div>
-
-          <!-- Actions -->
-          <div class="act">
-            ${status !== 'active' ? `
-            <button class="ib wa" onclick="sendWhatsAppReminder('${safeName}', '${safePhone}', '${safePlan}', '${expDateFormatted}')" title="Send WhatsApp Reminder">
-              <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3.1.8.8-3-.2-.3A8 8 0 1 1 12 20zm4.4-6c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1s-.7.8-.8 1c-.1.1-.3.2-.5.1a6.6 6.6 0 0 1-2-1.3 7.3 7.3 0 0 1-1.4-1.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.1.2-.3.3-.4a.4.4 0 0 0 0-.4l-.8-2c-.2-.5-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3A3.1 3.1 0 0 0 7 8.2a5.4 5.4 0 0 0 1.1 2.9 12.3 12.3 0 0 0 4.8 4.2c.7.3 1.2.5 1.6.6a3.8 3.8 0 0 0 1.8.1 3 3 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.5-.3z"/></svg>
-            </button>` : ''}
-            <button class="ib" onclick="openEditMemberModal('${m.id || memberId}')" title="Edit Member">
-              <svg viewBox="0 0 24 24"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+          <!-- Bottom: Action buttons (Edit, Delete, WhatsApp) in a flex row -->
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5 flex-wrap">
+            <button type="button" onclick="sendWhatsAppReminder('${safeName}', '${safePhone}', '${expDateFormatted}')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 active:scale-95 rounded-lg transition-all cursor-pointer shadow-xs" title="Send WhatsApp Reminder">
+              <svg class="w-3.5 h-3.5 fill-current text-emerald-600" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3.1.8.8-3-.2-.3A8 8 0 1 1 12 20zm4.4-6c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1s-.7.8-.8 1c-.1.1-.3.2-.5.1a6.6 6.6 0 0 1-2-1.3 7.3 7.3 0 0 1-1.4-1.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.1.2-.3.3-.4a.4.4 0 0 0 0-.4l-.8-2c-.2-.5-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3A3.1 3.1 0 0 0 7 8.2a5.4 5.4 0 0 0 1.1 2.9 12.3 12.3 0 0 0 4.8 4.2c.7.3 1.2.5 1.6.6a3.8 3.8 0 0 0 1.8.1 3 3 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.5-.3z"/></svg>
+              <span>WhatsApp</span>
+            </button>
+            <button type="button" onclick="openEditMemberModal('${m.id || memberId}', '${safePhone}')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 active:scale-95 rounded-lg transition-all cursor-pointer shadow-xs" title="Edit Member">
+              <svg class="w-3.5 h-3.5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+              <span>Edit</span>
+            </button>
+            <button type="button" onclick="window.deleteMember('${m.id || memberId}', '${safeName}')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 active:scale-95 rounded-lg transition-all cursor-pointer shadow-xs" title="Delete Member">
+              <svg class="w-3.5 h-3.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              <span>Delete</span>
             </button>
           </div>
         </div>`;
-      }).join('');
+
+        return { desktopRow, mobileCard };
+      });
+
+      const desktopRowsHtml = items.map(i => i.desktopRow).join('');
+      const mobileCardsHtml = items.map(i => i.mobileCard).join('');
+
+      container.innerHTML = `
+        <!-- Desktop View (md:table / md:block) -->
+        <div class="hidden md:block overflow-x-auto w-full">
+          <table class="w-full text-left border-collapse" style="min-width: 760px;">
+            <thead class="text-xs uppercase text-gray-400 bg-gray-50 border-y border-gray-100">
+              <tr>
+                <th class="py-2 px-4">Member ID</th>
+                <th class="py-2 px-4">Name</th>
+                <th class="py-2 px-4">Phone</th>
+                <th class="py-2 px-4">Plan expiry</th>
+                <th class="py-2 px-4 text-center">Status</th>
+                <th class="w-24 py-2 px-4 text-right"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 bg-white">
+              ${desktopRowsHtml}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile View (block md:hidden) -->
+        <div class="block md:hidden space-y-3 w-full">
+          ${mobileCardsHtml}
+        </div>
+      `;
     }
 
     window.renderMembersDirectoryTable = renderMembersDirectoryTable;
@@ -6276,10 +6362,16 @@
       memberPlanSelect.addEventListener('change', () => window.onPlanChange && window.onPlanChange());
     }
 
-    // Edit Member Modal Plan Dropdown change listener
+    // Edit Member Modal Plan Dropdown & Start Date change and input listeners
     const editMemberPlanSelect = document.getElementById('edit-member-plan');
     if (editMemberPlanSelect) {
-      editMemberPlanSelect.addEventListener('change', () => window.onEditPlanChange && window.onEditPlanChange());
+      editMemberPlanSelect.addEventListener('change', () => window.onEditPlanChange && window.onEditPlanChange('plan'));
+      editMemberPlanSelect.addEventListener('input', () => window.onEditPlanChange && window.onEditPlanChange('plan'));
+    }
+    const editMemberStartDateInput = document.getElementById('edit-member-start-date');
+    if (editMemberStartDateInput) {
+      editMemberStartDateInput.addEventListener('change', () => window.onEditPlanChange && window.onEditPlanChange('start-date'));
+      editMemberStartDateInput.addEventListener('input', () => window.onEditPlanChange && window.onEditPlanChange('start-date'));
     }
 
     // ── Edit Member Modal Functions ──────────────────────
@@ -6300,8 +6392,8 @@
       const editName = document.getElementById('edit-member-name');
       const editPhone = document.getElementById('edit-member-phone');
       const editPlan = document.getElementById('edit-member-plan');
+      const editStartDate = document.getElementById('edit-member-start-date');
       const editExpiry = document.getElementById('edit-member-expiry');
-      const editStatus = document.getElementById('edit-member-status');
       const editAmount = document.getElementById('edit-member-amount');
 
       if (editDocId) {
@@ -6340,9 +6432,39 @@
       if (editPlan) {
         editPlan.value = normalizedPlan;
         if (!editPlan.value) editPlan.value = '1 Month';
+        editPlan.setAttribute('data-old-plan', editPlan.value);
       }
+      window.currentEditOldPlan = editPlan ? editPlan.value : normalizedPlan;
 
-      // Format expiry date as YYYY-MM-DD for date input
+      // Format Start Date as YYYY-MM-DD (default to today if missing/invalid)
+      let oldStartFormatted = '';
+      const rawStart = member.startDate || member.joiningDate || member.joinDate || member.createdDate || member.date || '';
+      if (rawStart) {
+        const sd = new Date(rawStart);
+        if (!isNaN(sd.getTime())) {
+          const yyyy = sd.getFullYear();
+          const mm = String(sd.getMonth() + 1).padStart(2, '0');
+          const dd = String(sd.getDate()).padStart(2, '0');
+          oldStartFormatted = `${yyyy}-${mm}-${dd}`;
+        } else if (typeof rawStart === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(rawStart)) {
+          oldStartFormatted = rawStart;
+        }
+      }
+      if (!oldStartFormatted) {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        oldStartFormatted = `${yyyy}-${mm}-${dd}`;
+      }
+      if (editStartDate) {
+        editStartDate.value = oldStartFormatted;
+        editStartDate.setAttribute('data-old-start-date', oldStartFormatted);
+      }
+      window.currentEditOldStartDate = oldStartFormatted;
+
+      // Format expiry date as YYYY-MM-DD for date input and store oldExpiryDate
+      let oldExpiryFormatted = '';
       if (editExpiry) {
         let rawDate = member.expiryDate || member.planExpiryDate || member.expiry || '';
         if (rawDate) {
@@ -6351,20 +6473,19 @@
             const yyyy = d.getFullYear();
             const mm = String(d.getMonth() + 1).padStart(2, '0');
             const dd = String(d.getDate()).padStart(2, '0');
-            editExpiry.value = `${yyyy}-${mm}-${dd}`;
+            oldExpiryFormatted = `${yyyy}-${mm}-${dd}`;
+            editExpiry.value = oldExpiryFormatted;
           } else {
-            editExpiry.value = rawDate;
+            oldExpiryFormatted = String(rawDate);
+            editExpiry.value = oldExpiryFormatted;
           }
         } else {
           editExpiry.value = '';
+          oldExpiryFormatted = '';
         }
+        editExpiry.setAttribute('data-old-expiry', oldExpiryFormatted);
       }
-
-      // Determine status
-      if (editStatus) {
-        const days = daysLeft(member.expiryDate || member.planExpiryDate || member.expiry);
-        editStatus.value = days <= 0 ? 'expired' : 'active';
-      }
+      window.currentEditOldExpiryDate = oldExpiryFormatted;
 
       // Amount
       if (editAmount) {
@@ -6411,8 +6532,12 @@
       }
     };
 
-    window.onEditPlanChange = function () {
+    window.onEditPlanChange = function (source) {
       const planSelect = document.getElementById('edit-member-plan');
+      const startDateInput = document.getElementById('edit-member-start-date');
+      const expiryEl = document.getElementById('edit-member-expiry');
+      const amtEl = document.getElementById('edit-member-amount');
+
       if (!planSelect) return;
       const selectedOption = planSelect.options[planSelect.selectedIndex];
       if (!selectedOption) return;
@@ -6420,66 +6545,85 @@
       // 1. Months mapping
       const monthMap = {
         '1 Month': 1,
+        'Monthly': 1,
         '2 Months': 2,
         '3 Months': 3,
+        'Quarterly': 3,
         '6 Months': 6,
-        '1 Year': 12
+        '1 Year': 12,
+        'Yearly': 12,
+        'Annual': 12,
+        'Walk-in': 1
       };
       const months = parseInt(selectedOption.getAttribute('data-months'), 10) || monthMap[planSelect.value] || 1;
 
-      // 2. Extract price (from data-price attribute or option text)
-      let price = selectedOption.getAttribute('data-price');
-      if (!price) {
-        const match = selectedOption.textContent.match(/₹\s*(\d+)/i) || selectedOption.textContent.match(/(\d+)/);
-        if (match) price = match[1] || match[0];
-      }
-      const finalPrice = parseInt(price, 10) || 1500;
-
-      // Update Plan Amount (₹) input
-      const amtEl = document.getElementById('edit-member-amount');
-      if (amtEl) amtEl.value = finalPrice;
-
-      // 3. Expiry date calculation based on member's existing start date (if applicable) or today
-      const editDocIdEl = document.getElementById('edit-doc-id');
-      const docId = editDocIdEl?.value;
-      const member = (typeof allMembers !== 'undefined' && Array.isArray(allMembers))
-        ? allMembers.find(m => (m.id === docId || m.memberId === docId))
-        : null;
-
-      const existingStartDate = member?.startDate || editDocIdEl?.getAttribute('data-start-date');
-
-      let baseDate = new Date();
-      if (existingStartDate) {
-        const parts = existingStartDate.split('-');
+      // 2. Read current Start Date (if empty, default to today's date)
+      let startVal = (startDateInput && startDateInput.value) ? startDateInput.value.trim() : '';
+      let baseDate;
+      if (startVal) {
+        const parts = startVal.split('-');
         if (parts.length === 3) {
-          const parsed = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
-          if (!isNaN(parsed.getTime())) baseDate = parsed;
+          baseDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
         } else {
-          const parsed = new Date(existingStartDate);
-          if (!isNaN(parsed.getTime())) baseDate = parsed;
+          baseDate = new Date(startVal);
         }
       }
+      if (!baseDate || isNaN(baseDate.getTime())) {
+        baseDate = new Date();
+        baseDate.setHours(0, 0, 0, 0);
+        const yyyy = baseDate.getFullYear();
+        const mm = String(baseDate.getMonth() + 1).padStart(2, '0');
+        const dd = String(baseDate.getDate()).padStart(2, '0');
+        startVal = `${yyyy}-${mm}-${dd}`;
+        if (startDateInput) startDateInput.value = startVal;
+      }
 
-      // Add selected months to baseDate
+      // 3. Calculate new Expiry Date starting from Start Date + months
+      const targetDay = baseDate.getDate();
       const expiry = new Date(baseDate);
-      expiry.setMonth(expiry.getMonth() + months);
+      expiry.setMonth(baseDate.getMonth() + months);
+      // Handle month-end rollover (e.g. Jan 31 + 1 month -> Feb 28/29 instead of Mar 2/3)
+      if (expiry.getDate() !== targetDay) {
+        expiry.setDate(0);
+      }
 
       const yyyy = expiry.getFullYear();
       const mm = String(expiry.getMonth() + 1).padStart(2, '0');
       const dd = String(expiry.getDate()).padStart(2, '0');
       const formattedExpiry = `${yyyy}-${mm}-${dd}`;
 
-      const expiryEl = document.getElementById('edit-member-expiry');
-      if (expiryEl) expiryEl.value = formattedExpiry;
+      // Auto-fill 'Expiry Date' input field with newly calculated date
+      if (expiryEl) {
+        expiryEl.value = formattedExpiry;
+        expiryEl.dispatchEvent(new Event('input', { bubbles: true }));
+        expiryEl.dispatchEvent(new Event('change', { bubbles: true }));
+      }
 
-      // 4. Update Status dropdown based on new expiry date
-      const statusEl = document.getElementById('edit-member-status');
-      if (statusEl) {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const expCheck = new Date(expiry);
-        expCheck.setHours(0, 0, 0, 0);
-        statusEl.value = (expCheck.getTime() < today.getTime()) ? 'expired' : 'active';
+      // 4. Auto-fill 'Plan Amount' field when Plan changes (source !== 'start-date')
+      if (source !== 'start-date') {
+        const priceMap = {
+          '1 Month': 1500,
+          'Monthly': 1500,
+          '2 Months': 2500,
+          '3 Months': 4000,
+          'Quarterly': 4000,
+          '6 Months': 7500,
+          '1 Year': 12000,
+          'Yearly': 12000,
+          'Annual': 12000,
+          'Walk-in': 300
+        };
+        let price = selectedOption.getAttribute('data-price');
+        if (!price) {
+          const match = selectedOption.textContent.match(/₹\s*(\d+)/i) || selectedOption.textContent.match(/(\d+)/);
+          if (match) price = match[1] || match[0];
+        }
+        const finalPrice = parseInt(price, 10) || priceMap[planSelect.value] || 1500;
+        if (amtEl) {
+          amtEl.value = finalPrice;
+          amtEl.dispatchEvent(new Event('input', { bubbles: true }));
+          amtEl.dispatchEvent(new Event('change', { bubbles: true }));
+        }
       }
     };
 
@@ -6489,8 +6633,8 @@
       const name = document.getElementById('edit-member-name').value.trim();
       const phone = document.getElementById('edit-member-phone').value.trim();
       const plan = document.getElementById('edit-member-plan').value;
-      const expiryDate = document.getElementById('edit-member-expiry').value;
-      const status = document.getElementById('edit-member-status').value;
+      const currentStartDate = (document.getElementById('edit-member-start-date').value || '').trim();
+      const newExpiryDate = (document.getElementById('edit-member-expiry').value || '').trim();
       const amount = Number(document.getElementById('edit-member-amount').value) || 0;
 
       const btnSubmit = document.getElementById('btn-edit-submit');
@@ -6501,53 +6645,151 @@
       if (btnSpinner) btnSpinner.classList.remove('hidden');
       if (btnSubmit) btnSubmit.disabled = true;
 
+      // Old values captured when opening modal
+      const oldPlan = (window.currentEditOldPlan !== undefined
+        ? window.currentEditOldPlan
+        : (document.getElementById('edit-member-plan')?.getAttribute('data-old-plan') || '')).trim();
+
+      const oldStartDate = (window.currentEditOldStartDate !== undefined
+        ? window.currentEditOldStartDate
+        : (document.getElementById('edit-member-start-date')?.getAttribute('data-old-start-date') || '')).trim();
+
+      // Check if Plan or Start Date was actually modified
+      const isPlanModified = Boolean(oldPlan && plan !== oldPlan);
+      const isStartDateModified = Boolean(oldStartDate && currentStartDate !== oldStartDate);
+
+      // Transaction Rule: Only log a new transaction if 'Plan Amount' > 0 AND ('Plan' or 'Start Date' was actually modified)
+      const shouldLogTransaction = (amount > 0) && (isPlanModified || isStartDateModified);
+
+      // Automatically determine active / expired status based on newExpiryDate
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const todayIso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+      const computedStatus = (newExpiryDate && newExpiryDate >= todayIso) ? 'active' : 'expired';
+
       try {
-        if (isFirebaseLive && db && docId && !docId.startsWith('demo-')) {
-          const memberRef = doc(db, "members", docId);
-          await updateDoc(memberRef, {
-            name, phone, plan, expiryDate, planExpiryDate: expiryDate, expiry: expiryDate, status, amount, updatedAt: serverTimestamp()
+        const member = (typeof allMembers !== 'undefined' && Array.isArray(allMembers))
+          ? allMembers.find(m => (m.id === docId || m.memberId === docId))
+          : null;
+        const targetMemberId = member?.memberId || docId;
+
+        if (shouldLogTransaction) {
+          // ── Case 1: Plan or Start Date Modified with Amount > 0 (Log New Transaction) ──
+          // 1. Update member plan details in Firestore
+          if (isFirebaseLive && db && docId && !docId.startsWith('demo-')) {
+            const memberRef = doc(db, "members", docId);
+            await updateDoc(memberRef, {
+              name,
+              phone,
+              plan,
+              startDate: currentStartDate,
+              expiryDate: newExpiryDate,
+              planExpiryDate: newExpiryDate,
+              expiry: newExpiryDate,
+              status: computedStatus,
+              amount,
+              dueAmount: amount,
+              updatedAt: serverTimestamp()
+            });
+
+            // 2. Log a NEW transaction with the 'Plan Amount' in Firestore
+            const now = new Date();
+            const txDateIso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+            const currentTimeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const newTxDoc = {
+              name: name,
+              memberId: targetMemberId,
+              amount: amount,
+              mode: member?.paymentMode || 'Cash',
+              type: 'Renewal',
+              time: currentTimeStr,
+              date: txDateIso,
+              d: txDateIso
+            };
+
+            await addDoc(collection(db, "transactions"), {
+              ...newTxDoc,
+              createdAt: serverTimestamp()
+            });
+          }
+
+          // 3. Update Member Locally
+          const memberIdx = allMembers.findIndex(m => (m.id === docId || m.memberId === docId));
+          if (memberIdx !== -1) {
+            allMembers[memberIdx] = {
+              ...allMembers[memberIdx],
+              name,
+              phone,
+              plan,
+              startDate: currentStartDate,
+              expiryDate: newExpiryDate,
+              planExpiryDate: newExpiryDate,
+              expiry: newExpiryDate,
+              status: computedStatus,
+              amount,
+              dueAmount: amount
+            };
+          }
+
+          // 4. Log transaction locally & update revenue
+          const now = new Date();
+          const txDateIso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+          const currentTimeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          allTransactions.unshift({
+            id: `tx-renew-${Date.now()}`,
+            name: name,
+            memberId: targetMemberId,
+            amount: amount,
+            mode: member?.paymentMode || 'Cash',
+            type: 'Renewal',
+            time: currentTimeStr,
+            date: txDateIso,
+            d: txDateIso
           });
 
-          try {
-            const txQuery = query(collection(db, "transactions"), where("memberId", "==", docId));
-            const querySnapshot = await getDocs(txQuery);
-            if (!querySnapshot.empty) {
-              for (const txDoc of querySnapshot.docs) {
-                await updateDoc(txDoc.ref, { amount, updatedAt: serverTimestamp() });
-              }
-            } else {
-              const nameQuery = query(collection(db, "transactions"), where("name", "==", name));
-              const nameSnapshot = await getDocs(nameQuery);
-              for (const txDoc of nameSnapshot.docs) {
-                await updateDoc(txDoc.ref, { amount, updatedAt: serverTimestamp() });
-              }
-            }
-          } catch (e) {
-            console.warn("Firestore tx update error", e);
+          updateDashboardMembers([...allMembers]);
+          updateDashboardTransactions([...allTransactions]);
+          showToast(`Membership renewed for "${name}"! ₹${amount.toLocaleString('en-IN')} added.`, 'success');
+
+        } else {
+          // ── Case 2: Simple Profile Edit (Plan & Start Date Unchanged, or Amount <= 0) ──
+          // Update ONLY profile details in Firestore. DO NOT log a new transaction or add to revenue.
+          if (isFirebaseLive && db && docId && !docId.startsWith('demo-')) {
+            const memberRef = doc(db, "members", docId);
+            await updateDoc(memberRef, {
+              name,
+              phone,
+              plan,
+              startDate: currentStartDate,
+              expiryDate: newExpiryDate,
+              planExpiryDate: newExpiryDate,
+              expiry: newExpiryDate,
+              status: computedStatus,
+              updatedAt: serverTimestamp()
+            });
           }
-        }
 
-        // Update Member Locally
-        const memberIdx = allMembers.findIndex(m => (m.id === docId || m.memberId === docId));
-        if (memberIdx !== -1) {
-          allMembers[memberIdx] = {
-            ...allMembers[memberIdx],
-            name, phone, plan, expiryDate, planExpiryDate: expiryDate, expiry: expiryDate, status, amount, dueAmount: amount
-          };
-        }
-
-        // FORCE Transaction Ledger Update
-        for (let i = 0; i < allTransactions.length; i++) {
-          const t = allTransactions[i];
-          if (t.memberId === docId || t.id === docId || (t.name || '').toLowerCase() === name.toLowerCase()) {
-            allTransactions[i].amount = amount; // Overwrite old amount with new edited amount
+          // Update Member Locally
+          const memberIdx = allMembers.findIndex(m => (m.id === docId || m.memberId === docId));
+          if (memberIdx !== -1) {
+            allMembers[memberIdx] = {
+              ...allMembers[memberIdx],
+              name,
+              phone,
+              plan,
+              startDate: currentStartDate,
+              expiryDate: newExpiryDate,
+              planExpiryDate: newExpiryDate,
+              expiry: newExpiryDate,
+              status: computedStatus
+            };
           }
+
+          // DO NOT log a new transaction or mutate transaction amounts!
+          updateDashboardMembers([...allMembers]);
+          showToast(`Profile for "${name}" updated successfully!`, 'success');
         }
 
-        updateDashboardMembers([...allMembers]);
-        updateDashboardTransactions([...allTransactions]);
-
-        showToast(`Member "${name}" updated successfully!`, 'success');
         window.closeEditMemberModal();
       } catch (err) {
         console.error("Error updating member:", err);
