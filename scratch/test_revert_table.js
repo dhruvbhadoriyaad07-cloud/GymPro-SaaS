@@ -12,8 +12,8 @@ assert(html.includes('<thead class="text-xs uppercase text-gray-400 bg-gray-50 b
 // 3. Check tbody styling
 assert(html.includes('<tbody class="divide-y divide-gray-100 bg-white">'), 'Tbody must have divide-y divide-gray-100 bg-white');
 
-// 4. Check Actions column header has w-24
-assert(html.includes('<th class="w-24 py-2 px-4 text-right"></th>'), 'Actions header must have w-24 py-2 px-4 text-right');
+// 4. Check Actions column header has fixed w-52 width
+assert(html.includes('<th class="w-52 py-2 px-4 text-right"></th>'), 'Actions header must have w-52 py-2 px-4 text-right');
 
 // 5. Ensure compact padding px-4 py-2 whitespace-nowrap on all td elements in desktopRow
 const desktopRowRegex = /const desktopRow = `([\s\S]*?)`;/;
@@ -25,14 +25,18 @@ assert(!desktopRow.includes('h-32') && !desktopRow.includes('h-full') && !deskto
 assert(!desktopRow.includes('py-3') && !desktopRow.includes('py-4') && !desktopRow.includes('py-10') && !desktopRow.includes('py-16'), 'No large padding on desktopRow td');
 assert((desktopRow.match(/px-4 py-2 whitespace-nowrap/g) || []).length === 6, 'All 6 td elements in desktopRow must use px-4 py-2 whitespace-nowrap');
 
-// 6. Ensure actions container has flex items-center justify-end gap-2 w-24 ml-auto
-assert(desktopRow.includes('flex items-center justify-end gap-2 w-24 ml-auto'), 'Actions container must have w-24 gap-2 ml-auto');
+// 6. Ensure actions container has flex items-center justify-end gap-2 w-52 ml-auto & highlighted Renew button
+assert(desktopRow.includes('flex items-center justify-end gap-2 w-52 ml-auto'), 'Actions container must have w-52 gap-2 ml-auto');
+assert(desktopRow.includes("window.openMemberRenewDrawer('${safeDocId}')") && desktopRow.includes('from-blue-600 to-indigo-600'), 'Desktop row must include highlighted Renew button');
 
 // 7. Ensure action icons have smaller w-4 h-4
 assert((desktopRow.match(/class="w-4 h-4/g) || []).length >= 3, 'All action icons must have w-4 h-4');
 
-// 8. Ensure placeholder div is NOT present
+// 8. Ensure placeholder div is NOT present and mobileCard hides WhatsApp on active members
 assert(!desktopRow.includes('w-8 h-8 rounded-full bg-transparent'), 'No placeholder div for active members');
+const mobileCardMatch = html.match(/const mobileCard = `([\s\S]*?)`;/);
+assert(mobileCardMatch, 'mobileCard template literal must exist');
+assert(mobileCardMatch[1].includes("status !== 'active'") && mobileCardMatch[1].includes('sendWhatsAppReminder'), 'Mobile card WhatsApp button must only render when status !== active (Expiring Soon or Expired)');
 
 // 9. Verify all script blocks parse without syntax error
 const scriptMatches = [...html.matchAll(/<script(?:\s+type="([^"]*)")?[^>]*>([\s\S]*?)<\/script>/gi)];

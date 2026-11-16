@@ -29,7 +29,27 @@ service cloud.firestore {
     }
 
     // ========================================================
-    // 3. FALLBACK FOR OTHER COLLECTIONS
+    // 3. PLANS & PACKAGES
+    // ========================================================
+    // - Public read: Enables client dropdowns and packages to load.
+    // - Admin full access: Authenticated staff can create, update, delete plans.
+    match /plans/{planId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // ========================================================
+    // 4. GYM SETTINGS & PROFILE
+    // ========================================================
+    // - Public read: Enables client views and dashboard reports to fetch settings.
+    // - Admin write: Authenticated staff can update gym profile & settings.
+    match /gymSettings/{settingId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // ========================================================
+    // 5. FALLBACK FOR OTHER COLLECTIONS
     // ========================================================
     match /{document=**} {
       allow read, write: if request.auth != null;

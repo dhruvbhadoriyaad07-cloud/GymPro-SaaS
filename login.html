@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GymPro Admin — Sign In</title>
   <!-- Tailwind CSS Play CDN -->
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin/>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin />
   <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
   <script>
     tailwind.config = {
@@ -23,22 +24,41 @@
     }
   </script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
-    .fade-in { animation: fadeIn 0.4s ease both; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+
+    .fade-in {
+      animation: fadeIn 0.4s ease both;
     }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .ambient-glow {
       background: radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.18) 0%, rgba(15, 23, 42, 0) 70%);
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4 relative overflow-hidden select-none">
+
+<body
+  class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4 relative overflow-hidden select-none">
 
   <!-- Ambient background glow & decorative grid -->
   <div class="absolute inset-0 ambient-glow pointer-events-none"></div>
@@ -50,13 +70,16 @@
 
     <!-- Brand Header -->
     <div class="text-center mb-8">
-      <div class="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-indigo-600 to-indigo-500 rounded-2xl shadow-xl shadow-indigo-500/25 mb-4">
+      <div
+        class="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-indigo-600 to-indigo-500 rounded-2xl shadow-xl shadow-indigo-500/25 mb-4">
         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+            d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
         </svg>
       </div>
       <h1 class="text-2xl font-bold tracking-tight text-white flex items-center justify-center gap-2">
-        GymPro <span class="text-xs uppercase px-2 py-0.5 font-semibold tracking-wider bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 rounded-full">Admin</span>
+        GymPro <span
+          class="text-xs uppercase px-2 py-0.5 font-semibold tracking-wider bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 rounded-full">Admin</span>
       </h1>
       <p class="text-sm text-slate-400 mt-2">Sign in to manage your members and cash collection</p>
     </div>
@@ -65,7 +88,8 @@
     <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-800/80 rounded-3xl shadow-2xl p-7 sm:p-8">
 
       <!-- Alert / Error Banner -->
-      <div id="alert-banner" class="hidden mb-6 p-3.5 rounded-2xl border text-sm flex items-start gap-3 transition-all duration-200">
+      <div id="alert-banner"
+        class="hidden mb-6 p-3.5 rounded-2xl border text-sm flex items-start gap-3 transition-all duration-200">
         <span id="alert-icon" class="text-lg shrink-0 mt-0.5">⚠️</span>
         <div class="flex-1 text-xs sm:text-sm font-medium leading-relaxed" id="alert-msg"></div>
       </div>
@@ -75,59 +99,47 @@
 
         <!-- Email Field -->
         <div>
-          <label for="email" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Email Address</label>
+          <label for="email" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Email
+            Address</label>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                  d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
               </svg>
             </div>
-            <input
-              type="email"
-              id="email"
-              required
-              autocomplete="email"
-              placeholder="admin@gympro.in"
-              class="w-full pl-11 pr-4 py-3 bg-slate-950/70 text-slate-100 text-sm rounded-xl border border-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all"
-            />
+            <input type="email" id="email" required autocomplete="email" placeholder="admin@gympro.in"
+              class="w-full pl-11 pr-4 py-3 bg-slate-950/70 text-slate-100 text-sm rounded-xl border border-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all" />
           </div>
         </div>
 
         <!-- Password Field -->
         <div>
           <div class="flex items-center justify-between mb-2">
-            <label for="password" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Password</label>
-            <button
-              type="button"
-              onclick="handleForgotPassword()"
-              class="text-xs text-indigo-400 hover:text-indigo-300 font-medium transition-colors hover:underline cursor-pointer"
-            >
+            <label for="password"
+              class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Password</label>
+            <button type="button" onclick="handleForgotPassword()"
+              class="text-xs text-indigo-400 hover:text-indigo-300 font-medium transition-colors hover:underline cursor-pointer">
               Forgot password?
             </button>
           </div>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
-            <input
-              type="password"
-              id="password"
-              required
-              autocomplete="current-password"
-              placeholder="••••••••"
-              class="w-full pl-11 pr-11 py-3 bg-slate-950/70 text-slate-100 text-sm rounded-xl border border-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all"
-            />
-            <button
-              type="button"
-              onclick="togglePasswordVisibility()"
+            <input type="password" id="password" required autocomplete="current-password" placeholder="••••••••"
+              class="w-full pl-11 pr-11 py-3 bg-slate-950/70 text-slate-100 text-sm rounded-xl border border-slate-800 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all" />
+            <button type="button" onclick="togglePasswordVisibility()"
               class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-500 hover:text-slate-300 transition-colors cursor-pointer"
-              title="Show/Hide password"
-            >
+              title="Show/Hide password">
               <svg id="eye-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
             </button>
           </div>
@@ -135,23 +147,16 @@
 
         <!-- Remember Me Checkbox -->
         <div class="flex items-center">
-          <input
-            id="remember"
-            type="checkbox"
-            checked
-            class="w-4 h-4 rounded bg-slate-950 border-slate-800 text-indigo-600 focus:ring-indigo-500/30 focus:ring-offset-0 cursor-pointer"
-          />
+          <input id="remember" type="checkbox" checked
+            class="w-4 h-4 rounded bg-slate-950 border-slate-800 text-indigo-600 focus:ring-indigo-500/30 focus:ring-offset-0 cursor-pointer" />
           <label for="remember" class="ml-2 text-xs font-medium text-slate-400 cursor-pointer">
             Keep me signed in
           </label>
         </div>
 
         <!-- Submit Button -->
-        <button
-          type="submit"
-          id="btn-login"
-          class="w-full py-3.5 px-4 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-600 text-white font-semibold text-sm rounded-xl shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
-        >
+        <button type="submit" id="btn-login"
+          class="w-full py-3.5 px-4 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-600 text-white font-semibold text-sm rounded-xl shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
           <span id="btn-login-text">Sign In to Dashboard</span>
           <svg id="btn-login-spinner" class="w-4 h-4 text-white animate-spin hidden" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -165,7 +170,8 @@
     <!-- Security badge / footer -->
     <div class="mt-8 text-center text-xs text-slate-500 flex items-center justify-center gap-2">
       <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
       </svg>
       <span>Protected by Firebase Authentication</span>
     </div>
@@ -177,9 +183,9 @@
   ───────────────────────────────────────────────── -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { 
-      getAuth, 
-      signInWithEmailAndPassword, 
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
       onAuthStateChanged,
       sendPasswordResetEmail
     } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
@@ -225,7 +231,7 @@
     }
 
     // Toggle password visibility
-    window.togglePasswordVisibility = function() {
+    window.togglePasswordVisibility = function () {
       const pwdInput = document.getElementById('password');
       const eyeIcon = document.getElementById('eye-icon');
       if (pwdInput.type === 'password') {
@@ -243,7 +249,7 @@
     };
 
     // Forgot password handler
-    window.handleForgotPassword = async function() {
+    window.handleForgotPassword = async function () {
       const email = document.getElementById('email').value.trim();
       if (!email) {
         showAlert("Please enter your email address in the field above to receive a password reset link.");
@@ -259,7 +265,7 @@
     };
 
     // Handle Sign In submission
-    window.handleSignIn = async function(event) {
+    window.handleSignIn = async function (event) {
       event.preventDefault();
       hideAlert();
 
@@ -304,5 +310,5 @@
   </script>
 
 </body>
-</html>
 
+</html>
